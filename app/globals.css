@@ -73,4 +73,13 @@
   body {
     @apply bg-background text-foreground;
   }
+  .blur {
+    transition: filter 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+    filter: blur(1px);
+
+  }
+  .disabled{
+    pointer-events: none;
+    /* opacity: 0.5; */
+  }
 }

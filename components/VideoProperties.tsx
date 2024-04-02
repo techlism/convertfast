@@ -13,6 +13,7 @@ import {
   SelectLabel,
   SelectItem,
 } from "@/components/ui/select";
+import { Progress } from "./ui/progress";
 import { Input } from "@/components/ui/input";
 // import { Label } from "./ui/label"
 import InfoTooltip from "./InfoTooltip";
@@ -38,7 +39,9 @@ export default function VideoProperties() {
   const [volume, setVolume] = useState<string>("original");
   const [sampleRate, setSampleRate] = useState<string>("original");
   const [fit, setFit] = useState<string>("original");
-
+  const [totalDuration, setTotalDuration] = useState<number>(-10);
+  const [percentProgress, setPercentProgress] = useState(0);
+  const [converting , setConverting] = useState(false);
   const FFMPEGProcessor = async () => {
     const fps = frameRate === "original" ? [frameRate] : ["-r", frameRate];
     const crf = constantQuality === "original" ? [constantQuality] : constantQuality.split(" ");
@@ -48,7 +51,6 @@ export default function VideoProperties() {
     // const codec = videoCodec === "original" ? [videoCodec] : videoCodec.split(" ");
     const fitScale = fit === "original" ? [fit] : fit.split(" ");
     const aspect = aspectRatio === "original" ? [aspectRatio] : aspectRatio.split(" ");
-    console.log(aspect);
     const channel = channels === "original" ? [channels] : channels.split(" ");
     const codec = audioCodec === "original" ? [audioCodec] : audioCodec.split(" ");
     const vol = volume === "original" ? [volume] : ["-af", volume];
@@ -68,16 +70,16 @@ export default function VideoProperties() {
     const appliedAttributes = attributes.filter(
       (attribute) => attribute !== "original"
     );
-    console.log(appliedAttributes);
+    // console.log(appliedAttributes);
     const ffmpeg = ffmpegRef.current;
     if (inputFile) {
-      await ffmpeg.writeFile("input.mp4", await fetchFile(inputFile));
+      await ffmpeg.writeFile("input.mp4", await fetchFile(inputFile)).then(() => setConverting(true));
       await ffmpeg.exec([
         "-i",
         "input.mp4",
         ...appliedAttributes,
         "output.mkv",
-      ]);
+      ]).then(() => setConverting(false));
       const fileData = await ffmpeg.readFile("output.mkv");
       const data = new Uint8Array(fileData as ArrayBuffer);
       const url = URL.createObjectURL(
@@ -140,11 +142,11 @@ export default function VideoProperties() {
     file?.name && console.log(file.name);
     if (file) setInputFile(file);
   };
+
   const load = async () => {
     const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm";
     const ffmpeg = ffmpegRef.current;
     ffmpeg.on("log", ({ message }) => {
-      console.log(message);
       setMessage(message);
     });
     const ffmpegLoaded = await ffmpeg.load({
@@ -166,28 +168,70 @@ export default function VideoProperties() {
     if (!loaded) load();
   }, [loaded]);
 
+  useEffect(()=>{
+    function parseProgessAndDuration(message: string){
+      if(message.includes("Duration:")){
+        const duration = message.split("Duration:")[1].split(",")[0].trim();
+        const time = duration.split(":");
+        const hours = parseInt(time[0]);
+        const minutes = parseInt(time[1]);
+        const seconds = parseInt(time[2].split(".")[0]);
+        setTotalDuration(hours * 3600 + minutes * 60 + seconds);
+      }
+      if(message.includes("time=")){
+        const time = message.split("time=")[1].split(" ")[0].trim();
+        const currentTime = time.split(":");
+        const hours = parseInt(currentTime[0]);
+        const minutes = parseInt(currentTime[1]);
+        const seconds = parseInt(currentTime[2].split(".")[0]);
+        const currentDuration = hours * 3600 + minutes * 60 + seconds;
+        if(totalDuration > 0) {
+          const progress = (currentDuration / totalDuration) * 100;
+          setPercentProgress(progress);
+        }
+      }
+    }
+    if(message){
+      parseProgessAndDuration(message);
+    }
+  },[message])
+
   return (
     <div className="flex align-middle justify-center flex-col">
-      <Label
-        htmlFor="dropzone-file"
-        className="m-5 justify-self-center cursor-pointer"
-      >
-        <div className="flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-10">
-          <UploadIcon />
-          <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-            <span className="font-semibold">Click to upload</span> or Drag and
-            Drop
+      <div className="m-2">
+        { inputFile == null ?
+        <Label
+          htmlFor="dropzone-file"
+          className="justify-self-center cursor-pointer"
+        >
+          <div className="flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-10">
+            <UploadIcon />
+            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
+              <span className="font-semibold">Click to upload</span> or Drag and
+              Drop
+            </p>
+          </div>
+          <Input
+            id="dropzone-file"
+            type="file"
+            accept="video/mp4"
+            className="hidden"
+            onChange={handleFileChange}
+          />
+        </Label>
+        :
+        <div className="flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-10">        
+          <p className=" text-lg font-bold text-gray-500 dark:text-gray-400">
+            {inputFile?.name}
           </p>
-        </div>
-        <Input
-          id="dropzone-file"
-          type="file"
-          accept="video/mp4"
-          className="hidden"
-          onChange={handleFileChange}
-        />
-      </Label>
-      <div className="flex flex-col space-y-6 m-5">
+          <Button variant={'ghost'} onClick={()=>setInputFile(null)} className="text-xs opacity-20 justify-self-end">
+            Convert a different video
+          </Button>
+        </div>  
+      }
+        
+      </div>
+      <div className={`flex flex-col space-y-6 m-2 border p-5 rounded-lg ${converting==true ? 'blur disabled' : ''}`}>
         <div>
           <h2 className="flex items-center text-xl font-semibold">
             <FilmIcon className="mr-2 text-gray-600" />
@@ -430,17 +474,29 @@ export default function VideoProperties() {
           </div>
         </div>
       </div>
-      <p>{message}</p>
-      <Button onClick={FFMPEGProcessor} className="m-4" disabled={loaded==false || inputFile == null}>
-        Convert
-      </Button>
-      {outputFileURL !== "" && (
-        <Button>
-          <a href={outputFileURL} download="output.mkv">
-            Download
-          </a>
-        </Button>
-      )}
+      <div className="p-5 grid grid-cols-1 items-center gap-5 border m-2 rounded-lg" >
+        <Progress value={percentProgress} className="text-grey-500"/>
+        <div className="flex justify-center space-x-5">
+          <Button onClick={FFMPEGProcessor} disabled={loaded==false || inputFile == null || converting == true} className="text-md">
+            Convert
+          </Button>
+          {outputFileURL !== "" && (
+            <Button>
+              <a href={outputFileURL} download={`${inputFile?.name.slice(0,-4)}.mkv`} className="text-md">
+                Download
+              </a>
+            </Button>
+          )}
+          {
+            outputFileURL !== "" && (
+              <Button onClick={() => window.location.reload()} className="text-md" variant={'destructive'}>
+                Convert Another
+              </Button>
+            )
+          }          
+        </div>
+        
+      </div>
     </div>
   );
 }
