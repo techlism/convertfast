@@ -37,6 +37,7 @@ export default function VideoProperties() {
   const [channels, setChannels] = useState<string>("original");
   const [volume, setVolume] = useState<string>("original");
   const [sampleRate, setSampleRate] = useState<string>("original");
+  const [fit, setFit] = useState<string>("original");
 
   const FFMPEGProcessor = async () => {
     const fps = frameRate === "original" ? [frameRate] : ["-r", frameRate];
@@ -45,7 +46,9 @@ export default function VideoProperties() {
     const res = resolution === "original" ? [resolution] : ["-vf", resolution];
     // Video codec doesn't seems to working. Got stuck after thread creation
     // const codec = videoCodec === "original" ? [videoCodec] : videoCodec.split(" ");
-    const fitScale = aspectRatio === "original" ? [aspectRatio] : aspectRatio.split(" ");
+    const fitScale = fit === "original" ? [fit] : fit.split(" ");
+    const aspect = aspectRatio === "original" ? [aspectRatio] : aspectRatio.split(" ");
+    console.log(aspect);
     const channel = channels === "original" ? [channels] : channels.split(" ");
     const codec = audioCodec === "original" ? [audioCodec] : audioCodec.split(" ");
     const vol = volume === "original" ? [volume] : ["-af", volume];
@@ -60,6 +63,7 @@ export default function VideoProperties() {
       ...vol,
       ...sr,
       ...res,
+      ...aspect
     ];
     const appliedAttributes = attributes.filter(
       (attribute) => attribute !== "original"
@@ -83,6 +87,10 @@ export default function VideoProperties() {
     }
   };
 
+  function handleFitChange(value: string) {
+    setFit(value);
+  }
+
   function handleResolutionChange(value: string) {
     setResolution(value);
   }
@@ -94,12 +102,6 @@ export default function VideoProperties() {
   function handleConstantQualityChange(value: string) {
     setConstantQuality(value);
   }
-
-  // function handleVideoCodecChange(value: string) {
-  // ain't working
-  //   setVideoCodec(value);
-  // }
-
 
   function handleFrameRateChange(value: string) {
     setFrameRate(value);
@@ -244,7 +246,7 @@ export default function VideoProperties() {
                 onValueChange={(value) => handleConstantQualityChange(value)}
               >
                 <SelectTrigger id="crf">
-                  <SelectValue placeholder="23 (Normal)" />
+                  <SelectValue placeholder="23 (Normal) | Unchanged" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
@@ -257,28 +259,12 @@ export default function VideoProperties() {
                 </SelectContent>
               </Select>
             </div>
-            {/* <div className="flex flex-col">
-              <label className="font-medium flex align-middle p-3 justify-between">
-                Video Codec <InfoTooltip information="Video Codec" />
-              </label>
-              <Select onValueChange={(value) => handleVideoCodecChange(value)}>
-                <SelectTrigger id="video-codec">
-                  <SelectValue placeholder="x264" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectItem value="-c:v libx264">x264</SelectItem>
-                    <SelectItem value="-c:v libx265 -vtag hvc1">x265</SelectItem>
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div> */}
             <div className="flex flex-col">
               <label className="font-medium flex align-middle p-3 justify-between">
-                Aspect Ratio <InfoTooltip information="Aspect-Ratio" />
+                Fit <InfoTooltip information="Fit" />
               </label>
-              <Select onValueChange={(value) => handleAspectRatioChange(value)}>
-                <SelectTrigger id="aspect-ratio">
+              <Select onValueChange={(value) => handleFitChange(value)}>
+                <SelectTrigger id="fit">
                   <SelectValue placeholder="Unchanged" />
                 </SelectTrigger>
                 <SelectContent>
@@ -288,18 +274,12 @@ export default function VideoProperties() {
                     <SelectItem value="-vf scale=-2:1080">
                       Scale (to 1080p, maintain aspect ratio)
                     </SelectItem>
-                    <SelectItem value="-vf scale=-2:2160">
-                      Scale (to 2160p, maintain aspect ratio)
-                    </SelectItem>                    
                     <SelectItem value="-vf crop=1920:1080">
                       Crop (to 1920x1080)
                     </SelectItem>
-                    <SelectItem value="-vf crop=1080:1920">
-                      Crop (to 1080x1920) - Portrait
-                    </SelectItem>
-                    <SelectItem value="-vf crop=1920:960">
-                      Crop (to 1920x960) - Cinematic
-                    </SelectItem>                                         
+                    <SelectItem value="-vf crop=1080:1080">
+                      Crop (to 1080x1080) - Square
+                    </SelectItem>                                                   
                     <SelectItem value="-vf pad=1920:1080:-1:-1:color=black">
                       Pad (to 1920x1080, with black bars)
                     </SelectItem>                 
@@ -312,11 +292,33 @@ export default function VideoProperties() {
             </div>
             <div className="flex flex-col">
               <label className="font-medium flex align-middle p-3 justify-between">
+                Aspect Ratio <InfoTooltip information="Aspect-Ratio" />
+              </label>
+              <Select onValueChange={(value) => handleAspectRatioChange(value)}>
+                <SelectTrigger id="fit">
+                  <SelectValue placeholder="Unchanged" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="original">Original</SelectItem>
+                    <Separator />
+                    <SelectItem value="-aspect 16:9">16:9 - Normal</SelectItem>
+                    <SelectItem value="-aspect 4:3">4:3 - WideScreen</SelectItem>
+                    <SelectItem value="-aspect 21:9">21:9 - Cinematic</SelectItem>
+                    <SelectItem value="-aspect 1:1">1:1 - Square</SelectItem>
+                    <SelectItem value="-aspect 9:16">9:16 - Portrait</SelectItem>
+                    <SelectItem value="-aspect 9:18">9:18 - Portrait (Better for Mobiles)</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>            
+            <div className="flex flex-col">
+              <label className="font-medium flex align-middle p-3 justify-between">
                 FPS (Frame Rate) <InfoTooltip information="FPS (Frame Rate)" />
               </label>
               <Select onValueChange={(value) => handleFrameRateChange(value)}>
                 <SelectTrigger id="fps">
-                  <SelectValue placeholder="Original" />
+                  <SelectValue placeholder="Unchanged" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
