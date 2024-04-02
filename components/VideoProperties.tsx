@@ -212,6 +212,14 @@ export default function VideoProperties({ format }: { format: string }) {
 
   return (
     <div className="flex align-middle justify-center flex-col">
+      <div className="space-y-5 flex flex-col justify-center align-middle">
+        <h1 className="text-5xl font-bold text-center">
+          Convert your MP4 videos to {format.toUpperCase()}
+        </h1>
+        <p className="text-center text-lg text-gray-200 dark:text-gray-400 max-w-fit bg-muted-foreground p-4 rounded-lg font-medium">
+          Your videos will not be uploaded to any server. <br/> All the processing is done on your device and due to this, the processing time may vary depending on your device.
+        </p>
+      </div>
       <div className="m-2">
         {inputFile == null ? (
           <Label
@@ -245,7 +253,7 @@ export default function VideoProperties({ format }: { format: string }) {
             >
               Choose a different video
             </Button>
-			<p>{errorMsg}</p>
+			      <p className="bg-red-500">{errorMsg}</p>
           </div>
         )}
       </div>
@@ -540,10 +548,10 @@ export default function VideoProperties({ format }: { format: string }) {
             {converting == true ? "Converting..." : "Convert"}
           </Button>
           {outputFileURL !== "" && (
-            <Button>
+            <Button className="bg-blue-600 dark:bg-blue-400">
               <a
                 href={outputFileURL}
-                download={`${inputFile?.name.slice(0, Number(format.length * -1))}.${format}`}
+                download={`${inputFile?.name.slice(0, Number((format.length + 1) * -1))}.${format}`}
                 className="text-md"
               >
                 Download
