@@ -21,7 +21,7 @@ import { FilmIcon, MusicIcon, ScissorsIcon } from "lucide-react";
 import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
 
-export default function VideoProperties() {
+export default function VideoProperties({ format }: { format: string }) {
   const [loaded, setLoaded] = useState(false);
   const ffmpegRef = useRef(new FFmpeg());
   const [message, setMessage] = useState("");
@@ -41,18 +41,25 @@ export default function VideoProperties() {
   const [fit, setFit] = useState<string>("original");
   const [totalDuration, setTotalDuration] = useState<number>(-10);
   const [percentProgress, setPercentProgress] = useState(0);
-  const [converting , setConverting] = useState(false);
+  const [converting, setConverting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const FFMPEGProcessor = async () => {
     const fps = frameRate === "original" ? [frameRate] : ["-r", frameRate];
-    const crf = constantQuality === "original" ? [constantQuality] : constantQuality.split(" ");
-    const audioBR = audioBitrate === "original" ? [audioBitrate] : audioBitrate.split(" ");
+    const crf =
+      constantQuality === "original"
+        ? [constantQuality]
+        : constantQuality.split(" ");
+    const audioBR =
+      audioBitrate === "original" ? [audioBitrate] : audioBitrate.split(" ");
     const res = resolution === "original" ? [resolution] : ["-vf", resolution];
     // Video codec doesn't seems to working. Got stuck after thread creation
     // const codec = videoCodec === "original" ? [videoCodec] : videoCodec.split(" ");
     const fitScale = fit === "original" ? [fit] : fit.split(" ");
-    const aspect = aspectRatio === "original" ? [aspectRatio] : aspectRatio.split(" ");
+    const aspect =
+      aspectRatio === "original" ? [aspectRatio] : aspectRatio.split(" ");
     const channel = channels === "original" ? [channels] : channels.split(" ");
-    const codec = audioCodec === "original" ? [audioCodec] : audioCodec.split(" ");
+    const codec =
+      audioCodec === "original" ? [audioCodec] : audioCodec.split(" ");
     const vol = volume === "original" ? [volume] : ["-af", volume];
     const sr = sampleRate === "original" ? [sampleRate] : sampleRate.split(" ");
     const attributes = [
@@ -65,25 +72,28 @@ export default function VideoProperties() {
       ...vol,
       ...sr,
       ...res,
-      ...aspect
+      ...aspect,
     ];
+	if(format === "webm"){
+		attributes.push("-c:v", "libvpx", "-c:a", "libvorbis");
+		if(attributes.indexOf("-crf") === -1) attributes.push("-crf", "14");
+	}
     const appliedAttributes = attributes.filter(
       (attribute) => attribute !== "original"
     );
     // console.log(appliedAttributes);
     const ffmpeg = ffmpegRef.current;
     if (inputFile) {
-      await ffmpeg.writeFile("input.mp4", await fetchFile(inputFile)).then(() => setConverting(true));
-      await ffmpeg.exec([
-        "-i",
-        "input.mp4",
-        ...appliedAttributes,
-        "output.mkv",
-      ]).then(() => setConverting(false));
-      const fileData = await ffmpeg.readFile("output.mkv");
+      await ffmpeg
+        .writeFile("input.mp4", await fetchFile(inputFile))
+        .then(() => setConverting(true));
+      await ffmpeg
+        .exec(["-i", "input.mp4", ...appliedAttributes, `output.${format}`]);
+	  setConverting(false);		
+      const fileData = await ffmpeg.readFile(`output.${format}`);
       const data = new Uint8Array(fileData as ArrayBuffer);
       const url = URL.createObjectURL(
-        new Blob([data.buffer], { type: "video/mkv" })
+        new Blob([data.buffer], { type: "video/${format}" })
       );
       setOutputFileURL(url);
     }
@@ -139,15 +149,19 @@ export default function VideoProperties() {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = event.target.files?.[0] || null;
-    file?.name && console.log(file.name);
-    if (file) setInputFile(file);
+    // file?.name && console.log(file.name);
+    if (file && file.name.toLowerCase().includes("mp4")) setInputFile(file);
+	else if (file && !file.name.toLowerCase().includes("mp4")) {
+		setErrorMsg("This is not an MP4 file. Please select an MP4 file.")
+	}
   };
 
   const load = async () => {
     const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm";
     const ffmpeg = ffmpegRef.current;
-    ffmpeg.on("log", ({ message }) => {
+    ffmpeg.on("log", ({ message }) => {		
       setMessage(message);
+	//   console.log(message);
     });
     const ffmpegLoaded = await ffmpeg.load({
       coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript"),
@@ -168,9 +182,9 @@ export default function VideoProperties() {
     if (!loaded) load();
   }, [loaded]);
 
-  useEffect(()=>{
-    function parseProgessAndDuration(message: string){
-      if(message.includes("Duration:")){
+  useEffect(() => {
+    function parseProgessAndDuration(message: string) {
+      if (message.includes("Duration:")) {
         const duration = message.split("Duration:")[1].split(",")[0].trim();
         const time = duration.split(":");
         const hours = parseInt(time[0]);
@@ -178,61 +192,65 @@ export default function VideoProperties() {
         const seconds = parseInt(time[2].split(".")[0]);
         setTotalDuration(hours * 3600 + minutes * 60 + seconds);
       }
-      if(message.includes("time=")){
+      if (message.includes("time=")) {
         const time = message.split("time=")[1].split(" ")[0].trim();
         const currentTime = time.split(":");
         const hours = parseInt(currentTime[0]);
         const minutes = parseInt(currentTime[1]);
         const seconds = parseInt(currentTime[2].split(".")[0]);
         const currentDuration = hours * 3600 + minutes * 60 + seconds;
-        if(totalDuration > 0) {
+        if (totalDuration > 0) {
           const progress = (currentDuration / totalDuration) * 100;
           setPercentProgress(progress);
         }
       }
     }
-    if(message){
+    if (message) {
       parseProgessAndDuration(message);
     }
-  },[message])
+  }, [message]);
 
   return (
     <div className="flex align-middle justify-center flex-col">
       <div className="m-2">
-        { inputFile == null ?
-        <Label
-          htmlFor="dropzone-file"
-          className="justify-self-center cursor-pointer"
-        >
+        {inputFile == null ? (
+          <Label
+            htmlFor="dropzone-file"
+            className="justify-self-center cursor-pointer"
+          >
+            <div className="flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-10">
+              <UploadIcon />
+              <p className="mb-2 text-sm text-gray-500 dark:text-gray-400 text-center">
+                <span className="font-semibold">Click to Select</span> or Drag
+                and Drop
+              </p>
+            </div>
+            <Input
+              id="dropzone-file"
+              type="file"
+              accept="video/mp4"
+              className="hidden"
+              onChange={handleFileChange}
+            />
+          </Label>
+        ) : (
           <div className="flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-10">
-            <UploadIcon />
-            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-              <span className="font-semibold">Click to upload</span> or Drag and
-              Drop
+            <p className=" text-lg font-medium text-gray-500 dark:text-gray-400">
+              {inputFile?.name}
             </p>
+            <Button
+              variant={"ghost"}
+              onClick={() => setInputFile(null)}
+              className="text-xs opacity-30 justify-self-end"
+            >
+              Choose a different video
+            </Button>
+			<p>{errorMsg}</p>
           </div>
-          <Input
-            id="dropzone-file"
-            type="file"
-            accept="video/mp4"
-            className="hidden"
-            onChange={handleFileChange}
-          />
-        </Label>
-        :
-        <div className="flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-10">        
-          <p className=" text-lg font-bold text-gray-500 dark:text-gray-400">
-            {inputFile?.name}
-          </p>
-          <Button variant={'ghost'} onClick={()=>setInputFile(null)} className="text-xs opacity-20 justify-self-end">
-            Convert a different video
-          </Button>
-        </div>  
-      }
-        
+        )}
       </div>
-      <div className={`flex flex-col space-y-6 m-2 border p-5 rounded-lg ${converting==true ? 'blur disabled' : ''}`}>
-        <div>
+      <div className={`flex flex-col space-y-6 m-2 border p-5 rounded-lg `}>
+        <div className={`${converting == true ? "blur disabled" : ""}`}>
           <h2 className="flex items-center text-xl font-semibold">
             <FilmIcon className="mr-2 text-gray-600" />
             Video
@@ -240,18 +258,18 @@ export default function VideoProperties() {
           <div className="mt-4 grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 xl:gap-14 lg:gap-12 md:gap-8 gap-6 items-center">
             <div className="flex flex-col">
               <label className="font-medium flex align-middle p-3 justify-between">
-                Resolution <InfoTooltip information="Resolution" />
+                Resolution <InfoTooltip information="The resolution determines the amount of detail (pixels) and clarity of the video or image.Generally, higher the pixels higher the quality" />
               </label>
               <Select onValueChange={(value) => handleResolutionChange(value)}>
                 <SelectTrigger id="resolution">
-                  <SelectValue placeholder="Original" />
+                  <SelectValue placeholder="Unchanged" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
                     <SelectItem value="original" className="font-bold">
                       Original
                     </SelectItem>
-                    {/* No scaling applied */}
+
                     <Separator />
                     <SelectItem value="scale=426:240">
                       240p (426x240)
@@ -280,11 +298,11 @@ export default function VideoProperties() {
                   </SelectGroup>
                 </SelectContent>
               </Select>
-            </div>          
+            </div>
             <div className="flex flex-col">
               <label className="font-medium flex align-middle p-3 justify-between">
                 Constant Quality (CRF)
-                <InfoTooltip information="Constant Quality (CRF)" />
+                <InfoTooltip information=" The CRF value sets the video quality. Lower values mean better quality but longer conversion times" />
               </label>
               <Select
                 onValueChange={(value) => handleConstantQualityChange(value)}
@@ -294,6 +312,11 @@ export default function VideoProperties() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
+                    <SelectItem value="original" className="font-bold">
+                      Original
+                    </SelectItem>
+
+                    <Separator />
                     <SelectItem value="-crf 0">0 (Lossless)</SelectItem>
                     <SelectItem value="-crf 18">18 (High Quality)</SelectItem>
                     <SelectItem value="-crf 23">23 (Normal)</SelectItem>
@@ -305,7 +328,7 @@ export default function VideoProperties() {
             </div>
             <div className="flex flex-col">
               <label className="font-medium flex align-middle p-3 justify-between">
-                Fit <InfoTooltip information="Fit" />
+                Fit <InfoTooltip information="Sets the mode of sizing the video." />
               </label>
               <Select onValueChange={(value) => handleFitChange(value)}>
                 <SelectTrigger id="fit">
@@ -313,7 +336,9 @@ export default function VideoProperties() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="original">Original</SelectItem>
+                    <SelectItem value="original" className="font-bold">
+                      Original
+                    </SelectItem>
                     <Separator />
                     <SelectItem value="-vf scale=-2:1080">
                       Scale (to 1080p, maintain aspect ratio)
@@ -323,10 +348,10 @@ export default function VideoProperties() {
                     </SelectItem>
                     <SelectItem value="-vf crop=1080:1080">
                       Crop (to 1080x1080) - Square
-                    </SelectItem>                                                   
+                    </SelectItem>
                     <SelectItem value="-vf pad=1920:1080:-1:-1:color=black">
                       Pad (to 1920x1080, with black bars)
-                    </SelectItem>                 
+                    </SelectItem>
                     <SelectItem value="-vf pad=1920:1080:-1:-1:color=white">
                       Pad (to 1920x1080, with white bars)
                     </SelectItem>
@@ -336,7 +361,7 @@ export default function VideoProperties() {
             </div>
             <div className="flex flex-col">
               <label className="font-medium flex align-middle p-3 justify-between">
-                Aspect Ratio <InfoTooltip information="Aspect-Ratio" />
+                Aspect Ratio <InfoTooltip information="Aspect ratio refers to the proportional relationship between the width and height of a video or image. The choice of aspect ratio affects how content is displayed on various devices and screens." />
               </label>
               <Select onValueChange={(value) => handleAspectRatioChange(value)}>
                 <SelectTrigger id="fit">
@@ -344,21 +369,32 @@ export default function VideoProperties() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="original">Original</SelectItem>
+                    <SelectItem value="original" className="font-bold">
+                      Original
+                    </SelectItem>
+
                     <Separator />
                     <SelectItem value="-aspect 16:9">16:9 - Normal</SelectItem>
-                    <SelectItem value="-aspect 4:3">4:3 - WideScreen</SelectItem>
-                    <SelectItem value="-aspect 21:9">21:9 - Cinematic</SelectItem>
+                    <SelectItem value="-aspect 4:3">
+                      4:3 - WideScreen
+                    </SelectItem>
+                    <SelectItem value="-aspect 21:9">
+                      21:9 - Cinematic
+                    </SelectItem>
                     <SelectItem value="-aspect 1:1">1:1 - Square</SelectItem>
-                    <SelectItem value="-aspect 9:16">9:16 - Portrait</SelectItem>
-                    <SelectItem value="-aspect 9:18">9:18 - Portrait (Better for Mobiles)</SelectItem>
+                    <SelectItem value="-aspect 9:16">
+                      9:16 - Portrait
+                    </SelectItem>
+                    <SelectItem value="-aspect 9:18">
+                      9:18 - Portrait (Better for Mobiles)
+                    </SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>
-            </div>            
+            </div>
             <div className="flex flex-col">
               <label className="font-medium flex align-middle p-3 justify-between">
-                FPS (Frame Rate) <InfoTooltip information="FPS (Frame Rate)" />
+                FPS (Frame Rate) <InfoTooltip information="FPS-Frames Per Second. 60fps - Smooth, 30fps - Most Commonly used, 24 - For Cinema." />
               </label>
               <Select onValueChange={(value) => handleFrameRateChange(value)}>
                 <SelectTrigger id="fps">
@@ -366,6 +402,11 @@ export default function VideoProperties() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
+                    <SelectItem value="original" className="font-bold">
+                      Original
+                    </SelectItem>
+
+                    <Separator />
                     <SelectItem value="30">30 FPS</SelectItem>
                     <SelectItem value="24">24 FPS </SelectItem>
                     <SelectItem value="25">25 FPS </SelectItem>
@@ -378,7 +419,7 @@ export default function VideoProperties() {
           </div>
         </div>
         <Separator />
-        <div>
+        <div className={`${converting == true ? "blur disabled" : ""}`}>
           <h2 className="flex items-center text-xl font-semibold">
             <MusicIcon className="mr-2 text-gray-600" />
             Audio
@@ -386,7 +427,7 @@ export default function VideoProperties() {
           <div className="mt-4 grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 xl:gap-14 lg:gap-12 md:gap-8 gap-6 items-center">
             <div className="flex flex-col">
               <label className="font-medium flex align-middle p-3 justify-between">
-                Audio Codec <InfoTooltip information="Audio Codec" />
+                Audio Codec <InfoTooltip information="The audio codec is a type of program used to compress and decompress digital audio files. Common codecs include AAC for a balance of quality and compatibility, MP3 for widespread use, and Opus for high-quality streaming audio." />
               </label>
               <Select onValueChange={(value) => handleAudioCodecChange(value)}>
                 <SelectTrigger id="audio-codec">
@@ -394,6 +435,10 @@ export default function VideoProperties() {
                 </SelectTrigger>
                 <SelectGroup>
                   <SelectContent>
+                    <SelectItem value="original" className="font-bold">
+                      Original
+                    </SelectItem>
+                    <Separator />
                     <SelectItem value="-c:a aac">AAC</SelectItem>{" "}
                     {/* Use AAC codec */}
                     <Separator />
@@ -407,7 +452,7 @@ export default function VideoProperties() {
             </div>
             <div className="flex flex-col">
               <label className="font-medium flex align-middle p-3 justify-between">
-                Audio Bitrate <InfoTooltip information="Audio Bitrate" />
+                Audio Bitrate <InfoTooltip information="Bitrate refers to the amount of audio data transmitted per second, measured in kilobits per second (kbps). Higher bitrates generally result in better sound quality but larger file sizes. Typical values range from 128 kbps (good for podcasts) to 320 kbps (high quality for music)." />
               </label>
               <Input
                 placeholder="Enter bitrate (e.g. 128 kbps)"
@@ -419,13 +464,18 @@ export default function VideoProperties() {
             </div>
             <div className="flex flex-col">
               <label className="font-medium flex align-middle p-3 justify-between">
-                Channel <InfoTooltip information="Channel" />
+                Channel <InfoTooltip information="Audio channels refer to the number of separate audio signals in a recording, affecting how sound is heard. 'Mono' has one channel and sounds the same from all speakers, while 'Stereo' uses two channels for left and right speakers, offering a sense of dimension and direction in the sound." />
               </label>
               <Select onValueChange={(value) => handleChannelsChange(value)}>
                 <SelectTrigger id="channels">
                   <SelectValue placeholder="Unchanged" />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="original" className="font-bold">
+                    Original
+                  </SelectItem>
+
+                  <Separator />
                   <SelectItem value="-ac 2">Stereo</SelectItem>
                   <SelectItem value="-ac 1">Mono</SelectItem>
                 </SelectContent>
@@ -433,7 +483,7 @@ export default function VideoProperties() {
             </div>
             <div className="flex flex-col">
               <label className="font-medium flex align-middle p-3 justify-between">
-                Volume <InfoTooltip information="Volume" />
+                Volume <InfoTooltip information="Volume in audio terms refers to the loudness or intensity of the sound. It can be adjusted to make audio tracks louder or softer without altering the audio data itself. Volume adjustments are often made during mixing and mastering to ensure consistent loudness levels across tracks." />
               </label>
               <Select onValueChange={(value) => handleVolumeChange(value)}>
                 <SelectTrigger id="volume">
@@ -444,26 +494,29 @@ export default function VideoProperties() {
                   <SelectItem value="volume=1.2">+20%</SelectItem>
                   <SelectItem value="volume=1.1">+10%</SelectItem>
                   <Separator />
-                  <SelectItem value="original">0 (Original)</SelectItem>
+                  <SelectItem value="original" className="font-bold">
+                    Original
+                  </SelectItem>
                   <Separator />
                   <SelectItem value="volume=0.9">-10%</SelectItem>
                   <SelectItem value="volume=0.8">-20%</SelectItem>
                   <SelectItem value="volume=0.5">-50%</SelectItem>
-
-                  <Separator />
                 </SelectContent>
               </Select>
             </div>
             <div className="flex flex-col">
               <label className="font-medium flex align-middle p-3 justify-between">
-                Sample Rate <InfoTooltip information="Sample Rate" />
+                Sample Rate <InfoTooltip information="Sample rate, measured in Hertz (Hz), refers to the number of samples of audio carried per second. Higher sample rates can capture more detail but require more data. Common rates include 44.1 kHz (CD quality) and 48 kHz (professional audio and video standards)." />
               </label>
               <Select onValueChange={(value) => handleSampleRateChange(value)}>
                 <SelectTrigger id="sample-rate">
                   <SelectValue placeholder="Unchanged" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="original">Original</SelectItem>
+                  <SelectItem value="original" className="font-bold">
+                    Original
+                  </SelectItem>
+
                   <Separator />
                   <SelectItem value="-ar 44100">44100 Hz</SelectItem>
                   <SelectItem value="-ar 48000">48000 Hz</SelectItem>
@@ -474,28 +527,39 @@ export default function VideoProperties() {
           </div>
         </div>
       </div>
-      <div className="p-5 grid grid-cols-1 items-center gap-5 border m-2 rounded-lg" >
-        <Progress value={percentProgress} className="text-grey-500"/>
-        <div className="flex justify-center space-x-5">
-          <Button onClick={FFMPEGProcessor} disabled={loaded==false || inputFile == null || converting == true} className="text-md">
-            Convert
+      <div className="p-5 grid grid-cols-1 items-center gap-5 border m-2 rounded-lg">
+        <Progress value={percentProgress} className="text-grey-500" />
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-3 xl:grid-cols-3 items-center">
+          <Button
+            onClick={FFMPEGProcessor}
+            disabled={
+              loaded == false || inputFile == null || converting == true
+            }
+            className="text-md"
+          >
+            {converting == true ? "Converting..." : "Convert"}
           </Button>
           {outputFileURL !== "" && (
             <Button>
-              <a href={outputFileURL} download={`${inputFile?.name.slice(0,-4)}.mkv`} className="text-md">
+              <a
+                href={outputFileURL}
+                download={`${inputFile?.name.slice(0, Number(format.length * -1))}.${format}`}
+                className="text-md"
+              >
                 Download
               </a>
             </Button>
           )}
-          {
-            outputFileURL !== "" && (
-              <Button onClick={() => window.location.reload()} className="text-md" variant={'destructive'}>
-                Convert Another
-              </Button>
-            )
-          }          
+          {outputFileURL !== "" && (
+            <Button
+              onClick={() => window.location.reload()}
+              className="text-md"
+              variant={"outline"}
+            >
+              Convert Another
+            </Button>
+          )}
         </div>
-        
       </div>
     </div>
   );

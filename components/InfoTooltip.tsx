@@ -12,9 +12,9 @@ export default function InfoTooltip({information}:{information : string}) {
         <TooltipProvider>
             <Tooltip>
             <TooltipTrigger asChild>
-                <InfoIcon className="opacity-15 hover:opacity-80"/>
+                <InfoIcon className="opacity-15 hover:opacity-80 ml-2"/>
             </TooltipTrigger>
-            <TooltipContent>
+            <TooltipContent className="max-w-[50vw]">
                 <p>{information}</p>
             </TooltipContent>
             </Tooltip>

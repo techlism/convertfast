@@ -1,23 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
-  async headers() {
-    return [
-      {
-        source: "/",
-        headers: [
+    async rewrites() {
+        return [
           {
-            key: "Cross-Origin-Embedder-Policy",
-            value: "require-corp",
-          },
-          {
-            key: "Cross-Origin-Opener-Policy",
-            value: "same-origin",
-          },
-        ],
-      },
-    ];
-  },
+            source: '/mp4-to-:format', // Matches any URL like /mp4-to-xxx
+            destination: '/mp4-to/:format' // Rewrites to /mp4-to/xxx
+          }
+        ];
+      }
 };
 
 export default nextConfig;
