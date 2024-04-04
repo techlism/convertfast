@@ -5,7 +5,7 @@ import VideoProperties from "@/components/VideoProperties";
 import { Home } from "lucide-react";
 import Link from "next/link";
 
-const supportedFormats = ['mkv', 'avi', 'flv', 'webm', 'mov'];
+const supportedFormats = ['mkv', 'mp4', 'flv', 'webm', 'mov'];
 const primaryFormat = 'avi';
 
 export default function Page({ params }: { params: { format: string } }){
