@@ -6,7 +6,7 @@ import { Home } from "lucide-react";
 import Link from "next/link";
 
 const supportedFormats = ['mkv', 'avi', 'flv', 'webm', 'mov'];
-const primaryFormat = 'mov'
+const primaryFormat = 'mkv'
 
 export default function Page({ params }: { params: { format: string } }){
     const {format} = params;
