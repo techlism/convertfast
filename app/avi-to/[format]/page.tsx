@@ -3,6 +3,7 @@ import HeroSection from "@/components/Video-Hero";
 import NOSSRWrapper from "@/components/NOSSRWrapper";
 import VideoProperties from "@/components/VideoProperties";
 import { Home } from "lucide-react";
+import { MoveDown } from 'lucide-react';
 import Link from "next/link";
 
 const supportedFormats = ['mkv', 'mp4', 'flv', 'webm', 'mov'];
@@ -42,14 +43,10 @@ export default function Page({ params }: { params: { format: string } }){
                     <h1 className="text-4xl font-bold">Unsupported Format</h1>
                     <p className="text-lg mt-2">The format you are trying to convert to is not yet supported or it is an invalid file format</p>              
                 </div>
-                <div>          
-                    <p className="text-lg mb-5 text-center">Here are the available formats for conversion.</p>          
-                    <div className="space-x-4 flex flex-wrap">
-                        <Link href={'/mp4-to-mkv'} className="p-4 border rounded-lg text-pretty font-medium text-lg">MP4 to MKV</Link>
-                        <Link href={'/mp4-to-avi'} className="p-4 border rounded-lg text-pretty font-medium text-lg">MP4 to AVI</Link>
-                        <Link href={'/mp4-to-flv'} className="p-4 border rounded-lg text-pretty font-medium text-lg">MP4 to FLV</Link>
-                        <Link href={'/mp4-to-webm'} className="p-4 border rounded-lg text-pretty font-medium text-lg">MP4 to WEBM</Link>                            
-                        <Link href={'/mp4-to-mov'} className="p-4 border rounded-lg text-pretty font-medium text-lg">MP4 to MOV</Link>                            
+                <div>
+                    Click here to see all the supported format conversions.
+                    <div className="flex justify-center">
+                        <Link href={'#footer'} className="mt-5 border rounded-lg flex p-5"><MoveDown/><span className="sr-only">Go to Footer</span></Link>
                     </div>
                     <div className="flex justify-center">
                         <Link href={'/'} className="mt-5 border rounded-lg flex p-5"><Home/><span className="sr-only">Back to Home</span></Link>

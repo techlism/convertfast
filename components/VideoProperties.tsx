@@ -247,9 +247,9 @@ export default function VideoProperties({format, primaryFormat}: {format: string
             >
               Choose a different video
             </Button>
-              {errorMsg && (
-			          <p className="bg-red-500 p-2 rounded-lg">{errorMsg}</p>
-              )}
+            {errorMsg && (
+              <p className="bg-red-500 p-2 rounded-lg">{errorMsg}</p>
+            )}
           </div>
         )}
       </div>
