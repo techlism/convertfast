@@ -150,10 +150,12 @@ export default function VideoProperties({format, primaryFormat}: {format: string
   ) => {
     const file = event.target.files?.[0] || null;
     // file?.name && console.log(file.name);
-    if (file && file.name.toLowerCase().includes(primaryFormat.toLowerCase())) setInputFile(file);
-	else if (file && !file.name.toLowerCase().includes(primaryFormat)) {
-		setErrorMsg(`This is not a valid ${primaryFormat} file. Please upload a valid ${primaryFormat} file`);
-	}
+    if (file && file.name.toLowerCase().includes(primaryFormat))
+      {setInputFile(file);
+    }
+    else if (file && !file.name.toLowerCase().includes(primaryFormat)) {
+		  setErrorMsg(`This is not a valid ${primaryFormat} file. Please select a valid ${primaryFormat} file`);
+	  }
   };
 
   const load = async () => {
@@ -245,7 +247,9 @@ export default function VideoProperties({format, primaryFormat}: {format: string
             >
               Choose a different video
             </Button>
-			      <p className="bg-red-500">{errorMsg}</p>
+              {errorMsg && (
+			          <p className="bg-red-500 p-2 rounded-lg">{errorMsg}</p>
+              )}
           </div>
         )}
       </div>
