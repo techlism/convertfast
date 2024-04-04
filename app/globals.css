@@ -25,6 +25,8 @@
     --input: 240 5.9% 90%;
     --ring: 240 5.9% 10%;
     --radius: 0.5rem;
+    --bgColor1:#f8f9f36a;   
+    --bgColor2:#f8f8f7e9;     
   }
 
   .dark {
@@ -47,6 +49,9 @@
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
+
+    --bgColor1:#000d1dd0;
+    --bgColor2:#00020fc7;    
   }
 }
 
@@ -61,6 +66,16 @@
     transition: filter 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
     filter: blur(5px);
 
+  }
+  .transition-slow {
+    transition: filter 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+  .auto-gradient{
+    background-image: radial-gradient(
+      ellipse at center,
+      var(--bgColor1),
+      var(--bgColor2)
+    );
   }
   .disabled{
     pointer-events: none;

@@ -6,7 +6,8 @@ import { Home } from "lucide-react";
 import Link from "next/link";
 
 const supportedFormats = ['mkv', 'avi', 'flv', 'webm', 'mov'];
-const primaryFormat = 'mp4';
+const primaryFormat = 'mov'
+
 export default function Page({ params }: { params: { format: string } }){
     const {format} = params;
     if(format === "" || format === undefined){
@@ -18,7 +19,7 @@ export default function Page({ params }: { params: { format: string } }){
             </main>
         )
     }
-    if(format.toLowerCase() === primaryFormat){
+    if(format === primaryFormat){
         return (
             <main className="flex justify-center items-center min-h-screen p-4 border rounded-lg auto-gradient">
                 <div className="text-center">

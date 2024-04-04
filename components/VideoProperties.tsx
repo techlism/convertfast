@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { Label } from "@/components/ui/label";
-import { UploadIcon } from "lucide-react";
+import { Info, UploadIcon } from "lucide-react";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
 import {
@@ -21,7 +21,7 @@ import { FilmIcon, MusicIcon, ScissorsIcon } from "lucide-react";
 import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
 
-export default function VideoProperties({ format }: { format: string }) {
+export default function VideoProperties({format, primaryFormat}: {format: string, primaryFormat: string}) {
   const [loaded, setLoaded] = useState(false);
   const ffmpegRef = useRef(new FFmpeg());
   const [message, setMessage] = useState("");
@@ -85,15 +85,15 @@ export default function VideoProperties({ format }: { format: string }) {
     const ffmpeg = ffmpegRef.current;
     if (inputFile) {
       await ffmpeg
-        .writeFile("input.mp4", await fetchFile(inputFile))
+        .writeFile(`input.${primaryFormat}`, await fetchFile(inputFile))
         .then(() => setConverting(true));
       await ffmpeg
-        .exec(["-i", "input.mp4", ...appliedAttributes, `output.${format}`]);
+        .exec(["-i", `input.${primaryFormat}`, ...appliedAttributes, `output.${format}`]);
 	  setConverting(false);		
       const fileData = await ffmpeg.readFile(`output.${format}`);
       const data = new Uint8Array(fileData as ArrayBuffer);
       const url = URL.createObjectURL(
-        new Blob([data.buffer], { type: "video/${format}" })
+        new Blob([data.buffer], { type: `video/${format}` })
       );
       setOutputFileURL(url);
     }
@@ -150,9 +150,9 @@ export default function VideoProperties({ format }: { format: string }) {
   ) => {
     const file = event.target.files?.[0] || null;
     // file?.name && console.log(file.name);
-    if (file && file.name.toLowerCase().includes("mp4")) setInputFile(file);
-	else if (file && !file.name.toLowerCase().includes("mp4")) {
-		setErrorMsg("This is not an MP4 file. Please select an MP4 file.")
+    if (file && file.name.toLowerCase().includes(primaryFormat.toLowerCase())) setInputFile(file);
+	else if (file && !file.name.toLowerCase().includes(primaryFormat)) {
+		setErrorMsg(`This is not a valid ${primaryFormat} file. Please upload a valid ${primaryFormat} file`);
 	}
   };
 
@@ -212,14 +212,6 @@ export default function VideoProperties({ format }: { format: string }) {
 
   return (
     <div className="flex align-middle justify-center flex-col">
-      <div className="space-y-5 flex flex-col justify-center align-middle">
-        <h1 className="text-5xl font-bold text-center">
-          Convert your MP4 videos to {format.toUpperCase()}
-        </h1>
-        <p className="text-center text-lg text-gray-200 dark:text-gray-400 max-w-fit bg-muted-foreground p-4 rounded-lg font-medium">
-          Your videos will not be uploaded to any server. <br/> All the processing is done on your device and due to this, the processing time may vary depending on your device.
-        </p>
-      </div>
       <div className="m-2">
         {inputFile == null ? (
           <Label
@@ -236,7 +228,7 @@ export default function VideoProperties({ format }: { format: string }) {
             <Input
               id="dropzone-file"
               type="file"
-              accept="video/mp4"
+              accept={`video/${primaryFormat}`}
               className="hidden"
               onChange={handleFileChange}
             />
@@ -435,7 +427,7 @@ export default function VideoProperties({ format }: { format: string }) {
           <div className="mt-4 grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 xl:gap-14 lg:gap-12 md:gap-8 gap-6 items-center">
             <div className="flex flex-col">
               <label className="font-medium flex align-middle p-3 justify-between">
-                Audio Codec <InfoTooltip information="The audio codec is a type of program used to compress and decompress digital audio files. Common codecs include AAC for a balance of quality and compatibility, MP3 for widespread use, and Opus for high-quality streaming audio." />
+                Audio Codec <InfoTooltip information="The audio codec is a type of program used to compress and decompress digital audio files. Common codecs include AAC for a balance of quality and compatibility." />
               </label>
               <Select onValueChange={(value) => handleAudioCodecChange(value)}>
                 <SelectTrigger id="audio-codec">
@@ -491,7 +483,7 @@ export default function VideoProperties({ format }: { format: string }) {
             </div>
             <div className="flex flex-col">
               <label className="font-medium flex align-middle p-3 justify-between">
-                Volume <InfoTooltip information="Volume in audio terms refers to the loudness or intensity of the sound. It can be adjusted to make audio tracks louder or softer without altering the audio data itself. Volume adjustments are often made during mixing and mastering to ensure consistent loudness levels across tracks." />
+                Volume <InfoTooltip information="Volume in refers to the loudness or intensity of the sound." />
               </label>
               <Select onValueChange={(value) => handleVolumeChange(value)}>
                 <SelectTrigger id="volume">
@@ -548,7 +540,7 @@ export default function VideoProperties({ format }: { format: string }) {
             {converting == true ? "Converting..." : "Convert"}
           </Button>
           {outputFileURL !== "" && (
-            <Button className="bg-blue-600 dark:bg-blue-400">
+            <Button className="bg-blue-600 dark:bg-blue-500">
               <a
                 href={outputFileURL}
                 download={`${inputFile?.name.slice(0, Number((format.length + 1) * -1))}.${format}`}
