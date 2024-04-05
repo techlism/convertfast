@@ -3,7 +3,7 @@ import { FileLock2 } from "lucide-react";
 import { conversions } from "@/lib/conversion-formats";
 export default function Footer() {
 return (
-    <footer className="auto-gradient" id="footer">
+    <footer className="border-t" id="footer">
         <div className="container grid gap-10 px-4 py-12 md:px-6 md:gap-16 lg:grid-cols-2">
             <div className="flex items-center space-x-4">
                 <FileLock2 />

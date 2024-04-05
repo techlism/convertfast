@@ -1,4 +1,4 @@
-export interface Conversion {
+ interface Conversion {
     from: string;
     to: string;
 }
