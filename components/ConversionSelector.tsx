@@ -20,6 +20,7 @@ export default function ConversionSelector() {
 	const [selectedFromFormat, setSelectedFromFormat] = useState<string>("");
 	const [selectedToFormat, setSelectedToFormat] = useState<string>("");
 	const handleFromFormat = (value: string) => {
+		setSelectedToFormat("");
 		setSelectedFromFormat(value);
 	}
 	const handleToFormat = (value: string) => {
@@ -38,7 +39,7 @@ export default function ConversionSelector() {
 		<div className="my-20">
 			<h1 className="text-4xl font-bold mb-5">Select Conversion Type</h1>
 			<div className="border p-4 rounded-lg flex items-center align-middle justify-center">
-				<div className="space-x-5 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 items-center">
+				<div className="space-x-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 items-center">
 					<Select onValueChange={handleFromFormat}>
 						<SelectTrigger className="w-[220px]">
 							<SelectValue placeholder="From"/>
