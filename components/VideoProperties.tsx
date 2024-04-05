@@ -21,7 +21,9 @@ import { FilmIcon, MusicIcon, ScissorsIcon } from "lucide-react";
 import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
 
+
 export default function VideoProperties({format, primaryFormat}: {format: string, primaryFormat: string}) {
+
   const [loaded, setLoaded] = useState(false);
   const ffmpegRef = useRef(new FFmpeg());
   const [message, setMessage] = useState("");
@@ -145,18 +147,18 @@ export default function VideoProperties({format, primaryFormat}: {format: string
     setSampleRate(value);
   }
 
-  const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const file = event.target.files?.[0] || null;
-    // file?.name && console.log(file.name);
-    if (file && file.name.toLowerCase().includes(primaryFormat))
-      {setInputFile(file);
-    }
-    else if (file && !file.name.toLowerCase().includes(primaryFormat)) {
-		  setErrorMsg(`This is not a valid ${primaryFormat} file. Please select a valid ${primaryFormat} file`);
-	  }
-  };
+    const handleFileChange = async (
+      event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+      const file = event.target.files?.[0] || null;
+      // file?.name && console.log(file.name);
+      if (file && file.name.toLowerCase().endsWith(primaryFormat))
+        {setInputFile(file);
+      }
+      if (file && !file.name.toLowerCase().endsWith(primaryFormat)) {
+  		  setErrorMsg(`This is not a valid ${primaryFormat} file. Please select a valid ${primaryFormat} file.`);
+  	  }
+    };
 
   const load = async () => {
     const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm";
@@ -211,7 +213,6 @@ export default function VideoProperties({format, primaryFormat}: {format: string
       parseProgessAndDuration(message);
     }
   }, [message]);
-
   return (
     <div className="flex align-middle justify-center flex-col">
       <div className="m-2">
@@ -230,7 +231,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
             <Input
               id="dropzone-file"
               type="file"
-              accept={`video/${primaryFormat}`}
+              accept={`.${primaryFormat}`}
               className="hidden"
               onChange={handleFileChange}
             />
@@ -247,12 +248,14 @@ export default function VideoProperties({format, primaryFormat}: {format: string
             >
               Choose a different video
             </Button>
-            {errorMsg && (
-              <p className="bg-red-500 p-2 rounded-lg">{errorMsg}</p>
-            )}
           </div>
         )}
       </div>
+      {errorMsg && (
+        <div className="border p-4 rounded-lg bg-red-100 dark:bg-red-200 text-red-500 dark:text-red-500 m-2 font-medium transition-transform">
+          {errorMsg}
+        </div>
+      )}
       <div className={`flex flex-col space-y-6 m-2 border p-5 rounded-lg `}>
         <div className={`${converting == true ? "blur disabled" : ""}`}>
           <h2 className="flex items-center text-xl font-semibold">

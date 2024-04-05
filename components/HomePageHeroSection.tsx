@@ -1,19 +1,23 @@
 import HomeHeroCarousel from "./HomeHeroCarousel"
-import { DrawerDemo } from "./SupportedFormatsDrawer"
+
 import { FileCheck2, Shield, WifiOff } from 'lucide-react';
+import ConversionSelector from "./ConversionSelector";
 
 export default function HomePageHeroSection(){
     return(
-        <div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-4 max-w-7xl items-center align-middle min-h-screen">
+        <div className="my-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 gap-4 max-w-7xl items-center align-middle">
                 <HomeHeroCarousel/>
                 <div>
                     <h1 className="text-3xl lg:text-6xl xl:text-6xl md:text-4xl font-bold ">Convert, Compress and Chill.</h1>
                     <p className="text-lg my-5 ml-2 text-wrap">No files are sent to any server - all conversions and compressions happen right on your machine.</p> 
-                    <DrawerDemo/>         
+                            
                 </div>
             </div>
-            <div className="mb-5">
+            <div>
+                <ConversionSelector/>
+            </div>
+            <div>
                 <h1 className="text-4xl font-bold my-5">Why Convertfast?</h1>
                 <div className="border p-4 rounded-lg flex space-x-3 mt-5">
                     <div className="flex items-center">
