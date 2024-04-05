@@ -34,7 +34,7 @@ export function DrawerDemo() {
                     {
                         conversions.map((conversion, index) => {
                             return (                 
-                                <Link className="font-medium hover:underline border p-2 rounded-lg text-sm m-1" href={`/${conversion.from.toLowerCase()}-to-${conversion.to.toLowerCase()}`}>Convert {conversion.from} to {conversion.to}</Link>
+                                <Link className="font-medium hover:underline border p-2 rounded-lg text-sm m-1" href={`/${conversion.from.toLowerCase()}-to-${conversion.to.toLowerCase()}`} key={index+"drawer_link"}>Convert {conversion.from} to {conversion.to}</Link>
                             )
                         })
                     }
