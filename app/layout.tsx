@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   title: "Convertfast",
   description: "Convertfast is a free online tool to convert and compress media files. No files are sent to any server - all conversions and compressions happen right on your machine.",
   openGraph :{
-    images : 'https://www.convertfast.media/opengraph.png'
+    images : 'https://r2.my-links.live/Screenshot%20from%202024-04-06%2001-48-23.png'
   }
 };
 
