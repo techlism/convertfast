@@ -9,7 +9,7 @@ export default function HomePageHeroSection(){
             <div className="grid grid-cols-1  xl:grid-cols-2 2xl:grid-cols-2 gap-4 max-w-7xl items-center align-middle">
                 <HomeHeroCarousel/>
                 <div>
-                    <h1 className="text-3xl lg:text-6xl xl:text-6xl md:text-4xl font-bold ">Convert, Compress and Chill.</h1>
+                    <h1 className="text-3xl lg:text-6xl xl:text-6xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-blue-500 p-2">Convert, Compress and Chill.</h1>
                     <p className="text-lg my-5 ml-2 text-wrap">No files are sent to any server - all conversions and compressions happen right on your machine.</p>                             
                 </div>
             </div>
