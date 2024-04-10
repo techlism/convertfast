@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import ImageConverter from '@/components/ImageConverter';
 import NOSSRWrapper from '@/components/NOSSRWrapper';
-import ImageHeroSection from '@/components/ImageHeroSection';
+import ImageHeroSection from '@/components/ImageConversionHeroSection';
 import UnsupportedFormat from '@/components/UnsuportedFormat';
 
 const supportedFormats = ['jpeg', 'png' , 'webp', 'svg', 'pdf', 'bmp'];

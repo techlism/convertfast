@@ -1,5 +1,5 @@
 'use client'
-import HeroSection from "@/components/Video-Hero";
+import HeroSection from "@/components/VideoConverterHeroSection";
 import NOSSRWrapper from "@/components/NOSSRWrapper";
 import VideoProperties from "@/components/VideoConverterwithProperties";
 import UnsupportedFormat from "@/components/UnsuportedFormat";

@@ -149,8 +149,8 @@ export default function ImageConverter({
             />
           </Label>
         ) : (
-          <div className="flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-10 border-teal-600">
-            <p className=" text-lg font-medium text-gray-500 dark:text-gray-400 overflow-scroll text-center">
+          <div className="flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-10 border-teal-500">
+            <p className=" text-lg font-semibold text-gray-500 dark:text-gray-400  text-center">
             {inputFile?.name.length <= 23 ? inputFile?.name : `${inputFile?.name.substring(0, 15)}....${inputFile?.name.substring(inputFile?.name.length - 5)}`}
             </p>
             <Button
