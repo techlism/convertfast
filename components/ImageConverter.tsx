@@ -152,7 +152,7 @@ export default function ImageConverter({
           </Label>
         ) : (
           <div className="flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-10 border-teal-600">
-            <p className=" text-lg font-medium text-gray-500 dark:text-gray-400">
+            <p className=" text-lg font-medium text-gray-500 dark:text-gray-400 max-w-[80%] overflow-scroll text-center">
               {inputFile?.name}
             </p>
             <Button
