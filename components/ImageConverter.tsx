@@ -76,16 +76,19 @@ export default function ImageConverter({
       if((file && file.name.toLowerCase().endsWith('jpeg')) || (file && file.name.toLowerCase().endsWith('jpg'))){
         setInputFile(file);
         setErrorMsg("");
+        return;
       }
     }
     if (file && file.name.toLowerCase().endsWith(primaryFormat)) {
       setInputFile(file);
       setErrorMsg("");
+      return;
     }
     if (file && !file.name.toLowerCase().endsWith(primaryFormat)) {
       setErrorMsg(
         `This is not a valid ${primaryFormat.toUpperCase()} file. Please select a valid ${primaryFormat.toUpperCase()} file.`
       );
+      return;
     }
   };
 
