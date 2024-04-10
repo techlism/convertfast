@@ -1,7 +1,7 @@
 import HomeHeroCarousel from "./HomeHeroCarousel"
 
-import { FileCheck2, Shield, WifiOff } from 'lucide-react';
-import ConversionSelector from "./ConversionSelector";
+import { FileCheck2, Shield, WifiOff, MegaphoneOff } from 'lucide-react';
+import ConversionSelector from "./ConversionSelectorHomePage";
 
 export default function HomePageHeroSection(){
     return(
@@ -49,7 +49,18 @@ export default function HomePageHeroSection(){
                         <h2 className="text-2xl font-semibold">Works Offline</h2>
                         <p className="font-medium text-gray-700 dark:text-gray-400">Since all the processing in done on your machine, once all the components are no internet required in between.</p>
                     </div>
-                </div>                
+                </div>
+                {/* --------------- */}
+                <div className="border p-4 rounded-lg flex space-x-3 mt-5">
+                    <div className="flex items-center">
+                        <MegaphoneOff size={35} className="text-yellow-500"/>
+                    </div>
+                    <div className="w-[2px] bg-primary rounded-lg"/>
+                    <div>
+                        <h2 className="text-2xl font-semibold">No awkward Ads</h2>
+                        <p className="font-medium text-gray-700 dark:text-gray-400">Currently,the website is free of advertisements. Even if ads are introduced in the future, they will be kept to a minimum.</p>
+                    </div>
+                </div>                                
             </div>
         </div>
     )    

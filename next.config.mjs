@@ -25,7 +25,27 @@ const nextConfig = {
           {
             source: '/flv-to-:format', // Matches any URL like /flv-to-xxx
             destination: '/flv-to/:format' // Rewrites to /flv-to/xxx
-          },          
+          },
+          {
+            source: '/png-to-:format', // Matches any URL like /png-to-xxx
+            destination: '/png-to/:format' // Rewrites to /png-to/xxx
+          },
+          {
+            source: '/jpg-to-:format', // Matches any URL like /jpg-to-xxx
+            destination: '/jpg-to/:format' // Rewrites to /jpg-to/xxx            
+          },
+          {
+            source: '/jpeg-to-:format', // Matches any URL like /jpeg-to-xxx
+            destination: '/jpeg-to/:format' // Rewrites to /jpeg-to/xxx
+          },
+          {
+            source: '/svg-to-:format', // Matches any URL like /svg-to-xxx
+            destination: '/svg-to/:format' // Rewrites to /svg-to/xxx            
+          },
+          {
+            source : '/webp-to-:format',
+            destination : '/webp-to/:format'
+          }
         ];
       }
 };

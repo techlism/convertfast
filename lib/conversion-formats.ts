@@ -126,6 +126,24 @@ const conversions : Conversion[] = [
     {
         from: "AAC",
         to: "MP3"
-    }    
+    },
+    { from: 'JPEG', to: 'PNG' },
+    { from: 'JPEG', to: 'WEBP' },
+    { from: 'JPEG', to: 'SVG' },
+    { from: 'JPEG', to: 'PDF' },
+    { from: 'PNG', to: 'JPEG' },
+    { from: 'PNG', to: 'WEBP' },
+    { from: 'PNG', to: 'SVG' },
+    { from: 'PNG', to: 'PDF' },
+    { from: 'WEBP', to: 'JPEG' },
+    { from: 'WEBP', to: 'PNG' },
+    { from: 'WEBP', to: 'SVG' },
+    { from: 'WEBP', to: 'PDF' },
+    { from: 'SVG', to: 'JPEG' },
+    { from: 'SVG', to: 'PNG' },
+    { from: 'SVG', to: 'WEBP' },
+    { from: 'SVG', to: 'PDF' },
+    // skipped PDF to other formats for now to ghostscript issue
+
 ]
 export {conversions};

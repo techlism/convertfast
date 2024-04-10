@@ -1,7 +1,7 @@
 'use client'
 import HeroSection from "@/components/Video-Hero";
 import NOSSRWrapper from "@/components/NOSSRWrapper";
-import VideoProperties from "@/components/VideoProperties";
+import VideoProperties from "@/components/VideoConverterwithProperties";
 import { Home } from "lucide-react";
 import Link from "next/link";
 import UnsupportedFormat from "@/components/UnsuportedFormat";
