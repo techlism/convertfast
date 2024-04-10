@@ -7,7 +7,7 @@ export default function HeroSection({format, primaryFormat}: {format: string, pr
             <h1 className="text-5xl font-bold text-center">
                 Convert your {primaryFormat.toUpperCase()} videos to {format.toUpperCase()}
             </h1>
-            <div className="m-2 text-md text-gray-500 dark:text-gray-400 max-w-fit border p-4 rounded-lg font-medium flex flex-wrap justify-evenly flex-col space-y-2">
+            <div className="m-2 text-md text-gray-500 dark:text-gray-400 max-w-fit border p-4 rounded-lg font-medium flex flex-wrap justify-evenly flex-col space-y-2 shadow-sm">
                 <Lock/>
                 <p className="mr-2">         
                     Your videos will not be uploaded to any server. <br/> All the processing is done on your device and due to this, the processing time may vary depending on your device.

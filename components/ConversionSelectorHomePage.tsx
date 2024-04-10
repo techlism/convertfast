@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select"
 import { ScrollArea } from "./ui/scroll-area";
 import { useEffect, useState } from "react";
+import { Separator } from "./ui/separator";
 
 
 export default function ConversionSelector() {
@@ -52,11 +53,13 @@ export default function ConversionSelector() {
 											<SelectItem key={format} value={format}>{format}</SelectItem>
 										))
 									}
+									<Separator/>
 									{
 										imageFormats.map((format) => (
 											<SelectItem key={format} value={format}>{format}</SelectItem>
 										))
 									}
+									<Separator/>
 									{
 										audioFormats.map((format) => (
 											<SelectItem key={format} value={format}>{format}</SelectItem>

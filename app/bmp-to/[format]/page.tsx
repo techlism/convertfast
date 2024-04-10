@@ -5,8 +5,8 @@ import NOSSRWrapper from '@/components/NOSSRWrapper';
 import ImageHeroSection from '@/components/ImageHeroSection';
 import UnsupportedFormat from '@/components/UnsuportedFormat';
 
-const supportedFormats = ['jpeg', 'png' , 'webp', 'svg', 'pdf', 'bmp'];
-const primaryFormat = 'jpg'
+const supportedFormats = ['jpeg', 'jpg', 'svg', 'pdf', 'png', 'webp'];
+const primaryFormat = 'bmp'
 
 export default function Home({ params }: { params: { format: string } }){
     const {format} = params;

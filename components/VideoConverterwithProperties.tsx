@@ -253,7 +253,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
             className="justify-self-center cursor-pointer"
           >
             <div
-            className="flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-10 border-teal-600"
+            className="flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-10 "
             onDragOver={preventDefaults}
             onDragEnter={preventDefaults}
             onDragLeave={preventDefaults}
@@ -273,7 +273,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
             />
           </Label>
         ) : (
-          <div className="flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-10">
+          <div className="flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-10 border-teal-600">
             <p className=" text-lg font-medium text-gray-500 dark:text-gray-400">
               {inputFile?.name}
             </p>

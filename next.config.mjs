@@ -45,6 +45,10 @@ const nextConfig = {
           {
             source : '/webp-to-:format',
             destination : '/webp-to/:format'
+          },
+          {
+            source : '/bmp-to-:format',
+            destination : '/bmp-to/:format'
           }
         ];
       }

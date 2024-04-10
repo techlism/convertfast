@@ -7,7 +7,7 @@ export default function ImageHeroSection({format, primaryFormat}: {format: strin
             <h1 className="text-5xl font-bold text-center">
                 Convert your {primaryFormat.toUpperCase()} {primaryFormat === 'pdf' ? 'files' : 'images' } to {format.toUpperCase()}
             </h1>
-            <div className="m-2 text-md text-gray-500 dark:text-gray-400 max-w-fit border p-4 rounded-lg font-medium flex flex-wrap justify-evenly flex-col space-y-2">
+            <div className="m-2 text-md text-gray-500 dark:text-gray-400 max-w-fit border p-4 rounded-lg font-medium flex flex-wrap justify-evenly flex-col space-y-2 shadow-sm">
                 <Lock/>
                 <p className="mr-2">         
                     Your images will not be uploaded to any server. <br/> All the processing is done on your device and due to this, the processing time may vary depending on your device.

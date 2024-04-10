@@ -52,7 +52,7 @@ export default function ImageConverter({
             // console.log(image.format);
             image.write((data) => {
               const url = URL.createObjectURL(
-                new Blob([data], { type: `image/${format}` })
+                new Blob([data], { type: `file/${format}` })
               );
               setOutputFileURL(url);
               setConverting(false);
@@ -72,6 +72,12 @@ export default function ImageConverter({
   ) => {
     const file = event.target.files?.[0] || null;
     // file?.name && console.log(file.name);
+    if(primaryFormat === 'jpeg' || primaryFormat === 'jpg'){
+      if((file && file.name.toLowerCase().endsWith('jpeg')) || (file && file.name.toLowerCase().endsWith('jpg'))){
+        setInputFile(file);
+        setErrorMsg("");
+      }
+    }
     if (file && file.name.toLowerCase().endsWith(primaryFormat)) {
       setInputFile(file);
       setErrorMsg("");
@@ -121,7 +127,7 @@ export default function ImageConverter({
             className="justify-self-center cursor-pointer"
           >
             <div
-              className={`flex flex-col items-center justify-center p-10 border-2 border-dashed rounded-lg border-teal-600`}
+              className={`flex flex-col items-center justify-center p-10 border-2 border-dashed rounded-lg`}
               onDragOver={preventDefaults}
               onDragEnter={preventDefaults}
               onDragLeave={preventDefaults}
@@ -142,7 +148,7 @@ export default function ImageConverter({
             />
           </Label>
         ) : (
-          <div className="flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-10">
+          <div className="flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-10 border-teal-600">
             <p className=" text-lg font-medium text-gray-500 dark:text-gray-400">
               {inputFile?.name}
             </p>

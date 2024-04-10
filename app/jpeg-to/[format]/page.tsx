@@ -1,11 +1,11 @@
-'use client'
+
 import React, { useState } from 'react';
 import ImageConverter from '@/components/ImageConverter';
 import NOSSRWrapper from '@/components/NOSSRWrapper';
 import ImageHeroSection from '@/components/ImageHeroSection';
 import UnsupportedFormat from '@/components/UnsuportedFormat';
 
-const supportedFormats = ['png', 'jpg' , 'webp', 'svg', 'pdf'];
+const supportedFormats = ['png', 'jpg' , 'webp', 'svg', 'pdf', 'bmp'];
 const primaryFormat = 'jpeg'
 
 export default function Home({ params }: { params: { format: string } }){
