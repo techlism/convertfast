@@ -1,4 +1,4 @@
-
+'use client'
 import React, { useState } from 'react';
 import ImageConverter from '@/components/ImageConverter';
 import NOSSRWrapper from '@/components/NOSSRWrapper';
