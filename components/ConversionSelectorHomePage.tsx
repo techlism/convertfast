@@ -15,6 +15,7 @@ import {
 import { ScrollArea } from "./ui/scroll-area";
 import { useEffect, useState } from "react";
 import { Separator } from "./ui/separator";
+import Link from "next/link";
 
 
 export default function ConversionSelector() {
@@ -39,7 +40,7 @@ export default function ConversionSelector() {
     return(
 		<div className="my-20">
 			<h1 className="text-4xl font-bold mb-5">Select Conversion Type</h1>
-			<div className="border p-4 rounded-lg flex items-center align-middle justify-center">
+			<div className="border p-4 rounded-lg flex flex-col items-center align-middle justify-center">
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2 items-center gap-5">
 					<Select onValueChange={handleFromFormat}>
 						<SelectTrigger className="w-[220px]">
@@ -95,8 +96,10 @@ export default function ConversionSelector() {
 								</ScrollArea>
 							</SelectGroup>
 						</SelectContent>
-					</Select>										
+					</Select>						
 				</div>
+				<Separator className="mt-5"/>
+				<Link href={'/compress-images'} className="mt-5 mb-2 text-white p-3 rounded-lg bg-teal-500 text-md font-semibold ">Compress Images</Link>	
 			</div>
 		</div>
 	)

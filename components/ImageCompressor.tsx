@@ -261,7 +261,7 @@ export default function ImageCompressor() {
           <Button className="bg-blue-600 dark:bg-blue-500 text-gray-200 hover:opacity-90">
             <a
               href={outputFileURL}
-              download={inputFile?.name}
+              download={"compressed_"+inputFile?.name}
               className="text-md font-semibold flex justify-center items-center align-middle"
             >
               Download <Download size={15} className="ml-2" />
