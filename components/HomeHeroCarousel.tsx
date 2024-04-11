@@ -24,7 +24,6 @@ export default function HomeHeroCarousel() {
                 height={700}
                 width={700}
                 className="dark:inverted"
-                loading="eager"
             />
         </div>
     );
