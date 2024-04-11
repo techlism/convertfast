@@ -99,7 +99,7 @@ export default function ConversionSelector() {
 					</Select>						
 				</div>
 				<Separator className="mt-5"/>
-				<Link href={'/compress-images'} className="mt-5 mb-2 text-white p-3 rounded-lg bg-teal-500 text-md font-semibold ">Compress Images</Link>	
+				<Link href={'/compress-images'} className="mt-5 mb-2 text-white p-3 rounded-lg bg-teal-500 text-md font-semibold " hidden={selectedFromFormat !== "" && selectedToFormat !== ""}>Compress Images</Link>	
 			</div>
 		</div>
 	)

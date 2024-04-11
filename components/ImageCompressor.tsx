@@ -114,10 +114,13 @@ export default function ImageCompressor() {
   };
 
   const resetUpload = () => {
-	setCompressedFileSizeString("");
-    setInputFile(null);
-    setOutputFileURL("");
-    setErrorMsg("");
+	// setCompressedFileSizeString("");
+	// setQualityPercentage(100);
+	// setResolutionPercentage(100);
+    // setInputFile(null);
+    // setOutputFileURL("");
+    // setErrorMsg("");
+	window.location.reload();
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -261,6 +264,7 @@ export default function ImageCompressor() {
           <Button className="bg-blue-600 dark:bg-blue-500 text-gray-200 hover:opacity-90">
             <a
               href={outputFileURL}
+			  target="_blank/_self"
               download={"compressed_"+inputFile?.name}
               className="text-md font-semibold flex justify-center items-center align-middle"
             >
