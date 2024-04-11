@@ -1,4 +1,3 @@
-'use client'
 import HeroSection from "@/components/VideoConverterHeroSection";
 import NOSSRWrapper from "@/components/NOSSRWrapper";
 import VideoProperties from "@/components/VideoConverterwithProperties";
