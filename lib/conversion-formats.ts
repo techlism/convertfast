@@ -144,10 +144,6 @@ const conversions : Conversion[] = [
     { from: 'WEBP', to: 'PNG' },
     { from: 'WEBP', to: 'SVG' },
     { from: 'WEBP', to: 'PDF' },
-    { from: 'SVG', to: 'JPEG' },
-    { from: 'SVG', to: 'PNG' },
-    { from: 'SVG', to: 'WEBP' },
-    { from: 'SVG', to: 'PDF' },
     {
         from: "BMP",
         to: "SVG"
@@ -167,10 +163,6 @@ const conversions : Conversion[] = [
     {
         from: "BMP",
         to: "JPG"
-    },
-    {
-        from: "SVG",
-        to: "BMP"
     },
     {
         from: "PNG",

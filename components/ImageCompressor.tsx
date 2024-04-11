@@ -246,7 +246,7 @@ export default function ImageCompressor() {
         </div>
       )}
       {compressedFileSizeString && (
-        <div className="border p-4 rounded-lg text-green-500 m-2 font-medium transition-transform">
+        <div className="border p-4 rounded-lg text-green-500 m-2 font-medium transition-transform text-sm md:text-base lg:text-base xl:text-lg 2xl:text-lg">
           {compressedFileSizeString}
         </div>
       )}

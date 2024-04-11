@@ -38,10 +38,11 @@ const nextConfig = {
             source: '/jpeg-to-:format', // Matches any URL like /jpeg-to-xxx
             destination: '/jpeg-to/:format' // Rewrites to /jpeg-to/xxx
           },
-          {
-            source: '/svg-to-:format', // Matches any URL like /svg-to-xxx
-            destination: '/svg-to/:format' // Rewrites to /svg-to/xxx            
-          },
+          // {
+          // Dropping SVG support because of inkscape requirement issue
+          //   source: '/svg-to-:format', // Matches any URL like /svg-to-xxx
+          //   destination: '/svg-to/:format' // Rewrites to /svg-to/xxx            
+          // },
           {
             source : '/webp-to-:format',
             destination : '/webp-to/:format'

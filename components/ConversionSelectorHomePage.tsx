@@ -57,6 +57,7 @@ export default function ConversionSelector() {
 									<Separator/>
 									{
 										imageFormats.map((format) => (
+											format !== "SVG" &&
 											<SelectItem key={format} value={format}>{format}</SelectItem>
 										))
 									}
