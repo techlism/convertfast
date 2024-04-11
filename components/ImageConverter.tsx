@@ -48,12 +48,24 @@ export default function ImageConverter({
             image.format = format.toUpperCase() as MagickFormat;
             // image.format = MagickFormat.Jpeg;
             // console.log(image.format);
-            image.write((data) => {
-              const url = URL.createObjectURL(
-                new Blob([data], { type: `file/${format}` })
-              );
-              setOutputFileURL(url);
-              setConverting(false);
+            image.write((data) => {              
+              const fileBlob = new Blob([data], { type: `image/${format}` });
+              const reader = new FileReader();
+  
+              reader.onload = () => {
+                if (reader.result !== null && typeof reader.result === "string") {
+                  const base64String = reader?.result?.split(",")[1];
+                  const imageFormat = reader.result
+                    .split(":")[1]
+                    .split(";")[0]
+                    .split("/")[1];
+                  setOutputFileURL(`data:${imageFormat};base64,${base64String}`);
+                }
+  
+                setConverting(false);
+              };
+  
+              reader.readAsDataURL(fileBlob);
             });
           });
         }   
@@ -176,23 +188,21 @@ export default function ImageConverter({
           Convert
         </Button>
         {outputFileURL !== "" && (
-          <Button className="bg-blue-600 dark:bg-blue-500 text-gray-200 hover:opacity-90">
             <a
               href={outputFileURL}
               download={`${inputFile?.name.slice(
                 0,
                 Number((format.length + 1) * -1)
               )}.${format}`}
-              className="text-md font-semibold flex justify-center items-center align-middle"
+              className="bg-teal-600 dark:bg-teal-500 text-gray-100 hover:opacity-90 text-md font-medium flex justify-center items-center align-middle pt-2 pb-2 rounded-md"
             >
               Download <Download size={15} className="ml-2"/>
             </a>
-          </Button>
         )}
         {outputFileURL !== "" && (
           <Button
             onClick={resetUpload}
-            className="text-md ml-2"
+            className="text-md"
             variant={"outline"}
           >
             Convert Another

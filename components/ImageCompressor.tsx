@@ -38,11 +38,30 @@ export default function ImageCompressor() {
     loadWASM();
   }, [inputFile]);
 
+  function getMIMEType(fileName: File["name"]) {
+    const extension = fileName.toLowerCase().split(".").pop();
+    switch (extension) {
+      case "jpg":
+      case "jpeg":
+        return "image/jpeg";
+      case "png":
+        return "image/png";
+      case "webp":
+        return "image/webp";
+      case "tiff":
+        return "image/tiff";
+      case "bmp":
+        return "image/bmp";
+      default:
+        return "image/x-unknown";
+    }
+  }
+
   async function compressImageAndSetURL() {
-	setCompressedFileSizeString("");
+    setCompressedFileSizeString("");
     setConverting(true);
     setErrorMsg("");
-	setOutputFileURL("");
+    setOutputFileURL("");
     try {
       const buffer = wasm;
       if (inputFile && buffer) {
@@ -60,7 +79,7 @@ export default function ImageCompressor() {
             Math.sqrt(desiredResolution / aspectRatio)
           );
           const newWidth = Math.round(aspectRatio * newHeight);
-        //   image.negateGrayScale(); -- not sure if this is needed
+          //   image.negateGrayScale(); -- not sure if this is needed
           const conversionParameters = new MagickGeometry(newWidth, newHeight);
           /* Leaving this part here for future reference -- As of quantizing ain't feasible */
           // const quantizingValues = new QuantizeSettings();
@@ -71,14 +90,31 @@ export default function ImageCompressor() {
           image.resize(conversionParameters);
           // image.format = format.toUpperCase() as MagickFormat;
           // console.log(image.format);
-		image.write((data) => {
-			const fileBlob = new Blob([data], { type: `file/image` });
-            const url = URL.createObjectURL(fileBlob);	
-            setOutputFileURL(url);
-			setCompressedFileSizeString(
-				`Compressed image size: ${Math.round(fileBlob.size / 1024 * 100) / 100} KB | ${(fileBlob.size / 1024 / 1024).toFixed(2)} MB`
-			);
-            setConverting(false);
+          image.write((data) => {
+            // Removed the file Blob to URL part as it was creating issues with mobile phones
+            const fileMIMEType = getMIMEType(inputFile.name);
+            const fileBlob = new Blob([data], { type: fileMIMEType });
+            const reader = new FileReader();
+
+            reader.onload = () => {
+              if (reader.result !== null && typeof reader.result === "string") {
+                const base64String = reader?.result?.split(",")[1];
+                const imageFormat = reader.result
+                  .split(":")[1]
+                  .split(";")[0]
+                  .split("/")[1];
+                setOutputFileURL(`data:${fileMIMEType};base64,${base64String}`);
+              }
+              setCompressedFileSizeString(
+                `Compressed image size: ${
+                  Math.round((fileBlob.size / 1024) * 100) / 100
+                } KB | ${(fileBlob.size / 1024 / 1024).toFixed(2)} MB`
+              );
+
+              setConverting(false);
+            };
+
+            reader.readAsDataURL(fileBlob);
           });
         });
       }
@@ -97,8 +133,8 @@ export default function ImageCompressor() {
     if (file) {
       if (
         file.name.toLowerCase().endsWith("jpeg") ||
-        file.name.toLowerCase().endsWith("jpg")  ||
-        file.name.toLowerCase().endsWith("png")  ||
+        file.name.toLowerCase().endsWith("jpg") ||
+        file.name.toLowerCase().endsWith("png") ||
         file.name.toLowerCase().endsWith("webp") ||
         file.name.toLowerCase().endsWith("tiff") ||
         file.name.toLowerCase().endsWith("bmp")
@@ -114,13 +150,13 @@ export default function ImageCompressor() {
   };
 
   const resetUpload = () => {
-	// setCompressedFileSizeString("");
-	// setQualityPercentage(100);
-	// setResolutionPercentage(100);
+    // setCompressedFileSizeString("");
+    // setQualityPercentage(100);
+    // setResolutionPercentage(100);
     // setInputFile(null);
     // setOutputFileURL("");
     // setErrorMsg("");
-	window.location.reload();
+    window.location.reload();
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -131,8 +167,8 @@ export default function ImageCompressor() {
       if (file) {
         if (
           file.name.toLowerCase().endsWith("jpeg") ||
-          file.name.toLowerCase().endsWith("jpg")  ||
-          file.name.toLowerCase().endsWith("png")  ||
+          file.name.toLowerCase().endsWith("jpg") ||
+          file.name.toLowerCase().endsWith("png") ||
           file.name.toLowerCase().endsWith("webp") ||
           file.name.toLowerCase().endsWith("tiff") ||
           file.name.toLowerCase().endsWith("bmp")
@@ -213,44 +249,44 @@ export default function ImageCompressor() {
         <div className="border p-4 rounded-lg text-green-500 m-2 font-medium transition-transform">
           {compressedFileSizeString}
         </div>
-      )}	  
+      )}
       <div className="grid grid-cols-1 gap-4  items-center border m-2 p-5 rounded-lg">
         <div>
-			<div className="flex justify-between align-middle items-center space-x-4 mb-4">
-				<h3 className="text-xl font-semibold">
-					Adjust Quality for Compression
-				</h3>
-				<p className="p-1 px-4 max-w-fit font-medium border text-xl rounded-lg bg-muted  w-16">
-					{qualityPercentage}
-				</p>
-			</div>
-			<Slider
-				defaultValue={[100]}
-				step={1}
-				max={100}
-				min={1}
-				datatype="number"
-				onValueChange={(value) => setQualityPercentage(value?.[0])}
-			/>
+          <div className="flex justify-between align-middle items-center space-x-4 mb-4">
+            <h3 className="text-xl font-semibold">
+              Adjust Quality for Compression
+            </h3>
+            <p className="p-1 px-4 max-w-fit font-medium border text-xl rounded-lg bg-muted  w-16">
+              {qualityPercentage}
+            </p>
+          </div>
+          <Slider
+            defaultValue={[100]}
+            step={1}
+            max={100}
+            min={1}
+            datatype="number"
+            onValueChange={(value) => setQualityPercentage(value?.[0])}
+          />
         </div>
-		<Separator/>
+        <Separator />
         <div>
-			<div className="flex justify-between align-middle items-center space-x-4 mb-4">
-				<h3 className="text-xl font-semibold">
-					Adjust Resolution for Compression
-				</h3>
-				<p className="p-1 px-4 max-w-fit border rounded-lg font-medium bg-muted  w-16 text-xl">
-					{resolutionPercentage}
-				</p>
-			</div>
-			<Slider
-				defaultValue={[100]}
-				step={1}
-				max={100}
-				min={1}
-				datatype="number"
-				onValueChange={(value) => setResolutionPercentage(value?.[0])}
-			/>
+          <div className="flex justify-between align-middle items-center space-x-4 mb-4">
+            <h3 className="text-xl font-semibold">
+              Adjust Resolution for Compression
+            </h3>
+            <p className="p-1 px-4 max-w-fit border rounded-lg font-medium bg-muted  w-16 text-xl">
+              {resolutionPercentage}
+            </p>
+          </div>
+          <Slider
+            defaultValue={[100]}
+            step={1}
+            max={100}
+            min={1}
+            datatype="number"
+            onValueChange={(value) => setResolutionPercentage(value?.[0])}
+          />
         </div>
       </div>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 xl:grid-cols-3 items-center border m-2 p-5 rounded-lg">
@@ -261,21 +297,19 @@ export default function ImageCompressor() {
           {compressedFileSizeString === "" ? "Compress" : "Re-Compress"}
         </Button>
         {outputFileURL !== "" && (
-          <Button className="bg-blue-600 dark:bg-blue-500 text-gray-200 hover:opacity-90">
-            <a
-              href={outputFileURL}
-			  target="_blank/_self"
-              download={"compressed_"+inputFile?.name}
-              className="text-md font-semibold flex justify-center items-center align-middle"
-            >
-              Download <Download size={15} className="ml-2" />
-            </a>
-          </Button>
+			<a
+				href={outputFileURL}
+				target="_blank"
+				download={"compressed_" + inputFile?.name}
+				className="bg-teal-600 dark:bg-teal-500 text-gray-100 hover:opacity-90 text-md font-medium flex justify-center items-center align-middle pt-2 pb-2 rounded-md"
+			>
+				Download <Download size={15} className="ml-2" />
+			</a>		
         )}
         {outputFileURL !== "" && (
           <Button
             onClick={resetUpload}
-            className="text-md ml-2"
+            className="text-md"
             variant={"outline"}
           >
             Compress Another
