@@ -248,7 +248,7 @@ export default function ImageCompressor() {
       )}
       {compressedFileSizeString && (
         <div className="border p-4 rounded-lg text-green-500 m-2 font-medium transition-transform text-sm md:text-base lg:text-base xl:text-lg 2xl:text-lg">
-          {compressedFileSizeString.includes('\n') && compressedFileSizeString.split("\n").map((line, index) => (<p>{line}</p>))}
+          {compressedFileSizeString.includes('\n') && compressedFileSizeString.split("\n").map((line, index) => (<p id={`compressedmsg${index}`}>{line}</p>))}
         </div>
       )}
       <div className="grid grid-cols-1 gap-4  items-center border m-2 p-5 rounded-lg">
