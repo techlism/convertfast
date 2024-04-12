@@ -248,20 +248,20 @@ export default function ImageCompressor() {
         </div>
       )}
       {compressedFileSizeString && (
-        <div className="border p-4 rounded-lg text-green-500 m-2 font-medium transition-transform text-sm md:text-base lg:text-base xl:text-lg 2xl:text-lg">
+        <div className="border p-4 rounded-lg text-green-500 m-2 font-medium transition-transform text-sm md:text-sm lg:text-sm xl:text-lg 2xl:text-lg">
           {compressedFileSizeString.includes('\n') && compressedFileSizeString.split("\n").map((line, index) => (<p key={`compressedmsg${index}`}>{line}</p>))}
         </div>
       )}
       <div className="grid grid-cols-1 gap-4  items-center border m-2 p-5 rounded-lg">
         <div>
-          <div className="flex justify-between align-middle items-center space-x-4 mb-4">
-            <div className="flex space-x-4 align-middle items-center">
-              <h3 className="text-xl font-semibold">
+          <div className="flex justify-between align-middle items-center space-x-2 lg:space-x-4 xl:space-x-4 2xl:space-x-4 md:space-x-3 mb-4">
+            <div className="flex space-x-2 lg:space-x-4 xl:space-x-4 2xl:space-x-4 md:space-x-3 align-middle items-center">
+              <h3 className="text-sm xl:text-xl lg:text-xl md:text-lg font-semibold">
                 Adjust Quality for Compression
               </h3>
               <InfoTooltip information="Quality compression some times tends to produce vague results for smaller file sizes. Consider adjusting resolution in that case."/>
             </div>
-            <p className="p-1 px-4 max-w-fit font-medium border text-xl rounded-lg bg-muted  w-16">
+            <p className="p-1 px-3 max-w-fit font-medium border text-sm xl:text-xl lg:text-xl md:text-lg rounded-lg bg-muted  w-16">
               {qualityPercentage}
             </p>
           </div>
@@ -276,15 +276,15 @@ export default function ImageCompressor() {
         </div>
         <Separator />
         <div>
-          <div className="flex justify-between align-middle items-center space-x-4 mb-4">
-            <div className="flex space-x-4 align-middle items-center">
-              <h3 className="text-xl font-semibold">
+          <div className="flex justify-between align-middle items-center space-x-2 lg:space-x-4 xl:space-x-4 2xl:space-x-4 md:space-x-3 mb-4">
+            <div className="flex space-x-2 lg:space-x-4 xl:space-x-4 2xl:space-x-4 md:space-x-3 align-middle items-center">
+              <h3 className="text-sm xl:text-xl lg:text-xl md:text-lg font-semibold">
                 Adjust Resolution for Compression
               </h3>
               <InfoTooltip information="Adjusting resolution can help in reducing the file size significantly. However, it may result in loss of details."/>
             </div>
 
-            <p className="p-1 px-4 max-w-fit border rounded-lg font-medium bg-muted  w-16 text-xl">
+            <p className="p-1 px-3 max-w-fit border rounded-lg font-medium bg-muted  w-16 text-sm xl:text-xl lg:text-xl md:text-lg">
               {resolutionPercentage}
             </p>
           </div>
