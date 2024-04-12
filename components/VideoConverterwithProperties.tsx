@@ -583,18 +583,16 @@ export default function VideoProperties({format, primaryFormat}: {format: string
             {converting == true ? "Converting..." : "Convert"}
           </Button>
           {outputFileURL !== "" && (
-            <Button className="bg-blue-600 dark:bg-blue-500 text-gray-200">
             <a
               href={outputFileURL}
               download={`${inputFile?.name.slice(
                 0,
                 Number((format.length + 1) * -1)
               )}.${format}`}
-              className="text-md flex space-x-2 justify-center items-center align-middle"
+              className="bg-teal-600 dark:bg-teal-500 text-gray-100 hover:opacity-90 text-md font-medium flex justify-center items-center align-middle pt-2 pb-2 rounded-md"
             >
               Download <Download size={15}/>
             </a>
-          </Button>
           )}
           {outputFileURL !== "" && (
             <Button

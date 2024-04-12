@@ -105,10 +105,11 @@ export default function ImageCompressor() {
                   .split("/")[1];
                 setOutputFileURL(`data:${fileMIMEType};base64,${base64String}`);
               }
-              setCompressedFileSizeString(
-                `Compressed image size: ${
+              setCompressedFileSizeString(            
+                `Original Size : ${Math.round(((inputFile.size/1024)*100)/100)} KB\n
+                  Size after Compression: ${
                   Math.round((fileBlob.size / 1024) * 100) / 100
-                } KB | ${(fileBlob.size / 1024 / 1024).toFixed(2)} MB`
+                } KB`
               );
 
               setConverting(false);
@@ -247,7 +248,7 @@ export default function ImageCompressor() {
       )}
       {compressedFileSizeString && (
         <div className="border p-4 rounded-lg text-green-500 m-2 font-medium transition-transform text-sm md:text-base lg:text-base xl:text-lg 2xl:text-lg">
-          {compressedFileSizeString}
+          {compressedFileSizeString.includes('\n') && compressedFileSizeString.split("\n").map((line, index) => (<p>{line}</p>))}
         </div>
       )}
       <div className="grid grid-cols-1 gap-4  items-center border m-2 p-5 rounded-lg">

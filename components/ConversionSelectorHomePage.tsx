@@ -100,7 +100,7 @@ export default function ConversionSelector() {
 					</Select>						
 				</div>
 				<Separator className="mt-5"/>
-				<Link href={'/compress-images'} className="mt-5 mb-2 text-white p-3 rounded-lg bg-teal-500 text-md font-semibold " hidden={selectedFromFormat !== "" && selectedToFormat !== ""}>Compress Images</Link>	
+				<Link href={'/compress-images'} className="bg-teal-600 dark:bg-teal-500 text-gray-100 hover:opacity-90 text-md font-medium flex justify-center items-center align-middle p-2 rounded-md mt-5 mb-1" hidden={selectedFromFormat !== "" && selectedToFormat !== ""}>Compress Images</Link>	
 			</div>
 		</div>
 	)

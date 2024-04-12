@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import Footer from "@/components/Footer";
 import type { Viewport } from "next";
 const inter = Inter({ subsets: ["latin"] });
+import { Analytics } from '@vercel/analytics/react';
 
 export const metadata: Metadata = {
   title: "Convertfast",
@@ -43,6 +44,7 @@ export default function RootLayout({
           {children}
           <Footer/>
         </ThemeProvider>
+        <Analytics/>
         </body>
   </html>
   );
