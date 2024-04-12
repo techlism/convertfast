@@ -41,7 +41,7 @@ export default function Page({ params }: { params: { format: string } }){
         <main className="flex justify-center align-middle items-center min-h-screen m-4">
             <NOSSRWrapper>
                 <div>
-                    <HeroSection format={format} primaryFormat={primaryFormat}/>            
+                    <HeroSection format={format} primaryFormat={primaryFormat} />            
                     <VideoProperties format = {format} primaryFormat={primaryFormat}/>
                 </div>
             </NOSSRWrapper>            

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FileLock2 } from "lucide-react";
+import { Copyright, FileLock2 } from "lucide-react";
 import { conversions } from "@/lib/conversion-formats";
 export default function Footer() {
 return (
@@ -30,8 +30,10 @@ return (
                         </div>
                     ))}
                 </div>
-            </div>
-        </div>
+                
+            </div>            
+        </div>        
+        <div className="flex text-center text-gray-500 text-sm font-semibold items-center justify-center mt-4 mb-1 opacity-40"> <Copyright size={16}/><span>2024 Convertfast</span></div>
     </footer>
 );
 }
