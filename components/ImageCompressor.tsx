@@ -15,6 +15,7 @@ import {
 } from "@imagemagick/magick-wasm";
 import { Slider } from "@/components/ui/slider";
 import { Separator } from "./ui/separator";
+import InfoTooltip from "./InfoTooltip";
 export default function ImageCompressor() {
   const [inputFile, setInputFile] = useState<File | null>(null);
   const [outputFileURL, setOutputFileURL] = useState<string>("");
@@ -254,9 +255,12 @@ export default function ImageCompressor() {
       <div className="grid grid-cols-1 gap-4  items-center border m-2 p-5 rounded-lg">
         <div>
           <div className="flex justify-between align-middle items-center space-x-4 mb-4">
-            <h3 className="text-xl font-semibold">
-              Adjust Quality for Compression
-            </h3>
+            <div className="flex space-x-4 align-middle items-center">
+              <h3 className="text-xl font-semibold">
+                Adjust Quality for Compression
+              </h3>
+              <InfoTooltip information="Quality compression some times tends to produce vague results for smaller file sizes. Consider adjusting resolution in that case."/>
+            </div>
             <p className="p-1 px-4 max-w-fit font-medium border text-xl rounded-lg bg-muted  w-16">
               {qualityPercentage}
             </p>
@@ -273,9 +277,13 @@ export default function ImageCompressor() {
         <Separator />
         <div>
           <div className="flex justify-between align-middle items-center space-x-4 mb-4">
-            <h3 className="text-xl font-semibold">
-              Adjust Resolution for Compression
-            </h3>
+            <div className="flex space-x-4 align-middle items-center">
+              <h3 className="text-xl font-semibold">
+                Adjust Resolution for Compression
+              </h3>
+              <InfoTooltip information="Adjusting resolution can help in reducing the file size significantly. However, it may result in loss of details."/>
+            </div>
+
             <p className="p-1 px-4 max-w-fit border rounded-lg font-medium bg-muted  w-16 text-xl">
               {resolutionPercentage}
             </p>
