@@ -26,7 +26,7 @@ export default function ImageConverter({format, primaryFormat,}: {format: string
     const extension = fileName.toLowerCase().split(".").pop();
     const name = fileName.toLowerCase().split(".").shift();
     if(extension && name){
-      return `${name}.${extension}`;
+      return `${name}.${format}`;
     }
     else return `converted.${format}`
   }
