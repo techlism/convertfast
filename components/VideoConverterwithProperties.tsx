@@ -46,6 +46,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
   const [converting, setConverting] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const FFMPEGProcessor = async () => {
+    if(!loaded) load();
     const fps = frameRate === "original" ? [frameRate] : ["-r", frameRate];
     const crf =
       constantQuality === "original"
@@ -215,7 +216,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
 
   useEffect(() => {
     if (!loaded) load();
-  }, [loaded]);
+  }, [loaded, inputFile]);
 
   useEffect(() => {
     function parseProgessAndDuration(message: string) {
@@ -243,7 +244,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
     if (message) {
       parseProgessAndDuration(message);
     }
-  }, [message]);
+  }, [message, totalDuration]);
   return (
     <div className="flex align-middle justify-center flex-col">
       <div className="m-2">
