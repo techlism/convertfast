@@ -20,6 +20,17 @@ export default function ImageConverter({format, primaryFormat,}: {format: string
   const [converting, setConverting] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
+  
+
+  function getDownloadFileName(fileName: File["name"]) {
+    const extension = fileName.toLowerCase().split(".").pop();
+    const name = fileName.toLowerCase().split(".").shift();
+    if(extension && name){
+      return `${name}.${extension}`;
+    }
+    else return `converted.${format}`
+  }
+
   async function loadWASM() {
 	try {
 	  const response = await fetch('/magick.wasm'); // may produce CORS issue but let's see in production
@@ -182,19 +193,15 @@ export default function ImageConverter({format, primaryFormat,}: {format: string
         >
           Convert
         </Button>
-        {outputFileURL !== "" && (
-            <Link
+        {outputFileURL !== "" && inputFile?.name && (
+            <a
               href={outputFileURL}
-              download={`${inputFile?.name.slice(
-                0,
-                Number((format.length + 1) * -1)
-              )}.${format}`}
-
+              download={getDownloadFileName(inputFile.name)}
               target="_blank"
               className="bg-teal-600 dark:bg-teal-500 text-gray-100 hover:opacity-90 text-md font-medium flex justify-center items-center align-middle pt-2 pb-2 rounded-md"
             >
               Download <Download size={15} className="ml-2"/>
-            </Link>
+            </a>
         )}
         {outputFileURL !== "" && (
           <Button
