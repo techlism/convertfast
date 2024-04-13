@@ -236,6 +236,7 @@ export default function ImageCompressor() {
               variant={"ghost"}
               onClick={resetUpload}
               className="text-xs opacity-30 justify-self-end"
+              disabled={converting}
             >
               Choose a different image
             </Button>

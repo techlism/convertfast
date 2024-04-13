@@ -13,13 +13,7 @@ import {
   Quantum,
 } from "@imagemagick/magick-wasm";
 
-export default function ImageConverter({
-  format,
-  primaryFormat,
-}: {
-  format: string;
-  primaryFormat: string;
-}) {
+export default function ImageConverter({format, primaryFormat,}: {format: string; primaryFormat: string;}) {
   const [inputFile, setInputFile] = useState<File | null>(null);
   const [outputFileURL, setOutputFileURL] = useState<string>("");
   const [converting, setConverting] = useState(false);
@@ -55,13 +49,8 @@ export default function ImageConverter({
               reader.onload = () => {
                 if (reader.result !== null && typeof reader.result === "string") {
                   const base64String = reader?.result?.split(",")[1];
-                  const imageFormat = reader.result
-                    .split(":")[1]
-                    .split(";")[0]
-                    .split("/")[1];
-                  setOutputFileURL(`data:${imageFormat};base64,${base64String}`);
+                  setOutputFileURL(`data:${format};base64,${base64String}`);
                 }
-  
                 setConverting(false);
               };
   
@@ -169,6 +158,7 @@ export default function ImageConverter({
               variant={"ghost"}
               onClick={resetUpload}
               className="text-xs opacity-30 justify-self-end"
+              disabled={converting}
             >
               Choose a different image
             </Button>

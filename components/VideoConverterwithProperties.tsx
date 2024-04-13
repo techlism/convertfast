@@ -92,13 +92,14 @@ export default function VideoProperties({format, primaryFormat}: {format: string
         .then(() => setConverting(true));
       await ffmpeg
         .exec(["-i", `input.${primaryFormat}`, ...appliedAttributes, `output.${format}`]);
-	  setConverting(false);		
+
       const fileData = await ffmpeg.readFile(`output.${format}`);
       const data = new Uint8Array(fileData as ArrayBuffer);
       const url = URL.createObjectURL(
         new Blob([data.buffer], { type: `video/${format}` })
-      );
+      );		
       setOutputFileURL(url);
+      setConverting(false);
     }
   };
 
@@ -282,6 +283,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
               variant={"ghost"}
               onClick={() => setInputFile(null)}
               className="text-xs opacity-30 justify-self-end"
+              disabled={converting}
             >
               Choose a different video
             </Button>
@@ -592,7 +594,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
               )}.${format}`}
               className="bg-teal-600 dark:bg-teal-500 text-gray-100 hover:opacity-90 text-md font-medium flex justify-center items-center align-middle pt-2 pb-2 rounded-md"
             >
-              Download <Download size={15}/>
+              Download <Download size={15} className="ml-2"/>
             </a>
           )}
           {outputFileURL !== "" && (
