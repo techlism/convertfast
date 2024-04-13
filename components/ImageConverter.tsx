@@ -12,6 +12,7 @@ import {
   MagickFormat,
   Quantum,
 } from "@imagemagick/magick-wasm";
+import Link from "next/link";
 
 export default function ImageConverter({format, primaryFormat,}: {format: string; primaryFormat: string;}) {
   const [inputFile, setInputFile] = useState<File | null>(null);
@@ -53,6 +54,10 @@ export default function ImageConverter({format, primaryFormat,}: {format: string
                 }
                 setConverting(false);
               };
+              reader.onerror = (error) => {
+                setErrorMsg("Error converting image. See console for more details.");
+                console.log("Error converting image:", error);
+              }
   
               reader.readAsDataURL(fileBlob);
             });
@@ -178,16 +183,18 @@ export default function ImageConverter({format, primaryFormat,}: {format: string
           Convert
         </Button>
         {outputFileURL !== "" && (
-            <a
+            <Link
               href={outputFileURL}
               download={`${inputFile?.name.slice(
                 0,
                 Number((format.length + 1) * -1)
               )}.${format}`}
+
+              target="_blank"
               className="bg-teal-600 dark:bg-teal-500 text-gray-100 hover:opacity-90 text-md font-medium flex justify-center items-center align-middle pt-2 pb-2 rounded-md"
             >
               Download <Download size={15} className="ml-2"/>
-            </a>
+            </Link>
         )}
         {outputFileURL !== "" && (
           <Button
