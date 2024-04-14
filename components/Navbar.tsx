@@ -26,7 +26,7 @@ const Navbar: React.FC = () => {
                                 {/* <Button  className="font-medium" variant={'link'}>Home</Button> */}
                                 <Button  className="font-medium" variant={'link'}>About</Button>
                                 <Button  className="font-medium" variant={'link'}>Features</Button> {/*This will be an accordion*/}
-                                <Button  className="font-medium" variant={'link'}>Report an issue</Button>
+                                <Button  className="font-medium" variant={'link'} onClick={()=>window.open('/report')}>Report an issue</Button>
                             </div>
                         </div>
                     </div>
