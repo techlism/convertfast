@@ -3,6 +3,7 @@ import Link from 'next/link';
 import React, { useState } from 'react';
 import { Button } from './ui/button';
 import DarkModeSwitch from './DarkModeSwitch';
+import Image from 'next/image';
 
 const Navbar: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -14,19 +15,19 @@ const Navbar: React.FC = () => {
     return (
         <nav className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex items-center justify-between h-16">
+                <div className="flex items-center xl:justify-start 2xl:justify-start lg:justify-start md:justify-start justify-between h-16 space-x-4">
                     <div className="flex items-center">
                         <div className="flex-shrink-0">
                             <Link href={'/'}>
-                                <img className="h-11 w-11 dark:invert" src="/convertfast.svg" alt="Logo" />
+                                <Image className="dark:invert" src="/convertfast.svg" alt="Logo" height={35} width={35}/>
                             </Link>                            
                         </div>
                         <div className="hidden md:block">
                             <div className="ml-10 flex items-baseline space-x-4">
                                 {/* <Button  className="font-medium" variant={'link'}>Home</Button> */}
-                                <Button  className="font-medium" variant={'link'}>About</Button>
-                                <Button  className="font-medium" variant={'link'}>Features</Button> {/*This will be an accordion*/}
-                                <Button  className="font-medium" variant={'link'} onClick={()=>window.open('/report')}>Report an issue</Button>
+                                <Link  className='font-medium hover:underline text-md' href={'#'}>About</Link>
+                                <Link  className='font-medium hover:underline text-md' href={'#'}>Features</Link> {/*This will be an accordion*/}
+                                <Link  className='font-medium hover:underline text-md' href={'/report'}>Report an issue</Link>
                             </div>
                         </div>
                     </div>
@@ -52,10 +53,9 @@ const Navbar: React.FC = () => {
             {isOpen && (
                 <div className="md:hidden transition-slow">
                     <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                        <Link href="#" className="  px-3 py-2 rounded-lg text-sm font-medium block">Home</Link>
                         <Link href="#" className="  px-3 py-2 rounded-lg text-sm font-medium block">About</Link>
-                        <Link href="#" className="  px-3 py-2 rounded-lg text-sm font-medium block">Services</Link>
-                        <Link href="#" className="  px-3 py-2 rounded-lg text-sm font-medium block">Contact</Link>
+                        <Link href="#" className="  px-3 py-2 rounded-lg text-sm font-medium block">Features</Link>
+                        <Link href="#" className="  px-3 py-2 rounded-lg text-sm font-medium block">Report</Link>
                     </div>
                 </div>
             )}
