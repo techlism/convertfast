@@ -62,7 +62,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
       aspectRatio === "original" ? [aspectRatio] : aspectRatio.split(" ");
     const channel = channels === "original" ? [channels] : channels.split(" ");
     const codec =
-      audioCodec === "original" ? [audioCodec] : audioCodec.split(" ");
+      audioCodec === "original" ? ["-c:a","copy"] : audioCodec.split(" ");
     const vol = volume === "original" ? [volume] : ["-af", volume];
     const sr = sampleRate === "original" ? [sampleRate] : sampleRate.split(" ");
     const attributes = [
@@ -86,21 +86,28 @@ export default function VideoProperties({format, primaryFormat}: {format: string
     );
     // console.log(appliedAttributes);
     const ffmpeg = ffmpegRef.current;
-    if (inputFile) {
-      await ffmpeg
-        .writeFile(`input.${primaryFormat}`, await fetchFile(inputFile))
-        .then(() => setConverting(true));
-      await ffmpeg
-        .exec(["-i", `input.${primaryFormat}`, ...appliedAttributes, `output.${format}`]);
-
-      const fileData = await ffmpeg.readFile(`output.${format}`);
-      const data = new Uint8Array(fileData as ArrayBuffer);
-      const url = URL.createObjectURL(
-        new Blob([data.buffer], { type: `video/${format}` })
-      );		
-      setOutputFileURL(url);
-      setConverting(false);
+    try {
+      if (inputFile) {
+        await ffmpeg
+          .writeFile(`input.${primaryFormat}`, await fetchFile(inputFile))
+          .then(() => setConverting(true));
+        await ffmpeg
+          .exec(["-i", `input.${primaryFormat}`, ...appliedAttributes, `output.${format}`]);
+  
+        const fileData = await ffmpeg.readFile(`output.${format}`);
+        const data = new Uint8Array(fileData as ArrayBuffer);
+        const url = URL.createObjectURL(
+          new Blob([data.buffer], { type: `video/${format}` })
+        );		
+        setOutputFileURL(url);
+        setConverting(false);
+      }      
+    } catch (error) {
+      console.error(error);
+      setErrorMsg("An error occurred. Please try again.");
+      setConverting(false);     
     }
+
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
@@ -125,7 +132,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
     setVolume("original");
     setSampleRate("original");
     setPercentProgress(0);
-    setTotalDuration(-10);
+    setTotalDuration(-10);    
   };
 
   const preventDefaults = (e: React.DragEvent<HTMLDivElement>) => {
@@ -374,7 +381,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
             </div>
             <div className="flex flex-col">
               <label onClick={(event)=>event.preventDefault()}className="font-medium flex align-middle p-3 items-center justify-between">
-                Fit <InfoTooltip information="Sets the mode of sizing the video." />
+                Fit | Crop <InfoTooltip information="Sets the mode of sizing the video." />
               </label>
               <Select onValueChange={(value) => handleFitChange(value)}>
                 <SelectTrigger id="fit">
@@ -389,11 +396,11 @@ export default function VideoProperties({format, primaryFormat}: {format: string
                     <SelectItem value="-vf scale=-2:1080">
                       Scale (to 1080p, maintain aspect ratio)
                     </SelectItem>
-                    <SelectItem value="-vf crop=1920:1080">
-                      Crop (to 1920x1080)
+                    <SelectItem value="-filter:v crop=in_h*9/16:in_h:(in_w-in_h*9/16)/2:0">
+                      Crop Vertically (to 16:9) - Ideal for Mobiles
                     </SelectItem>
-                    <SelectItem value="-vf crop=1080:1080">
-                      Crop (to 1080x1080) - Square
+                    <SelectItem value="-filter:v crop=in_h/2:in_h:(in_w-in_h/2)/2:0">
+                      Crop Vertically (to 9:18) - Ideal for Mobiles
                     </SelectItem>
                     <SelectItem value="-vf pad=1920:1080:-1:-1:color=black">
                       Pad (to 1920x1080, with black bars)
@@ -401,6 +408,9 @@ export default function VideoProperties({format, primaryFormat}: {format: string
                     <SelectItem value="-vf pad=1920:1080:-1:-1:color=white">
                       Pad (to 1920x1080, with white bars)
                     </SelectItem>
+                    <SelectItem value="-vf pad=1920:960:-1:-1:color=black">
+                      Pad (to 1920x960 : 18:9, with black bars)
+                    </SelectItem>                    
                   </SelectGroup>
                 </SelectContent>
               </Select>
