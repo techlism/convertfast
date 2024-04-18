@@ -25,7 +25,7 @@ const Navbar: React.FC = () => {
                         <div className="hidden md:block">
                             <div className="ml-10 flex items-baseline space-x-4">
                                 {/* <Button  className="font-medium" variant={'link'}>Home</Button> */}
-                                <Link  className='font-medium hover:underline text-md' href={'#'}>About</Link>
+                                <Link  className='font-medium hover:underline text-md' href={'/about'}>About</Link>
                                 <Link  className='font-medium hover:underline text-md' href={'#'}>Features</Link> {/*This will be an accordion*/}
                                 <Link  className='font-medium hover:underline text-md' href={'/report'}>Report an issue</Link>
                             </div>

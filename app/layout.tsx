@@ -11,7 +11,7 @@ import { Analytics } from '@vercel/analytics/react';
 export const metadata: Metadata = {
   title: "Convertfast",
   description: "Convertfast is a free online tool to convert and compress media files. No files are sent to any server - all conversions and compressions happen right on your machine.",
-  keywords : ["file converter", "file compressor", "compress files online", "file compress online", "convert files online", "file convert online", "convertfast", "convertfast online", "convertfast file converter", "convertfast file compressor", "convertfast file convert", "convertfast file compress", "compress images for forms", "compress photos", "jpeg to png", "jpg to png", "png to jpg", "png to svg", "mov to mp4"],
+  keywords : ["file converter", "file compressor", "compress files online", "file compress online", "convert files online", "file convert online", "convertfast", "convertfast online", "convertfast file converter", "convertfast file compressor", "convertfast file convert", "convertfast file compress", "compress images for forms", "compress photos", "jpeg to png", "jpg to png", "png to jpg", "png to svg", "mov to mp4", "convert fast", "how to compress files locally", "compress files without uploading", "how to convert files locally"],
   openGraph :{
     images : 'https://r2.my-links.live/convertfast-og.png'
   },
