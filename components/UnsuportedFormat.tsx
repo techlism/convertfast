@@ -1,3 +1,4 @@
+'use client'
 import { Home, MoveDown } from "lucide-react";
 import Link from "next/link";
 import { Button } from "./ui/button";

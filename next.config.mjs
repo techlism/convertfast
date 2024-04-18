@@ -50,6 +50,22 @@ const nextConfig = {
           {
             source : '/bmp-to-:format',
             destination : '/bmp-to/:format'
+          },
+          {
+            source : '/mp3-to-:format',
+            destination : '/mp3-to/:format'
+          },
+          {
+            source : '/wav-to-:format',
+            destination : '/wav-to/:format'
+          },
+          {
+            source : '/m4a-to-:format',
+            destination : '/m4a-to/:format'
+          },
+          {
+            source : '/aac-to-:format',
+            destination : '/aac-to/:format'
           }
         ];
       }

@@ -19,7 +19,7 @@ export default function Page() {
             <div className="rounded-lg bg-gray-200 dark:bg-gray-800 p-4">
                 <h2 className="text-2xl font-bold text-left">Shortcomings</h2>
                 <div>    
-                    <p>As you may have noticed that each and every conversion/compression/manipulation is taking place in your hardware itself. You may think how it is working. Here's the secret sauce -&gt; Web Assembly. As of 17<sup>th</sup> April 2024, I am using two npm packages for the conversion which under the hood rely on <Link className="hover:underline text-blue-500" href={'https://ffmpeg.org'}>FFMPEG</Link> and <Link href={'https://www.imagemagick.org'} className="hover:underline text-blue-500">IMAGE-MAGICK</Link> (basically a web assembly compilation of both). </p>
+                    <p>As you may have noticed that each and every conversion/compression/manipulation is taking place in your hardware itself. You may think how it is working. Here&apos;s the secret sauce -&gt; Web Assembly. As of 17<sup>th</sup> April 2024, I am using two npm packages for the conversion which under the hood rely on <Link className="hover:underline text-blue-500" href={'https://ffmpeg.org'}>FFMPEG</Link> and <Link href={'https://www.imagemagick.org'} className="hover:underline text-blue-500">IMAGE-MAGICK</Link> (basically a web assembly compilation of both). </p>
                     <p>The two packages are</p>
                     <ul>
                         <li><Link href={'https://www.npmjs.com/package/@ffmpeg/ffmpeg'} className="hover:underline text-blue-500" target="_blank">ffmpeg wasm</Link></li>
@@ -30,7 +30,7 @@ export default function Page() {
                 </div>
                 <div>
                     <h3 className="text-lg font-semibold" >Shortcoming 2:</h3>
-                    <p>The Speed - The real deal breaker that could be for most the users would be the speed. As compared to native CLI based FFMPEG, ffmpeg wasm is performing with only 10% of the speed at best. For images, it is unnoticeable but for say videos especially where formats like MKV are involved it feels slow.</p>
+                    <p>The Speed - The real deal breaker that could be for most the users would be the speed. As compared to native CLI based FFMPEG, ffmpeg wasm is performing with only 10% of the speed at best. For images & audios, it is unnoticeable but for say videos especially where formats like MKV are involved it feels slow.</p>
                     <p>There could be many reason that why WASM is not fast. It could be because of resource allocation from browser or any other factor but I am bullish on Web Assembly.</p>
                 </div>
                 <div>

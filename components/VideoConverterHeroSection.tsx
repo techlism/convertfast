@@ -6,7 +6,7 @@ export default function HeroSection({format, primaryFormat}: {format: string, pr
     return (
         <div className="grid grid-cols-1 items-center align-middle gap-2">
             <h1 className="text-5xl font-bold text-center">
-                Convert your {primaryFormat.toUpperCase()} videos to {format.toUpperCase()}
+                Convert your {primaryFormat.toUpperCase()} files to {format.toUpperCase()}
             </h1>
             <div className="m-2 text-md text-gray-500 dark:text-gray-400 border p-4 rounded-lg font-medium flex flex-wrap justify-evenly flex-col space-y-2 shadow-sm">
                 <Lock/>

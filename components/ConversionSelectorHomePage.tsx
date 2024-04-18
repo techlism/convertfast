@@ -1,6 +1,6 @@
 'use client';
 const videoFormats = ["MP4", "MKV", "AVI", "MOV", "FLV", "WEBM"];
-const audioFormats = ["MP3", "WAV", "AAC"];
+const audioFormats = ["MP3", "WAV", "AAC", "M4A"];
 const imageFormats = ["JPEG", "PNG", "JPG", "SVG", "BMP", "WEBP"];
 
 import {
