@@ -1,8 +1,8 @@
 import HeroSection from "@/components/VideoConverterHeroSection";
 import NOSSRWrapper from "@/components/NOSSRWrapper";
-import VideoProperties from "@/components/VideoConverterwithProperties";
 import UnsupportedFormat from "@/components/UnsuportedFormat";
 import type { Metadata } from "next";
+import AudioConverterWithProperties from "@/components/AudioConverterwithProperties";
 
 const supportedFormats = ['mp3', 'aac', 'm4a'];
 const primaryFormat = 'wav';
@@ -42,7 +42,7 @@ export default function Page({ params }: { params: { format: string } }){
             <NOSSRWrapper>
                 <div>
                     <HeroSection format={format} primaryFormat={primaryFormat}/>            
-                    <VideoProperties format = {format} primaryFormat={primaryFormat}/>
+                    <AudioConverterWithProperties format = {format} primaryFormat={primaryFormat}/>
                 </div>
             </NOSSRWrapper>            
         </main>
