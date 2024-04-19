@@ -41,6 +41,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
   const [volume, setVolume] = useState<string>("original");
   const [sampleRate, setSampleRate] = useState<string>("original");
   const [fit, setFit] = useState<string>("original");
+  const [preset, setPreset] = useState<string>("original");
   const [totalDuration, setTotalDuration] = useState<number>(-10);
   const [percentProgress, setPercentProgress] = useState(0);
   const [converting, setConverting] = useState(false);
@@ -65,6 +66,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
       audioCodec === "original" ? ["-c:a","copy"] : audioCodec.split(" ");
     const vol = volume === "original" ? [volume] : ["-af", volume];
     const sr = sampleRate === "original" ? [sampleRate] : sampleRate.split(" ");
+    const presetValue = preset === "original" ? [preset] : preset.split(" ");
     const attributes = [
       ...crf,
       ...fitScale,
@@ -76,6 +78,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
       ...sr,
       ...res,
       ...aspect,
+      ...presetValue,
     ];
 	if(format === "webm"){
 		attributes.push("-c:v", "libvpx", "-c:a", "libvorbis");
@@ -96,9 +99,11 @@ export default function VideoProperties({format, primaryFormat}: {format: string
   
         const fileData = await ffmpeg.readFile(`output.${format}`);
         const data = new Uint8Array(fileData as ArrayBuffer);
-        const url = URL.createObjectURL(
-          new Blob([data.buffer], { type: `video/${format}` })
-        );		
+        const dataBlob = new Blob([data], { type: `video/${format}` });
+        if(dataBlob.size > 0) {
+          setPercentProgress(100);
+        }
+        const url = URL.createObjectURL(dataBlob);		
         setOutputFileURL(url);
         setConverting(false);
       }      
@@ -140,30 +145,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
     e.stopPropagation();
   }; 
 
-  function handleFitChange(value: string) {
-    setFit(value);
-  }
-
-  function handleResolutionChange(value: string) {
-    setResolution(value);
-  }
-
-  function handleAspectRatioChange(value: string) {
-    setAspectRatio(value);
-  }
-
-  function handleConstantQualityChange(value: string) {
-    setConstantQuality(value);
-  }
-
-  function handleFrameRateChange(value: string) {
-    setFrameRate(value);
-  }
-
-  function handleAudioCodecChange(value: string) {
-    setAudioCodec(value);
-  }
-
+  
   function handleAudioBitrateChange(
     event: React.ChangeEvent<HTMLInputElement>
   ) {
@@ -172,18 +154,10 @@ export default function VideoProperties({format, primaryFormat}: {format: string
     if (isValidBitrate) {
       setAudioBitrate(`-b:v ${bitrate}k`);
     }
-  }
-
-  function handleChannelsChange(value: string) {
-    setChannels(value);
-  }
-
-  function handleVolumeChange(value: string) {
-    setVolume(value);
-  }
-
-  function handleSampleRateChange(value: string) {
-    setSampleRate(value);
+    else {
+      setAudioBitrate("original");
+      setErrorMsg("Please enter a valid bitrate.");
+    }
   }
 
     const handleFileChange = async (
@@ -313,7 +287,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
               <label onClick={(event)=>event.preventDefault()}className="font-medium flex align-middle p-3 items-center justify-between">
                 Resolution <InfoTooltip information="The resolution determines the amount of detail (pixels) and clarity of the video or image.Generally, higher the pixels higher the quality" />
               </label>
-              <Select onValueChange={(value) => handleResolutionChange(value)}>
+              <Select onValueChange={(value) => setResolution(value)}>
                 <SelectTrigger id="resolution">
                   <SelectValue placeholder="Unchanged" />
                 </SelectTrigger>
@@ -358,7 +332,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
                 <InfoTooltip information=" The CRF value sets the video quality. Lower values mean better quality but longer conversion times" />
               </label>
               <Select
-                onValueChange={(value) => handleConstantQualityChange(value)}
+                onValueChange={(value) => setConstantQuality(value)}
               >
                 <SelectTrigger id="crf">
                   <SelectValue placeholder="23 (Normal) | Unchanged" />
@@ -383,7 +357,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
               <label onClick={(event)=>event.preventDefault()}className="font-medium flex align-middle p-3 items-center justify-between">
                 Fit | Crop <InfoTooltip information="Sets the mode of sizing the video." />
               </label>
-              <Select onValueChange={(value) => handleFitChange(value)}>
+              <Select onValueChange={(value) => setFit(value)}>
                 <SelectTrigger id="fit">
                   <SelectValue placeholder="Unchanged" />
                 </SelectTrigger>
@@ -419,7 +393,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
               <label onClick={(event)=>event.preventDefault()}className="font-medium flex align-middle p-3 items-center justify-between">
                 Aspect Ratio <InfoTooltip information="Aspect ratio refers to the proportional relationship between the width and height of a video or image. The choice of aspect ratio affects how content is displayed on various devices and screens." />
               </label>
-              <Select onValueChange={(value) => handleAspectRatioChange(value)}>
+              <Select onValueChange={(value) => setAspectRatio(value)}>
                 <SelectTrigger id="fit">
                   <SelectValue placeholder="Unchanged" />
                 </SelectTrigger>
@@ -452,7 +426,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
               <label onClick={(event)=>event.preventDefault()}className="font-medium flex align-middle p-3 items-center justify-between">
                 FPS (Frame Rate) <InfoTooltip information="FPS-Frames Per Second. 60fps - Smooth, 30fps - Most Commonly used, 24 - For Cinema." />
               </label>
-              <Select onValueChange={(value) => handleFrameRateChange(value)}>
+              <Select onValueChange={(value) => setFrameRate(value)}>
                 <SelectTrigger id="fps">
                   <SelectValue placeholder="Unchanged" />
                 </SelectTrigger>
@@ -472,6 +446,34 @@ export default function VideoProperties({format, primaryFormat}: {format: string
                 </SelectContent>
               </Select>
             </div>
+            <div className="flex flex-col">
+              <label onClick={(event)=>event.preventDefault()}className="font-medium flex align-middle p-3 items-center justify-between">
+                Preset <InfoTooltip information="The preset does not directly affect the visual quality in terms of resolution or color accuracy but impacts how the video data is compressed during encoding. Use when time is crucial." />
+              </label>
+              <Select onValueChange={(value) => setPreset(value)}>
+                <SelectTrigger id="preset">
+                  <SelectValue placeholder="Unchanged | Default (Medium)" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="original" className="font-bold">
+                      Original
+                    </SelectItem>
+                    <Separator />
+                    <SelectItem value="-preset ultrafast">Ultrafast</SelectItem>
+                    <SelectItem value="-preset superfast">Superfast</SelectItem>
+                    <SelectItem value="-preset veryfast">Veryfast</SelectItem>
+                    <SelectItem value="-preset faster">Faster</SelectItem>
+                    <SelectItem value="-preset fast">Fast</SelectItem>
+                    <SelectItem value="-preset medium">Medium</SelectItem>
+                    <SelectItem value="-preset slow">Slow</SelectItem>
+                    <SelectItem value="-preset slower">Slower</SelectItem>
+                    <SelectItem value="-preset veryslow">Veryslow</SelectItem>
+                    <SelectItem value="-preset placebo">Placebo</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>            
           </div>
         </div>
         <Separator />
@@ -485,7 +487,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
               <label onClick={(event)=>event.preventDefault()} className="font-medium flex align-middle p-3 items-center justify-between">
                 Audio Codec <InfoTooltip information="The audio codec is a type of program used to compress and decompress digital audio files. Common codecs include AAC for a balance of quality and compatibility." />
               </label>
-              <Select onValueChange={(value) => handleAudioCodecChange(value)}>
+              <Select onValueChange={(value) => setAudioCodec(value)}>
                 <SelectTrigger id="audio-codec">
                   <SelectValue placeholder="AAC" />
                 </SelectTrigger>
@@ -522,7 +524,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
               <label onClick={(event)=>event.preventDefault()}className="font-medium flex align-middle p-3 items-center justify-between">
                 Channel <InfoTooltip information="Audio channels refer to the number of separate audio signals in a recording, affecting how sound is heard. 'Mono' has one channel and sounds the same from all speakers, while 'Stereo' uses two channels for left and right speakers, offering a sense of dimension and direction in the sound." />
               </label>
-              <Select onValueChange={(value) => handleChannelsChange(value)}>
+              <Select onValueChange={(value) => setChannels(value)}>
                 <SelectTrigger id="channels">
                   <SelectValue placeholder="Unchanged" />
                 </SelectTrigger>
@@ -541,7 +543,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
               <label onClick={(event)=>event.preventDefault()}className="font-medium flex align-middle p-3 items-center justify-between">
                 Volume <InfoTooltip information="Volume in refers to the loudness or intensity of the sound." />
               </label>
-              <Select onValueChange={(value) => handleVolumeChange(value)}>
+              <Select onValueChange={(value) => setVolume(value)}>
                 <SelectTrigger id="volume">
                   <SelectValue placeholder="Unchanged" />
                 </SelectTrigger>
@@ -564,7 +566,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
               <label onClick={(event)=>event.preventDefault()}className="font-medium flex align-middle p-3 items-center justify-between">
                 Sample Rate <InfoTooltip information="Sample rate, measured in Hertz (Hz), refers to the number of samples of audio carried per second. Higher sample rates can capture more detail but require more data. Common rates include 44.1 kHz (CD quality) and 48 kHz (professional audio and video standards)." />
               </label>
-              <Select onValueChange={(value) => handleSampleRateChange(value)}>
+              <Select onValueChange={(value) => setSampleRate(value)}>
                 <SelectTrigger id="sample-rate">
                   <SelectValue placeholder="Unchanged" />
                 </SelectTrigger>
