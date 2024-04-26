@@ -262,7 +262,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
             </p>
             <Button
               variant={"ghost"}
-              onClick={() => setInputFile(null)}
+              onClick={(resetUpload}
               className="text-xs opacity-30 justify-self-end"
               disabled={converting}
             >
@@ -595,7 +595,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
             }
             className="text-md"
           >
-            {converting == true ? "Converting..." : "Convert"}
+            {converting == true ? "Converting..." : outputFileURL === "" ? "Convert" : "Re-Convert"}
           </Button>
           {outputFileURL !== "" && (
             <a
