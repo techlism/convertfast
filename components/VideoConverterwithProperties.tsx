@@ -137,7 +137,8 @@ export default function VideoProperties({format, primaryFormat}: {format: string
     setVolume("original");
     setSampleRate("original");
     setPercentProgress(0);
-    setTotalDuration(-10);    
+    setTotalDuration(-10);
+    setPreset("original");    
   };
 
   const preventDefaults = (e: React.DragEvent<HTMLDivElement>) => {
