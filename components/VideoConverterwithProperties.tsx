@@ -263,7 +263,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
             </p>
             <Button
               variant={"ghost"}
-              onClick={(resetUpload}
+              onClick={resetUpload}
               className="text-xs opacity-30 justify-self-end"
               disabled={converting}
             >
