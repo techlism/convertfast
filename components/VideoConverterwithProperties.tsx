@@ -177,6 +177,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
 
   const load = async () => {
     const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm";
+    const baseFFMPEGURL = "https://convertfast.media"
     const ffmpeg = ffmpegRef.current;
     ffmpeg.on("log", ({ message }) => {		
       setMessage(message);
@@ -185,7 +186,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
     const ffmpegLoaded = await ffmpeg.load({
       coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript"),
       wasmURL: await toBlobURL(
-        `${baseURL}/ffmpeg-core.wasm`,
+        `${baseFFMPEGURL}/ffmpeg-core.wasm`,
         "application/wasm"
       ),
       // SharedBufferArray is not supported in the browser (so not possible to use multithreading right now)
@@ -264,7 +265,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
             <Button
               variant={"ghost"}
               onClick={resetUpload}
-              className="text-xs opacity-30 justify-self-end"
+              className={`text-xs opacity-30 justify-self-end ${converting == true ? "animate-pulse" : ""}`}
               disabled={converting}
             >
               Choose a different video
