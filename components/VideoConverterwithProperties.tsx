@@ -177,7 +177,6 @@ export default function VideoProperties({format, primaryFormat}: {format: string
 
   const load = async () => {
     const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm";
-    const baseFFMPEGURL = "https://convertfast.media"
     const ffmpeg = ffmpegRef.current;
     ffmpeg.on("log", ({ message }) => {		
       setMessage(message);
@@ -186,7 +185,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
     const ffmpegLoaded = await ffmpeg.load({
       coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript"),
       wasmURL: await toBlobURL(
-        `${baseFFMPEGURL}/ffmpeg-core.wasm`,
+        `${baseURL}/ffmpeg-core.wasm`,
         "application/wasm"
       ),
       // SharedBufferArray is not supported in the browser (so not possible to use multithreading right now)
