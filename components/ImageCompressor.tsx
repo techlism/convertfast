@@ -260,7 +260,7 @@ export default function ImageCompressor() {
               <h3 className="text-sm xl:text-xl lg:text-xl md:text-lg font-semibold">
                 Adjust Quality for Compression
               </h3>
-              <InfoTooltip information="Quality compression some times tends to produce vague results for smaller file sizes. Consider adjusting resolution in that case."/>
+              <InfoTooltip information="Quality compression in PNG file format produces inconsistent output beyond 80%, in that case adjust resolution or convert it JPEG."/>
             </div>
             <p className="p-1 px-3 max-w-fit font-medium border text-sm xl:text-xl lg:text-xl md:text-lg rounded-lg bg-muted  w-16">
               {qualityPercentage}
