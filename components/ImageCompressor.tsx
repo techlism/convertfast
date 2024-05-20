@@ -82,7 +82,7 @@ export default function ImageCompressor() {
           const newWidth = Math.round(aspectRatio * newHeight);
           //   image.negateGrayScale(); -- not sure if this is needed
           const conversionParameters = new MagickGeometry(newWidth, newHeight);
-          /* Leaving this part here for future reference -- As of quantizing ain't feasible */
+          /* Leaving this part here for future reference -- As of now quantizing ain't feasible */
           // const quantizingValues = new QuantizeSettings();
           // quantizingValues.colorSpace = ColorSpace.RGB;
           // quantizingValues.treeDepth = 8;
@@ -100,10 +100,10 @@ export default function ImageCompressor() {
             reader.onload = () => {
               if (reader.result !== null && typeof reader.result === "string") {
                 const base64String = reader?.result?.split(",")[1];
-                const imageFormat = reader.result
-                  .split(":")[1]
-                  .split(";")[0]
-                  .split("/")[1];
+                // const imageFormat = reader.result
+                //   .split(":")[1]
+                //   .split(";")[0]
+                //   .split("/")[1]; -- Not being used as of now
                 setOutputFileURL(`data:${fileMIMEType};base64,${base64String}`);
               }
               setCompressedFileSizeString(            
