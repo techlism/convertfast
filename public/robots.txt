@@ -1,5 +1,7 @@
+User-agent: *
+Allow: /
+
 User-agent: ChatGPT-User
 Disallow: /
-User-agent: Googlebot
-Allow: /
-Sitemap : https://convertfast.media/sitemap.xml
+
+Sitemap: https://convertfast.media/sitemap.xml
