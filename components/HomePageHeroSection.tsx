@@ -16,20 +16,21 @@ export default function HomePageHeroSection(){
             <div>
                 <ConversionSelector/>
             </div>
+            {/* /--------------/ */}
             <div>
                 <h1 className="text-4xl font-bold my-5">Why Convertfast?</h1>
-                <div className="border p-4 rounded-lg flex space-x-3 mt-5">
+                <div className="border p-4 rounded-lg flex space-x-4 mt-5">
                     <div className="flex items-center">
                         <FileCheck2 size={35} className="text-teal-500"/>
                     </div>
                     <div className="w-[2px] bg-primary rounded-lg"/>
                     <div>
-                        <h2 className="text-2xl font-semibold">Support all popular media formats</h2>
+                        <h2 className="text-2xl font-semibold">Support all the popular media formats</h2>
                         <p className="font-medium text-gray-700 dark:text-gray-400">Convertfast supports all popular media formats including MP4, MP3, JPEG, PNG, MKV and many more.</p>
                     </div>
                 </div>
                 {/* --------------- */}
-                <div className="border p-4 rounded-lg flex space-x-3 mt-5">
+                <div className="border p-4 rounded-lg flex space-x-4 mt-5">
                     <div className="flex items-center">
                         <Shield size={35} className="text-blue-500"/>
                     </div>
@@ -40,18 +41,18 @@ export default function HomePageHeroSection(){
                     </div>
                 </div> 
                 {/* --------------- */}
-                <div className="border p-4 rounded-lg flex space-x-3 mt-5">
+                <div className="border p-4 rounded-lg flex space-x-4 mt-5">
                     <div className="flex items-center">
-                        <WifiOff size={35} className="text-yellow-500"/>
+                        <WifiOff size={35} className="text-red-500"/>
                     </div>
                     <div className="w-[2px] bg-primary rounded-lg"/>
                     <div>
                         <h2 className="text-2xl font-semibold">Works Offline</h2>
-                        <p className="font-medium text-gray-700 dark:text-gray-400">Since all the processing in done on your machine, once all the components are no internet required in between.</p>
+                        <p className="font-medium text-gray-700 dark:text-gray-400">All processing is performed locally, eliminating the need for an internet connection once all components are loaded, thus ensuring smooth operation.</p>
                     </div>
                 </div>
                 {/* --------------- */}
-                <div className="border p-4 rounded-lg flex space-x-3 mt-5">
+                <div className="border p-4 rounded-lg flex space-x-4 mt-5">
                     <div className="flex items-center">
                         <MegaphoneOff size={35} className="text-yellow-500"/>
                     </div>
