@@ -1,6 +1,14 @@
 import { Separator } from "@/components/ui/separator";
 import { BookText } from 'lucide-react';
 import Link from "next/link";
+import type { Metadata} from 'next';
+
+export const metadata: Metadata = {
+    title: "About this project - Convertfast",
+    description: "About this project - Convertfast. Learn about the project, the shortcomings and the good parts of the project.",
+    keywords: ["about convertfast", "convertfast project", "convertfast shortcomings", "convertfast good parts"],
+}
+
 export default function Page() {
     return (
     <main className="container max-w-7xl flex flex-col space-y-3">

@@ -3,7 +3,7 @@ import ImageCompressor from "@/components/ImageCompressor";
 import NOSSRWrapper from "@/components/NOSSRWrapper";
 import type { Metadata } from "next";
 
-export const metadata : Metadata = {
+const defaultMetadata : Metadata = {
     title: "Compress Images Online",   
     description: "Compress images and photos quickly and easily without uploading them to any server.",
     keywords : ["compress images", "compress photos", "compress pictures", "compress image online", "compress image", "compress without uploading", "resize", "resize to 50kb", "resize photographs for forms","decrease image size"],
