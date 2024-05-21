@@ -17,7 +17,7 @@ import { Progress } from "./ui/progress";
 import { Input } from "@/components/ui/input";
 // import { Label } from "./ui/label"
 import InfoTooltip from "./InfoTooltip";
-import { FilmIcon, MusicIcon, ScissorsIcon } from "lucide-react";
+import { MusicIcon } from "lucide-react";
 import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
 
@@ -38,6 +38,8 @@ export default function AudioConverterWithProperties({format, primaryFormat}: {f
   const [percentProgress, setPercentProgress] = useState(0);
   const [converting, setConverting] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  
+  // The function that processes the audio file
   const FFMPEGProcessor = async () => {
     if(!loaded) load();
     // "-c:a","copy"
@@ -71,8 +73,13 @@ export default function AudioConverterWithProperties({format, primaryFormat}: {f
         const url = URL.createObjectURL(
           new Blob([data.buffer], { type: `audio/${format}` })
         );		
-        setOutputFileURL(url);
-        setConverting(false);
+        setOutputFileURL(()=>{
+          setPercentProgress(100);
+          setConverting(false);
+          return url;
+        });
+        // setConverting(false);
+        // setPercentProgress(100);
       }      
     } catch (error) {
       console.log(error);      
