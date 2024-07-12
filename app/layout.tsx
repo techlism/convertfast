@@ -15,7 +15,14 @@ export const metadata : Metadata = {
   openGraph :{
     images : 'https://r2.my-links.live/convertfast-og.png'
   },
+  twitter : {
+    images : 'https://r2.my-links.live/convertfast-og.png',
+    site : '@convertfast',
+  },
   manifest : "/manifest.json",
+  alternates : {
+    canonical : "https://convertfast.media"
+  }
 };
 
 export const viewport: Viewport = {

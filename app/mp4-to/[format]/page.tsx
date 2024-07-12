@@ -36,7 +36,10 @@ export async function generateMetadata({params}: {params: {format: string}}, par
         applicationName: "Convertfast",
         creator: "Techlism",
         authors: "Techlism",
-        keywords: keywords
+        keywords: keywords,
+        alternates : {
+            canonical : `https://convertfast.media/${primaryFormat}-to-${format}`
+        }        
     }
 }
 

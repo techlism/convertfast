@@ -3,11 +3,14 @@ import ImageCompressor from "@/components/ImageCompressor";
 import NOSSRWrapper from "@/components/NOSSRWrapper";
 import type { Metadata } from "next";
 
-const defaultMetadata : Metadata = {
+export const defaultMetadata : Metadata = {
     title: "Compress Images Online",   
     description: "Compress images and photos quickly and easily without uploading them to any server.",
     keywords : ["compress images", "compress photos", "compress pictures", "compress image online", "compress image", "compress without uploading", "resize", "resize to 50kb", "resize photographs for forms","decrease image size"],
-    creator : "Techlism"
+    creator : "Techlism",
+    alternates : {
+        canonical : "https://convertfast.media/compress-images"
+    }
 }
 
 export default function Home(){
@@ -17,8 +20,7 @@ export default function Home(){
                 <div>                    
                     <ImageCompressionHeroSection/>
                     <ImageCompressor/>
-                </div>
-                
+                </div>                
             </NOSSRWrapper>
 
         </main>
