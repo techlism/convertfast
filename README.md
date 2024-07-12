@@ -1,4 +1,4 @@
-## Getting Started
+# Getting Started
 
 First, run the development server:
 
@@ -11,4 +11,5 @@ pnpm dev
 # or
 bun dev
 ```
+
 A NEXTJS BASED PROJECT.
