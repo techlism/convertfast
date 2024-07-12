@@ -1,4 +1,4 @@
-import ConverterHeroSection from "@/components/ConverterHeroSection";
+import ConverterInfoSection from "@/components/ConverterInfoSection";
 import NOSSRWrapper from "@/components/NOSSRWrapper";
 import VideoProperties from "@/components/VideoConverterwithProperties";
 import UnsupportedFormat from "@/components/UnsuportedFormat";
@@ -70,7 +70,7 @@ export default function Page({ params }: { params: { format: string } }){
         <main className="flex justify-center align-middle items-center min-h-screen m-4">
         <NOSSRWrapper>
             <div>
-                <ConverterHeroSection format={format} primaryFormat={primaryFormat}/>            
+                <ConverterInfoSection format={format} primaryFormat={primaryFormat}/>            
                 <VideoProperties format = {format} primaryFormat={primaryFormat}/>
             </div>
 

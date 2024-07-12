@@ -207,10 +207,11 @@ export default function AudioConverterWithProperties({format, primaryFormat}: {f
       parseProgessAndDuration(message);
     }
   }, [message, totalDuration]);
+  
   return (
-    <div className="flex align-middle justify-center flex-col">
+    <div className="flex align-middle justify-center flex-col rounded-lg shadow-md border p-2">
       <div className="m-2">
-        {inputFile == null ? (
+        {inputFile === null ? (
           <Label
             htmlFor="dropzone-file"
             className="justify-self-center cursor-pointer"
@@ -252,7 +253,7 @@ export default function AudioConverterWithProperties({format, primaryFormat}: {f
         )}
       </div>
       {errorMsg && (
-        <div className="border p-4 rounded-lg bg-red-100 dark:bg-red-200 text-red-500 dark:text-red-500 m-2 font-medium transition-transform">
+        <div className="border p-4 rounded-lg bg-red-100 dark:bg-red-200 text-red-500 dark:text-red-500 m-2 font-medium transition-transform ease-in-out">
           {errorMsg}
         </div>
       )}
@@ -267,7 +268,7 @@ export default function AudioConverterWithProperties({format, primaryFormat}: {f
               <label onClick={(event)=>event.preventDefault()} className="font-medium flex align-middle p-3 items-center justify-between">
                 Audio Codec <InfoTooltip information="An Audio Codec is a software or hardware tool that converts (encodes or decodes) audio data from one format to another." />
               </label>
-              <Select onValueChange={(value) => handleAudioCodecChange(value)}>
+              <Select onValueChange={(value : string | any) => handleAudioCodecChange(value)}>
                 <SelectTrigger id="audio-codec">
                   <SelectValue placeholder="Unchanged | Selected" />
                 </SelectTrigger>
@@ -304,7 +305,7 @@ export default function AudioConverterWithProperties({format, primaryFormat}: {f
               <label onClick={(event)=>event.preventDefault()}className="font-medium flex align-middle p-3 items-center justify-between">
                 Channel <InfoTooltip information="Audio channels refer to the number of separate audio signals in a recording, affecting how sound is heard. 'Mono' has one channel and sounds the same from all speakers, while 'Stereo' uses two channels for left and right speakers, offering a sense of dimension and direction in the sound." />
               </label>
-              <Select onValueChange={(value) => handleChannelsChange(value)}>
+              <Select onValueChange={(value : string | any) => handleChannelsChange(value)}>
                 <SelectTrigger id="channels">
                   <SelectValue placeholder="Unchanged" />
                 </SelectTrigger>
@@ -323,7 +324,7 @@ export default function AudioConverterWithProperties({format, primaryFormat}: {f
               <label onClick={(event)=>event.preventDefault()}className="font-medium flex align-middle p-3 items-center justify-between">
                 Volume <InfoTooltip information="Volume in refers to the loudness or intensity of the sound." />
               </label>
-              <Select onValueChange={(value) => handleVolumeChange(value)}>
+              <Select onValueChange={(value : string | any) => handleVolumeChange(value)}>
                 <SelectTrigger id="volume">
                   <SelectValue placeholder="Unchanged" />
                 </SelectTrigger>
@@ -346,7 +347,7 @@ export default function AudioConverterWithProperties({format, primaryFormat}: {f
               <label onClick={(event)=>event.preventDefault()}className="font-medium flex align-middle p-3 items-center justify-between">
                 Sample Rate <InfoTooltip information="Sample rate, measured in Hertz (Hz), refers to the number of samples of audio carried per second. Higher sample rates can capture more detail but require more data. Common rates include 44.1 kHz (CD quality) and 48 kHz (professional audio and video standards)." />
               </label>
-              <Select onValueChange={(value) => handleSampleRateChange(value)}>
+              <Select onValueChange={(value : string | any) => handleSampleRateChange(value)}>
                 <SelectTrigger id="sample-rate">
                   <SelectValue placeholder="Unchanged" />
                 </SelectTrigger>
