@@ -12,9 +12,9 @@ import {
   MagickFormat,
   Quantum,
 } from "@imagemagick/magick-wasm";
-import Link from "next/link";
+// import Link from "next/link";
 
-export default function ImageConverter({format, primaryFormat,}: {format: string; primaryFormat: string;}) {
+export default function ImageConverter({format, primaryFormat}: {format: string; primaryFormat: string;}) {
   const [inputFile, setInputFile] = useState<File | null>(null);
   const [outputFileURL, setOutputFileURL] = useState<string>("");
   const [converting, setConverting] = useState(false);
@@ -137,7 +137,7 @@ export default function ImageConverter({format, primaryFormat,}: {format: string
   };
 
   return (
-    <div className="flex align-middle justify-center flex-col">
+    <div className="flex align-middle justify-center flex-col border rounded-lg shadow-md">
       <div className="m-2">
         {inputFile == null ? (
           <Label
@@ -182,7 +182,7 @@ export default function ImageConverter({format, primaryFormat,}: {format: string
         )}
       </div>
       {errorMsg && (
-        <div className="border p-4 rounded-lg bg-red-100 dark:bg-red-200 text-red-500 dark:text-red-500 m-2 font-medium transition-transform">
+        <div className="border p-4 rounded-lg bg-red-100 dark:bg-red-200 text-red-500 dark:text-red-500 m-2 font-medium transition-transform ease-in-out">
           {errorMsg}
         </div>
       )}

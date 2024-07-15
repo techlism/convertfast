@@ -192,7 +192,7 @@ export default function ImageCompressor() {
   };
 
   return (
-    <div className="flex align-middle justify-center flex-col">
+    <div className="flex align-middle justify-center flex-col border p-2 rounded-lg shadow-md">
       <div className="m-2">
         {inputFile == null ? (
           <Label
@@ -272,7 +272,7 @@ export default function ImageCompressor() {
             max={100}
             min={1}
             datatype="number"
-            onValueChange={(value) => setQualityPercentage(value?.[0])}
+            onValueChange={(value : string | any) => setQualityPercentage(value?.[0])}
           />
         </div>
         <Separator />
@@ -295,7 +295,7 @@ export default function ImageCompressor() {
             max={100}
             min={1}
             datatype="number"
-            onValueChange={(value) => setResolutionPercentage(value?.[0])}
+            onValueChange={(value : string | any) => setResolutionPercentage(value?.[0])}
           />
         </div>
       </div>
