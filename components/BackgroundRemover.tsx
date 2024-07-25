@@ -173,7 +173,7 @@ export default function BackgroundRemover(): JSX.Element {
                     </div>
                     <Switch
                         checked={useLargerModel}
-                        onCheckedChange={setUseLargerModel}
+                        onCheckedChange={()=>setUseLargerModel((prev) => !prev)}
                     />
                 </div>
 
@@ -219,10 +219,7 @@ export default function BackgroundRemover(): JSX.Element {
                 {outputFileURL !== "" && (
                     <a
                         href={outputFileURL}
-                        download={`bg_removed_${inputFile?.name.slice(
-                            0,
-                            -4
-                        )}.png`}
+                        download={fileName()}
                         className="bg-teal-600 dark:bg-teal-500 text-gray-100 hover:opacity-90 text-md font-medium flex justify-center items-center align-middle pt-2 pb-2 rounded-md"
                     >
                         Download <Download size={15} className="ml-2" />
