@@ -15,7 +15,7 @@ export const metadata : Metadata = {
 
 export default function Home(){
     return(
-        <main className="flex justify-center align-middle items-center min-h-screen m-4">
+        <main className="flex justify-center align-middle items-center min-h-screen max-w-[90%] mx-auto">
             <NOSSRWrapper>                
                 <div>                    
                     <ImageCompressionHeroSection/>

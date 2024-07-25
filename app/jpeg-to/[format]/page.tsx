@@ -67,7 +67,7 @@ export default function Home({ params }: { params: { format: string } }){
         )
     }    
     return(
-        <main className="flex justify-center align-middle items-center min-h-screen m-4">
+        <main className="flex justify-center align-middle items-center min-h-screen max-w-[90%] mx-auto">
             <NOSSRWrapper >
                 <div>
                     <ImageHeroSection format={format} primaryFormat={primaryFormat}/>

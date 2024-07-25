@@ -5,10 +5,13 @@ import { Download, UploadIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "./ui/button";
 import { removeBackground } from "@imgly/background-removal";
+import { Slider } from "./ui/slider";
 import { Switch } from "./ui/switch";
 import { Progress } from "./ui/progress";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 
 type DownloadFileType = "image/png" | "image/webp";
+type ModelPrecision = "isnet" | "isnet_fp16" | "isnet_quint8";
 
 export default function BackgroundRemover(): JSX.Element {
     const [inputFile, setInputFile] = useState<File | null>(null);
@@ -18,7 +21,8 @@ export default function BackgroundRemover(): JSX.Element {
     const [progress, setProgress] = useState<number>(0);
     const [imageDownloadType, setImageDownloadType] =
         useState<DownloadFileType>("image/png");
-    const [useLargerModel, setUseLargerModel] = useState<boolean>(false);
+    const [modelPrecision, setModelPrecision] = useState<ModelPrecision>("isnet_fp16");
+    const [quality, setQuality] = useState<number>(100);
 
     function fileName() {
         let nameWithoutExtention = inputFile?.name;
@@ -39,6 +43,7 @@ export default function BackgroundRemover(): JSX.Element {
         setErrorMsg("");
         setOutputFileURL("");
         setProgress(0);
+        console.log(quality/100);
         try {
             if (inputFile) {
                 const imageData = await new Response(inputFile).blob();
@@ -49,15 +54,13 @@ export default function BackgroundRemover(): JSX.Element {
                             setProgress(Math.round((current / total) * 100));
                         }
                     },
-                    model: useLargerModel ? "isnet_fp16" : "isnet_quint8",
+                    model: modelPrecision,
                     output: {
                         format: imageDownloadType,
-                        quality: 1,
+                        quality: (quality/100) | 0.8,
                     },
-                });
-                console.log("Output Blob:", blob);
+                });      
                 const url = URL.createObjectURL(blob);
-                console.log("Output URL:", url);
                 setOutputFileURL(url);
             }
         } catch (error) {
@@ -108,7 +111,7 @@ export default function BackgroundRemover(): JSX.Element {
     };
 
     return (
-        <div className="flex align-middle justify-center flex-col border p-2 rounded-lg shadow-md">
+        <div className="flex align-middle justify-center flex-col border p-2 rounded-lg shadow-md mb-4">
             <div className="m-2">
                 {inputFile == null ? (
                     <Label
@@ -161,20 +164,30 @@ export default function BackgroundRemover(): JSX.Element {
                     </div>
                 )}
             </div>
-            <div className="space-y-4 m-2">
+            <div className="space-y-4 m-2 border p-4 rounded-lg">
+                <h3 className="text-xl font-bold">Options</h3>
                 <div className="flex items-center justify-between p-4 border rounded-lg">
                     <div>
                         <h3 className="font-medium">
                             Use larger model
                         </h3>
                         <p className="text-gray-400 text-sm">
-                            Improves quality but uses ~2x more data
+                            Improves quality but uses ~2x more data and resources.
                         </p>
                     </div>
-                    <Switch
-                        checked={useLargerModel}
-                        onCheckedChange={()=>setUseLargerModel((prev) => !prev)}
-                    />
+                    <Select 
+                      value={modelPrecision}
+                      onValueChange={(value) => setModelPrecision(value as ModelPrecision)}
+                    >
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Select model" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="isnet">High Quality (Slower)</SelectItem>
+                        <SelectItem value="isnet_fp16">Balanced</SelectItem>
+                        <SelectItem value="isnet_quint8">Fast (Lower Quality)</SelectItem>
+                      </SelectContent>
+                    </Select>
                 </div>
 
                 <div className="flex items-center justify-between p-4 rounded-lg border">
@@ -195,6 +208,23 @@ export default function BackgroundRemover(): JSX.Element {
                                     : "image/webp"
                             );
                         }}
+                    />
+                </div>
+                <div className="grid grid-cols-1 gap-2 p-4 border rounded-lg">
+                    <div>
+                        <h3 className="font-medium">
+                            Quality
+                        </h3>
+                        <p className="text-gray-400 text-sm">
+                            Not much effective but can reduce file size in some cases.
+                        </p>
+                    </div>
+                    <Slider
+                        min={1}
+                        max={100}
+                        defaultValue={[100]}
+                        step={1}
+                        onValueChange={(value) => setQuality(value[0])}
                     />
                 </div>
             </div>
@@ -220,7 +250,7 @@ export default function BackgroundRemover(): JSX.Element {
                     <a
                         href={outputFileURL}
                         download={fileName()}
-                        className="bg-teal-600 dark:bg-teal-500 text-gray-100 hover:opacity-90 text-md font-medium flex justify-center items-center align-middle pt-2 pb-2 rounded-md"
+                        className="bg-teal-600 dark:bg-teal-500 text-white hover:opacity-90 text-md font-medium flex justify-center items-center align-middle pt-2 pb-2 rounded-md"
                     >
                         Download <Download size={15} className="ml-2" />
                     </a>
