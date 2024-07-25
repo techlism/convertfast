@@ -12,7 +12,7 @@ export const metadata : Metadata = {
 }
 export default function Home() {
     return (
-        <main className="flex justify-center align-middle items-center m-10">
+        <main className="flex justify-center align-middle items-center min-h-screen">
                 <div>
                     <BackgroundRemoverHeroSection/>
                     <BackgroundRemover/>
