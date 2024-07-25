@@ -164,7 +164,7 @@ export default function BackgroundRemover(): JSX.Element {
             <div className="space-y-4 m-2">
                 <div className="flex items-center justify-between p-4 border rounded-lg">
                     <div>
-                        <h3 className="text-white font-medium">
+                        <h3 className="font-medium">
                             Use larger model
                         </h3>
                         <p className="text-gray-400 text-sm">
@@ -179,7 +179,7 @@ export default function BackgroundRemover(): JSX.Element {
 
                 <div className="flex items-center justify-between p-4 rounded-lg border">
                     <div>
-                        <h3 className="text-white font-medium">
+                        <h3 className="font-medium">
                             Output as WebP
                         </h3>
                         <p className="text-gray-400 text-sm">
