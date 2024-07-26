@@ -77,6 +77,9 @@
       var(--bgColor2)
     );
   }
+  .pulse {
+    animation: pulse 2s infinite;
+  }
   .inverted{
     filter: invert(1);
     position: relative;

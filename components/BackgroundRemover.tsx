@@ -1,13 +1,19 @@
 "use client";
 import React, { useState } from "react";
 import { Label } from "@/components/ui/label";
-import { Download, UploadIcon } from "lucide-react";
+import { Bolt, Download, UploadIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "./ui/button";
 import { removeBackground } from "@imgly/background-removal";
 import { Slider } from "./ui/slider";
 import { Switch } from "./ui/switch";
 import { Progress } from "./ui/progress";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 
 type DownloadFileType = "image/png" | "image/webp";
@@ -19,10 +25,10 @@ export default function BackgroundRemover(): JSX.Element {
     const [processing, setProcessing] = useState<boolean>(false);
     const [errorMsg, setErrorMsg] = useState<string>("");
     const [progress, setProgress] = useState<number>(0);
-    const [imageDownloadType, setImageDownloadType] =
-        useState<DownloadFileType>("image/png");
+    const [imageDownloadType, setImageDownloadType] = useState<DownloadFileType>("image/png");
     const [modelPrecision, setModelPrecision] = useState<ModelPrecision>("isnet_fp16");
     const [quality, setQuality] = useState<number>(100);
+    const [currentStatus, setCurrentStatus] = useState<string>("Processing...");
 
     function fileName() {
         let nameWithoutExtention = inputFile?.name;
@@ -50,8 +56,12 @@ export default function BackgroundRemover(): JSX.Element {
                 //
                 const blob = await removeBackground(imageData, {
                     progress: (key: string, current: number, total: number) => {
+                        if(key.includes("fetch")) {
+                            setCurrentStatus("Fetching model...");
+                        }
                         if (key.includes("compute")) {
                             setProgress(Math.round((current / total) * 100));
+                            setCurrentStatus("Processing...");
                         }
                     },
                     model: modelPrecision,
@@ -164,8 +174,37 @@ export default function BackgroundRemover(): JSX.Element {
                     </div>
                 )}
             </div>
-            <div className="space-y-4 m-2 border p-4 rounded-lg">
-                <h3 className="text-xl font-bold">Options</h3>
+            {/* Preview */}
+            {inputFile && outputFileURL && (
+                <div className="mx-auto border p-4 rounded-lg flex gap-4 ease-in-out my-2 transition-all flex-wrap justify-center">
+                  <div>
+                  <img
+                        src={URL.createObjectURL(inputFile)}
+                        alt="Preview"
+                        className="rounded-lg max-h-60 shadow-sm border"
+                    />
+                    <h4 className="font-medium text-gray-400">Before</h4>
+                  </div>
+                    <div>
+                    <img
+                        src={outputFileURL}
+                        alt="Preview"
+                        className="rounded-lg max-h-60 shadow-sm border"
+                    />
+                    <h4 className="font-medium text-gray-400">After</h4>
+                    </div>
+      
+                </div>
+            )}
+            {/* Advanced Options */}
+            <div className="m-2 border p-4 rounded-lg">
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="item-1">
+                  <AccordionTrigger className="flex items-center justify-between">
+                    <h3 className="text-xl font-bold flex"><Bolt className="mr-2"/>Advanced Options</h3>
+                  </AccordionTrigger>
+                {/* <h3 className="text-xl font-bold flex"><Bolt className="mr-2"/>Options</h3> */}
+                <AccordionContent className="space-y-4">
                 <div className="flex items-center justify-between p-4 border rounded-lg">
                     <div>
                         <h3 className="font-medium">
@@ -227,6 +266,9 @@ export default function BackgroundRemover(): JSX.Element {
                         onValueChange={(value) => setQuality(value[0])}
                     />
                 </div>
+                </AccordionContent>
+                </AccordionItem>
+              </Accordion>
             </div>
             {errorMsg && (
                 <div className="border p-4 rounded-lg bg-red-100 dark:bg-red-200 text-red-500 dark:text-red-500 m-2 font-medium transition-transform">
@@ -235,7 +277,7 @@ export default function BackgroundRemover(): JSX.Element {
             )}
             {processing && (
               <div className="border p-4 m-2 rounded-lg">
-                <Progress value={progress} className="text-grey-500" defaultValue={0} />
+                <Progress value={progress} className={`text-gray-500 ${progress===0 ? 'pulse' : ''}`} defaultValue={0} />
               </div>
               
             )}
@@ -244,7 +286,7 @@ export default function BackgroundRemover(): JSX.Element {
                     onClick={removeBackgroundLocal}
                     disabled={!inputFile || processing}
                 >
-                    {processing ? "Processing..." : "Remove Background"}
+                    {processing ? currentStatus : "Remove Background"}
                 </Button>
                 {outputFileURL !== "" && (
                     <a

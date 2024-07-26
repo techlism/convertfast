@@ -14,8 +14,8 @@ export default function BackgroundRemoverHeroSection() {
                     Your images will not be uploaded to any server. <br/> All the processing is done on your device and due to this, the processing time may vary depending on your device.
                 </p>
                 <p className="mr-2 text-green-600 font-semibold">
-                    Smaller model has a size of about 40MB, where as for the larger model, it is about 80MB.
-                    <br />
+                    {/* Smaller model has a size of about 40MB, where as for the larger model, it is about 80MB.
+                    <br /> */}
                     Due to resource constraints, it may not work on Mobile phones.
                 </p>
                 <Separator/>
