@@ -5,6 +5,7 @@ import { Bolt, Download, UploadIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "./ui/button";
 import { removeBackground } from "@imgly/background-removal";
+import { ImgComparisonSlider } from '@img-comparison-slider/react';
 import { Slider } from "./ui/slider";
 import { Switch } from "./ui/switch";
 import { Progress } from "./ui/progress";
@@ -176,8 +177,8 @@ export default function BackgroundRemover(): JSX.Element {
             </div>
             {/* Preview */}
             {inputFile && outputFileURL && (
-                <div className="mx-auto border p-4 rounded-lg flex gap-4 ease-in-out my-2 transition-all flex-wrap justify-center">
-                  <div>
+                <div className="mx-auto border  p-4 rounded-lg flex gap-4 ease-in-out my-2 transition-all flex-wrap justify-center">
+                  {/* <div>
                   <img
                         src={URL.createObjectURL(inputFile)}
                         alt="Preview"
@@ -192,8 +193,21 @@ export default function BackgroundRemover(): JSX.Element {
                         className="rounded-lg max-h-60 shadow-sm border"
                     />
                     <h4 className="font-medium text-gray-400">After</h4>
-                    </div>
-      
+                    </div> */}
+                    <ImgComparisonSlider className="rounded-lg focus-visible:border-0">
+                        <img
+                        slot="first"
+                            src={URL.createObjectURL(inputFile)}
+                            alt="Before"
+                            className="max-h-96 shadow-sm  rounded-lg"
+                        />
+                        <img
+                        slot="second"
+                            src={outputFileURL}
+                            alt="After"
+                            className = "max-h-96  shadow-sm rounded-lg"
+                        /> 
+                    </ImgComparisonSlider>
                 </div>
             )}
             {/* Advanced Options */}
