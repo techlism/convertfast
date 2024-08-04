@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Bolt, Download, UploadIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -16,6 +16,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+
 
 type DownloadFileType = "image/png" | "image/webp";
 type ModelPrecision = "isnet" | "isnet_fp16" | "isnet_quint8";
@@ -42,7 +43,8 @@ export default function BackgroundRemover(): JSX.Element {
 
         if (imageDownloadType === "image/png") {
             return `bg_removed_${nameWithoutExtention}.png`;
-        } else return `bg_removed_${nameWithoutExtention}.webp`;
+        }
+        return `bg_removed_${nameWithoutExtention}.webp`;
     }
 
     async function removeBackgroundLocal(): Promise<void> {

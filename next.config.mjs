@@ -1,5 +1,27 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  images: {
+    remotePatterns : [
+      {
+        protocol: 'https',
+        hostname : 'github.com',
+        port : '',
+        pathname : '/.*'
+      },
+      {
+        protocol : 'https',
+        hostname : 'avatars.githubusercontent.com',
+        port : '',
+        pathname : '/.*'
+      },
+      {
+        protocol : 'https',
+        hostname : 'picsum.photos',
+        port : '',
+        pathname : '/.*'
+      }
+    ]
+  },
     async rewrites() {
         return [
           {
@@ -76,11 +98,7 @@ const nextConfig = {
           headers: [
             {
               key: 'Cross-Origin-Opener-Policy',
-              value: 'same-origin',
-            },
-            {
-              key: 'Cross-Origin-Embedder-Policy',
-              value: 'require-corp',
+              value: 'same-site',
             },
           ],
         },        

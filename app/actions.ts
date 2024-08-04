@@ -1,7 +1,7 @@
-import fs from 'fs/promises';
-import path from 'path';
+import fs from 'node:fs/promises';
+import path from 'node:path';
 import matter from 'gray-matter';
-import { Post, PostMetadata } from '../lib/types';
+import type { Post, PostMetadata } from '../lib/types';
 
 const postsDirectory = path.join(process.cwd(), 'posts');
 
@@ -18,7 +18,7 @@ export async function getPostSlugs(): Promise<string[] | Error> {
     }
 }
 
-async function getPostBySlug(slug: string): Promise<Post | Error> {
+export async function getPostBySlug(slug: string): Promise<Post | Error> {
     try {
         const realSlug = slug.replace(/\.md$/, '');
         console.log('realSlug:', realSlug); 
