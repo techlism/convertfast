@@ -9,7 +9,7 @@ import {
 } from "./ui/card";
 import Link from 'next/link';
 
-import { Post } from "../lib/types";
+import type { Post } from "../lib/types";
 
 interface BlogPageArticlePreviewProps {
     post: Post;

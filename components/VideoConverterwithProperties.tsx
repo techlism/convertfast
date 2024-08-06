@@ -151,7 +151,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
     event: React.ChangeEvent<HTMLInputElement>
   ) {
     const bitrate = event.target.value;
-    const isValidBitrate = !isNaN(Number(bitrate));
+    const isValidBitrate = !Number.isNaN(Number(bitrate));
     if (isValidBitrate) {
       setAudioBitrate(`-b:v ${bitrate}k`);
     }
@@ -166,7 +166,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
     ) => {
       const file = event.target.files?.[0] || null;
       // file?.name && console.log(file.name);
-      if (file && file.name.toLowerCase().endsWith(primaryFormat)){
+      if (file?.name.toLowerCase().endsWith(primaryFormat)){
         setInputFile(file);
         setErrorMsg("");
       }
@@ -197,6 +197,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
     if (ffmpegLoaded) setLoaded(true);
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (!loaded) load();
   }, [loaded, inputFile]);
@@ -206,17 +207,17 @@ export default function VideoProperties({format, primaryFormat}: {format: string
       if (message.includes("Duration:")) {
         const duration = message.split("Duration:")[1].split(",")[0].trim();
         const time = duration.split(":");
-        const hours = parseInt(time[0]);
-        const minutes = parseInt(time[1]);
-        const seconds = parseInt(time[2].split(".")[0]);
+        const hours = Number.parseInt(time[0]);
+        const minutes = Number.parseInt(time[1]);
+        const seconds = Number.parseInt(time[2].split(".")[0]);
         setTotalDuration(hours * 3600 + minutes * 60 + seconds);
       }
       if (message.includes("time=")) {
         const time = message.split("time=")[1].split(" ")[0].trim();
         const currentTime = time.split(":");
-        const hours = parseInt(currentTime[0]);
-        const minutes = parseInt(currentTime[1]);
-        const seconds = parseInt(currentTime[2].split(".")[0]);
+        const hours = Number.parseInt(currentTime[0]);
+        const minutes = Number.parseInt(currentTime[1]);
+        const seconds = Number.parseInt(currentTime[2].split(".")[0]);
         const currentDuration = hours * 3600 + minutes * 60 + seconds;
         if (totalDuration > 0) {
           const progress = (currentDuration / totalDuration) * 100;
@@ -265,7 +266,7 @@ export default function VideoProperties({format, primaryFormat}: {format: string
             <Button
               variant={"ghost"}
               onClick={resetUpload}
-              className={`text-xs opacity-30 justify-self-end ${converting == true ? "animate-pulse" : ""}`}
+              className={`text-xs opacity-30 justify-self-end ${converting === true ? "animate-pulse" : ""}`}
               disabled={converting}
             >
               Choose a different video
@@ -278,18 +279,20 @@ export default function VideoProperties({format, primaryFormat}: {format: string
           {errorMsg}
         </div>
       )}
-      <div className={`flex flex-col space-y-6 m-2 border p-5 rounded-lg `}>
-        <div className={`${converting == true ? "blur disabled" : ""}`}>
+      <div className={"flex flex-col space-y-6 m-2 border p-5 rounded-lg "}>
+        <div className={`${converting === true ? "blur disabled" : ""}`}>
           <h2 className="flex items-center text-xl font-semibold">
             <FilmIcon className="mr-2 text-gray-600" />
             Video
           </h2>
           <div className="mt-4 grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 xl:gap-14 lg:gap-12 md:gap-8 gap-6 items-center">
             <div className="flex flex-col">
-              <label onClick={(event)=>event.preventDefault()}className="font-medium flex align-middle p-3 items-center justify-between">
+                            <label onClick={(event)=>event.preventDefault()} onKeyDown={(event)=>event.preventDefault()} onKeyUp={(event)=>event.preventDefault()} className="font-medium flex align-middle p-3 items-center justify-between">
+
                 Resolution <InfoTooltip information="The resolution determines the amount of detail (pixels) and clarity of the video or image.Generally, higher the pixels higher the quality" />
               </label>
-              <Select onValueChange={(value : string | any) => setResolution(value)}>
+              {/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
+<Select onValueChange={(value : string | any) => setResolution(value)}>
                 <SelectTrigger id="resolution">
                   <SelectValue placeholder="Unchanged" />
                 </SelectTrigger>
@@ -329,11 +332,13 @@ export default function VideoProperties({format, primaryFormat}: {format: string
               </Select>
             </div>
             <div className="flex flex-col">
-              <label onClick={(event)=>event.preventDefault()}className="font-medium flex align-middle p-3 items-center justify-between">
+                            <label onClick={(event)=>event.preventDefault()} onKeyDown={(event)=>event.preventDefault()} onKeyUp={(event)=>event.preventDefault()} className="font-medium flex align-middle p-3 items-center justify-between">
+
                 Constant Quality (CRF)
                 <InfoTooltip information=" The CRF value sets the video quality. Lower values mean better quality but longer conversion times" />
               </label>
               <Select
+                // biome-ignore lint/suspicious/noExplicitAny: <explanation>
                 onValueChange={(value : string | any) => setConstantQuality(value)}
               >
                 <SelectTrigger id="crf">
@@ -356,10 +361,12 @@ export default function VideoProperties({format, primaryFormat}: {format: string
               </Select>
             </div>
             <div className="flex flex-col">
-              <label onClick={(event)=>event.preventDefault()}className="font-medium flex align-middle p-3 items-center justify-between">
+                            <label onClick={(event)=>event.preventDefault()} onKeyDown={(event)=>event.preventDefault()} onKeyUp={(event)=>event.preventDefault()} className="font-medium flex align-middle p-3 items-center justify-between">
+
                 Fit | Crop <InfoTooltip information="Sets the mode of sizing the video." />
               </label>
-              <Select onValueChange={(value : string | any) => setFit(value)}>
+              {/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
+<Select onValueChange={(value : string | any) => setFit(value)}>
                 <SelectTrigger id="fit">
                   <SelectValue placeholder="Unchanged" />
                 </SelectTrigger>
@@ -392,10 +399,12 @@ export default function VideoProperties({format, primaryFormat}: {format: string
               </Select>
             </div>
             <div className="flex flex-col">
-              <label onClick={(event)=>event.preventDefault()}className="font-medium flex align-middle p-3 items-center justify-between">
+                            <label onClick={(event)=>event.preventDefault()} onKeyDown={(event)=>event.preventDefault()} onKeyUp={(event)=>event.preventDefault()} className="font-medium flex align-middle p-3 items-center justify-between">
+
                 Aspect Ratio <InfoTooltip information="Aspect ratio refers to the proportional relationship between the width and height of a video or image. The choice of aspect ratio affects how content is displayed on various devices and screens." />
               </label>
-              <Select onValueChange={(value : string | any) => setAspectRatio(value)}>
+              {/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
+<Select onValueChange={(value : string | any) => setAspectRatio(value)}>
                 <SelectTrigger id="fit">
                   <SelectValue placeholder="Unchanged" />
                 </SelectTrigger>
@@ -425,10 +434,12 @@ export default function VideoProperties({format, primaryFormat}: {format: string
               </Select>
             </div>
             <div className="flex flex-col">
-              <label onClick={(event)=>event.preventDefault()}className="font-medium flex align-middle p-3 items-center justify-between">
+                            <label onClick={(event)=>event.preventDefault()} onKeyDown={(event)=>event.preventDefault()} onKeyUp={(event)=>event.preventDefault()} className="font-medium flex align-middle p-3 items-center justify-between">
+
                 FPS (Frame Rate) <InfoTooltip information="FPS-Frames Per Second. 60fps - Smooth, 30fps - Most Commonly used, 24 - For Cinema." />
               </label>
-              <Select onValueChange={(value : string | any) => setFrameRate(value)}>
+              {/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
+<Select onValueChange={(value : string | any) => setFrameRate(value)}>
                 <SelectTrigger id="fps">
                   <SelectValue placeholder="Unchanged" />
                 </SelectTrigger>
@@ -449,10 +460,12 @@ export default function VideoProperties({format, primaryFormat}: {format: string
               </Select>
             </div>
             <div className="flex flex-col">
-              <label onClick={(event)=>event.preventDefault()}className="font-medium flex align-middle p-3 items-center justify-between">
+                            <label onClick={(event)=>event.preventDefault()} onKeyDown={(event)=>event.preventDefault()} onKeyUp={(event)=>event.preventDefault()} className="font-medium flex align-middle p-3 items-center justify-between">
+
                 Preset <InfoTooltip information="The preset does not directly affect the visual quality in terms of resolution or color accuracy but impacts how the video data is compressed during encoding. Use when time is crucial." />
               </label>
-              <Select onValueChange={(value : string | any) => setPreset(value)}>
+              {/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
+<Select onValueChange={(value : string | any) => setPreset(value)}>
                 <SelectTrigger id="preset">
                   <SelectValue placeholder="Unchanged | Default (Medium)" />
                 </SelectTrigger>
@@ -479,17 +492,18 @@ export default function VideoProperties({format, primaryFormat}: {format: string
           </div>
         </div>
         <Separator />
-        <div className={`${converting == true ? "blur disabled" : ""}`}>
+        <div className={`${converting === true ? "blur disabled" : ""}`}>
           <h2 className="flex items-center text-xl font-semibold">
             <MusicIcon className="mr-2 text-gray-600" />
             Audio
           </h2>
           <div className="mt-4 grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 xl:gap-14 lg:gap-12 md:gap-8 gap-6 items-center">
             <div className="flex flex-col">
-              <label onClick={(event)=>event.preventDefault()} className="font-medium flex align-middle p-3 items-center justify-between">
+            <label onClick={(event)=>event.preventDefault()} onKeyDown={(event)=>event.preventDefault()} onKeyUp={(event)=>event.preventDefault()} className="font-medium flex align-middle p-3 items-center justify-between">
                 Audio Codec <InfoTooltip information="The audio codec is a type of program used to compress and decompress digital audio files. Common codecs include AAC for a balance of quality and compatibility." />
               </label>
-              <Select onValueChange={(value : string | any) => setAudioCodec(value)}>
+              {/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
+<Select onValueChange={(value : string | any) => setAudioCodec(value)}>
                 <SelectTrigger id="audio-codec">
                   <SelectValue placeholder="AAC" />
                 </SelectTrigger>
@@ -511,7 +525,8 @@ export default function VideoProperties({format, primaryFormat}: {format: string
               </Select>
             </div>
             <div className="flex flex-col">
-              <label onClick={(event)=>event.preventDefault()}className="font-medium flex align-middle p-3 items-center justify-between">
+                            <label onClick={(event)=>event.preventDefault()} onKeyDown={(event)=>event.preventDefault()} onKeyUp={(event)=>event.preventDefault()} className="font-medium flex align-middle p-3 items-center justify-between">
+
                 Audio Bitrate <InfoTooltip information="Bitrate refers to the amount of audio data transmitted per second, measured in kilobits per second (kbps). Higher bitrates generally result in better sound quality but larger file sizes. Typical values range from 128 kbps (good for podcasts) to 320 kbps (high quality for music)." />
               </label>
               <Input
@@ -523,10 +538,12 @@ export default function VideoProperties({format, primaryFormat}: {format: string
               />
             </div>
             <div className="flex flex-col">
-              <label onClick={(event)=>event.preventDefault()}className="font-medium flex align-middle p-3 items-center justify-between">
+                            <label onClick={(event)=>event.preventDefault()} onKeyDown={(event)=>event.preventDefault()} onKeyUp={(event)=>event.preventDefault()} className="font-medium flex align-middle p-3 items-center justify-between">
+
                 Channel <InfoTooltip information="Audio channels refer to the number of separate audio signals in a recording, affecting how sound is heard. 'Mono' has one channel and sounds the same from all speakers, while 'Stereo' uses two channels for left and right speakers, offering a sense of dimension and direction in the sound." />
               </label>
-              <Select onValueChange={(value : string | any) => setChannels(value)}>
+              {/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
+<Select onValueChange={(value : string | any) => setChannels(value)}>
                 <SelectTrigger id="channels">
                   <SelectValue placeholder="Unchanged" />
                 </SelectTrigger>
@@ -542,10 +559,12 @@ export default function VideoProperties({format, primaryFormat}: {format: string
               </Select>
             </div>
             <div className="flex flex-col">
-              <label onClick={(event)=>event.preventDefault()}className="font-medium flex align-middle p-3 items-center justify-between">
+                            <label onClick={(event)=>event.preventDefault()} onKeyDown={(event)=>event.preventDefault()} onKeyUp={(event)=>event.preventDefault()} className="font-medium flex align-middle p-3 items-center justify-between">
+
                 Volume <InfoTooltip information="Volume in refers to the loudness or intensity of the sound." />
               </label>
-              <Select onValueChange={(value : string | any) => setVolume(value)}>
+              {/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
+<Select onValueChange={(value : string | any) => setVolume(value)}>
                 <SelectTrigger id="volume">
                   <SelectValue placeholder="Unchanged" />
                 </SelectTrigger>
@@ -565,10 +584,12 @@ export default function VideoProperties({format, primaryFormat}: {format: string
               </Select>
             </div>
             <div className="flex flex-col">
-              <label onClick={(event)=>event.preventDefault()}className="font-medium flex align-middle p-3 items-center justify-between">
+                            <label onClick={(event)=>event.preventDefault()} onKeyDown={(event)=>event.preventDefault()} onKeyUp={(event)=>event.preventDefault()} className="font-medium flex align-middle p-3 items-center justify-between">
+
                 Sample Rate <InfoTooltip information="Sample rate, measured in Hertz (Hz), refers to the number of samples of audio carried per second. Higher sample rates can capture more detail but require more data. Common rates include 44.1 kHz (CD quality) and 48 kHz (professional audio and video standards)." />
               </label>
-              <Select onValueChange={(value : string | any) => setSampleRate(value)}>
+              {/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
+<Select onValueChange={(value : string | any) => setSampleRate(value)}>
                 <SelectTrigger id="sample-rate">
                   <SelectValue placeholder="Unchanged" />
                 </SelectTrigger>
@@ -593,11 +614,11 @@ export default function VideoProperties({format, primaryFormat}: {format: string
           <Button
             onClick={FFMPEGProcessor}
             disabled={
-              loaded == false || inputFile == null || converting == true
+              loaded === false || inputFile === null || converting === true
             }
             className="text-md"
           >
-            {converting == true ? "Converting..." : outputFileURL === "" ? "Convert" : "Re-Convert"}
+            {converting === true ? "Converting..." : outputFileURL === "" ? "Convert" : "Re-Convert"}
           </Button>
           {outputFileURL !== "" && (
             <a

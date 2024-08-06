@@ -52,7 +52,7 @@ export default function BackgroundRemover(): JSX.Element {
         setErrorMsg("");
         setOutputFileURL("");
         setProgress(0);
-        console.log(quality/100);
+        // console.log(quality/100);
         try {
             if (inputFile) {
                 const imageData = await new Response(inputFile).blob();

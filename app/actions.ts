@@ -3,7 +3,7 @@ import path from 'node:path';
 import matter from 'gray-matter';
 import type { Post, PostMetadata } from '../lib/types';
 
-const postsDirectory = path.join(process.cwd(), 'posts');
+const postsDirectory = path.join(process.cwd(), 'articles');
 
 function isValidSlug(slug: string): boolean {
     return /^[a-zA-Z0-9_-]+$/.test(slug);
@@ -21,7 +21,7 @@ export async function getPostSlugs(): Promise<string[] | Error> {
 export async function getPostBySlug(slug: string): Promise<Post | Error> {
     try {
         const realSlug = slug.replace(/\.md$/, '');
-        console.log('realSlug:', realSlug); 
+        // console.log('realSlug:', realSlug); 
         const fullPath = path.join(postsDirectory, `${realSlug}.md`);        
         const fileContents = await fs.readFile(fullPath, 'utf8');            
         const { data, content } = matter(fileContents);
@@ -41,7 +41,6 @@ export async function getPostBySlug(slug: string): Promise<Post | Error> {
             coverImage: data.coverImage
         };
     } catch (error) {
-        console.error(`Error processing post ${slug}:`, error);
         return error as Error;
     }
 }

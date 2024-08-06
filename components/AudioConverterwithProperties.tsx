@@ -82,7 +82,7 @@ export default function AudioConverterWithProperties({format, primaryFormat}: {f
         // setPercentProgress(100);
       }      
     } catch (error) {
-      console.log(error);      
+      // console.log(error);      
       setErrorMsg("An error occurred. Please try again.");
       setConverting(false);     
     }
@@ -122,7 +122,7 @@ export default function AudioConverterWithProperties({format, primaryFormat}: {f
     event: React.ChangeEvent<HTMLInputElement>
   ) {
     const bitrate = event.target.value;
-    const isValidBitrate = !isNaN(Number(bitrate));
+    const isValidBitrate = !Number.isNaN(Number(bitrate));
     if (isValidBitrate) {
       setAudioBitrate(`-b:v ${bitrate}k`);
     }
@@ -145,7 +145,7 @@ export default function AudioConverterWithProperties({format, primaryFormat}: {f
     ) => {
       const file = event.target.files?.[0] || null;
       // file?.name && console.log(file.name);
-      if (file && file.name.toLowerCase().endsWith(primaryFormat)){
+      if (file?.name.toLowerCase().endsWith(primaryFormat)){
         setInputFile(file);
         setErrorMsg("");
       }
@@ -176,6 +176,7 @@ export default function AudioConverterWithProperties({format, primaryFormat}: {f
     if (ffmpegLoaded) setLoaded(true);
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (!loaded) load();
   }, [loaded, inputFile]);
@@ -185,17 +186,17 @@ export default function AudioConverterWithProperties({format, primaryFormat}: {f
       if (message.includes("Duration:")) {
         const duration = message.split("Duration:")[1].split(",")[0].trim();
         const time = duration.split(":");
-        const hours = parseInt(time[0]);
-        const minutes = parseInt(time[1]);
-        const seconds = parseInt(time[2].split(".")[0]);
+        const hours = Number.parseInt(time[0]);
+        const minutes = Number.parseInt(time[1]);
+        const seconds = Number.parseInt(time[2].split(".")[0]);
         setTotalDuration(hours * 3600 + minutes * 60 + seconds);
       }
       if (message.includes("time=")) {
         const time = message.split("time=")[1].split(" ")[0].trim();
         const currentTime = time.split(":");
-        const hours = parseInt(currentTime[0]);
-        const minutes = parseInt(currentTime[1]);
-        const seconds = parseInt(currentTime[2].split(".")[0]);
+        const hours = Number.parseInt(currentTime[0]);
+        const minutes = Number.parseInt(currentTime[1]);
+        const seconds = Number.parseInt(currentTime[2].split(".")[0]);
         const currentDuration = hours * 3600 + minutes * 60 + seconds;
         if (totalDuration > 0) {
           const progress = (currentDuration / totalDuration) * 100;
@@ -257,18 +258,19 @@ export default function AudioConverterWithProperties({format, primaryFormat}: {f
           {errorMsg}
         </div>
       )}
-      <div className={`flex flex-col space-y-6 m-2 border p-5 rounded-lg `}>
-        <div className={`${converting == true ? "blur disabled" : ""}`}>
+      <div className={"flex flex-col space-y-6 m-2 border p-5 rounded-lg "}>
+        <div className={`${converting === true ? "blur disabled" : ""}`}>
           <h2 className="flex items-center text-xl font-semibold">
             <MusicIcon className="mr-2 text-gray-600" />
             Audio
           </h2>
           <div className="mt-4 grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 xl:gap-14 lg:gap-12 md:gap-8 gap-6 items-center">
             <div className="flex flex-col">
-              <label onClick={(event)=>event.preventDefault()} className="font-medium flex align-middle p-3 items-center justify-between">
+              <label onClick={(event)=>event.preventDefault()} onKeyDown={(event)=>event.preventDefault()} onKeyUp={(event)=>event.preventDefault()} className="font-medium flex align-middle p-3 items-center justify-between">
                 Audio Codec <InfoTooltip information="An Audio Codec is a software or hardware tool that converts (encodes or decodes) audio data from one format to another." />
               </label>
-              <Select onValueChange={(value : string | any) => handleAudioCodecChange(value)}>
+              {/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
+<Select onValueChange={(value : string | any) => handleAudioCodecChange(value)}>
                 <SelectTrigger id="audio-codec">
                   <SelectValue placeholder="Unchanged | Selected" />
                 </SelectTrigger>
@@ -290,8 +292,8 @@ export default function AudioConverterWithProperties({format, primaryFormat}: {f
               </Select>
             </div>
             <div className="flex flex-col">
-              <label onClick={(event)=>event.preventDefault()}className="font-medium flex align-middle p-3 items-center justify-between">
-                Audio Bitrate <InfoTooltip information="Bitrate refers to the amount of audio data transmitted per second, measured in kilobits per second (kbps). Higher bitrates generally result in better sound quality but larger file sizes. Typical values range from 128 kbps (good for podcasts) to 320 kbps (high quality for music)." />
+            <label onClick={(event)=>event.preventDefault()} onKeyDown={(event)=>event.preventDefault()} onKeyUp={(event)=>event.preventDefault()} className="font-medium flex align-middle p-3 items-center justify-between">
+              Audio Bitrate <InfoTooltip information="Bitrate refers to the amount of audio data transmitted per second, measured in kilobits per second (kbps). Higher bitrates generally result in better sound quality but larger file sizes. Typical values range from 128 kbps (good for podcasts) to 320 kbps (high quality for music)." />
               </label>
               <Input
                 placeholder="Enter bitrate (e.g. 128 kbps)"
@@ -302,10 +304,11 @@ export default function AudioConverterWithProperties({format, primaryFormat}: {f
               />
             </div>
             <div className="flex flex-col">
-              <label onClick={(event)=>event.preventDefault()}className="font-medium flex align-middle p-3 items-center justify-between">
-                Channel <InfoTooltip information="Audio channels refer to the number of separate audio signals in a recording, affecting how sound is heard. 'Mono' has one channel and sounds the same from all speakers, while 'Stereo' uses two channels for left and right speakers, offering a sense of dimension and direction in the sound." />
+            <label onClick={(event)=>event.preventDefault()} onKeyDown={(event)=>event.preventDefault()} onKeyUp={(event)=>event.preventDefault()} className="font-medium flex align-middle p-3 items-center justify-between">
+              Channel <InfoTooltip information="Audio channels refer to the number of separate audio signals in a recording, affecting how sound is heard. 'Mono' has one channel and sounds the same from all speakers, while 'Stereo' uses two channels for left and right speakers, offering a sense of dimension and direction in the sound." />
               </label>
-              <Select onValueChange={(value : string | any) => handleChannelsChange(value)}>
+              {/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
+<Select onValueChange={(value : string | any) => handleChannelsChange(value)}>
                 <SelectTrigger id="channels">
                   <SelectValue placeholder="Unchanged" />
                 </SelectTrigger>
@@ -321,10 +324,11 @@ export default function AudioConverterWithProperties({format, primaryFormat}: {f
               </Select>
             </div>
             <div className="flex flex-col">
-              <label onClick={(event)=>event.preventDefault()}className="font-medium flex align-middle p-3 items-center justify-between">
-                Volume <InfoTooltip information="Volume in refers to the loudness or intensity of the sound." />
+            <label onClick={(event)=>event.preventDefault()} onKeyDown={(event)=>event.preventDefault()} onKeyUp={(event)=>event.preventDefault()} className="font-medium flex align-middle p-3 items-center justify-between">
+            Volume <InfoTooltip information="Volume in refers to the loudness or intensity of the sound." />
               </label>
-              <Select onValueChange={(value : string | any) => handleVolumeChange(value)}>
+              {/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
+<Select onValueChange={(value : string | any) => handleVolumeChange(value)}>
                 <SelectTrigger id="volume">
                   <SelectValue placeholder="Unchanged" />
                 </SelectTrigger>
@@ -344,10 +348,11 @@ export default function AudioConverterWithProperties({format, primaryFormat}: {f
               </Select>
             </div>
             <div className="flex flex-col">
-              <label onClick={(event)=>event.preventDefault()}className="font-medium flex align-middle p-3 items-center justify-between">
-                Sample Rate <InfoTooltip information="Sample rate, measured in Hertz (Hz), refers to the number of samples of audio carried per second. Higher sample rates can capture more detail but require more data. Common rates include 44.1 kHz (CD quality) and 48 kHz (professional audio and video standards)." />
+            <label onClick={(event)=>event.preventDefault()} onKeyDown={(event)=>event.preventDefault()} onKeyUp={(event)=>event.preventDefault()} className="font-medium flex align-middle p-3 items-center justify-between">
+            Sample Rate <InfoTooltip information="Sample rate, measured in Hertz (Hz), refers to the number of samples of audio carried per second. Higher sample rates can capture more detail but require more data. Common rates include 44.1 kHz (CD quality) and 48 kHz (professional audio and video standards)." />
               </label>
-              <Select onValueChange={(value : string | any) => handleSampleRateChange(value)}>
+              {/* biome-ignore lint/suspicious/noExplicitAny: <explanation> */}
+<Select onValueChange={(value : string | any) => handleSampleRateChange(value)}>
                 <SelectTrigger id="sample-rate">
                   <SelectValue placeholder="Unchanged" />
                 </SelectTrigger>
@@ -372,11 +377,11 @@ export default function AudioConverterWithProperties({format, primaryFormat}: {f
           <Button
             onClick={FFMPEGProcessor}
             disabled={
-              loaded == false || inputFile == null || converting == true
+              loaded === false || inputFile === null || converting === true
             }
             className="text-md"
           >
-            {converting == true ? "Converting..." : "Convert"}
+            {converting === true ? "Converting..." : "Convert"}
           </Button>
           {outputFileURL !== "" && (
             <a

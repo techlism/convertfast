@@ -1,6 +1,7 @@
 'use client'
 import Link from 'next/link';
-import React, { use, useEffect, useState } from 'react';
+import type React from 'react';
+import { use, useEffect, useState } from 'react';
 import { Button } from './ui/button';
 import DarkModeSwitch from './DarkModeSwitch';
 import Image from 'next/image';
@@ -13,6 +14,7 @@ const Navbar: React.FC = () => {
     const toggleNavbar = () => {
         setIsOpen(!isOpen);
     };
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
         setIsOpen(false);
     }, [pathname]);
@@ -30,7 +32,7 @@ const Navbar: React.FC = () => {
                         <div className="hidden md:block">
                             <div className="ml-10 flex items-baseline space-x-4">
                                 {/* <Button  className="font-medium" variant={'link'}>Home</Button> */}
-                                <Link  className='font-medium hover:underline text-md' href={'/about'}>About</Link>
+                                <Link  className='font-medium hover:underline text-md' href={'/blog/about'}>About</Link>
                                 <Link  className='font-medium hover:underline text-md' href={'#'}>Features</Link> {/*This will be an accordion*/}
                                 <Link  className='font-medium hover:underline text-md' href={'/report'}>Report an issue</Link>
                             </div>
@@ -54,7 +56,7 @@ const Navbar: React.FC = () => {
             {isOpen && (
                 <div className="md:hidden transition-slow">
                     <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                        <Link href="/about" className="  px-3 py-2 rounded-lg text-sm font-medium block hover:underline">About</Link>
+                        <Link href="/blog/about" className="  px-3 py-2 rounded-lg text-sm font-medium block hover:underline">About</Link>
                         <Link href="#" className="  px-3 py-2 rounded-lg text-sm font-medium block hover:underline">Features</Link>
                         <Link href="/report" className="  px-3 py-2 rounded-lg text-sm font-medium block">Report an issue</Link>
                     </div>
