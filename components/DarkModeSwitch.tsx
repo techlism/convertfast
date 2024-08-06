@@ -33,6 +33,9 @@ const DarkModeSwitch = () =>{
             :
             <Sun size={20} />
           }
+          <span className="sr-only">
+            {theme==='dark' ? 'Light' : 'Dark'}
+          </span>
         </Button>
         </TooltipTrigger>
         <TooltipContent>
