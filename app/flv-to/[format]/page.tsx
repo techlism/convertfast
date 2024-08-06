@@ -69,7 +69,7 @@ export default function Page({ params }: { params: { format: string } }){
 
 
     return (
-        <main className="flex justify-center align-middle items-center min-h-screen max-w-[90%] mx-auto">
+        <main className="flex justify-center align-middle items-center min-h-screen max-w-[90%] mx-auto my-10">
         <NOSSRWrapper>
             <div>
                 <ConverterInfoSection format={format} primaryFormat={primaryFormat}/>            

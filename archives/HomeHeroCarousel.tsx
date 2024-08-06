@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 
 
 const conversionImages = ["/video-conversion-formats.svg", "/image-conversion-formats.svg"];
-
+// Not in use anymore
 export default function HomeHeroCarousel() {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
 

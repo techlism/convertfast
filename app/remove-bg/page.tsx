@@ -1,6 +1,6 @@
 import BackgroundRemover from "@/components/BackgroundRemover";
 import BackgroundRemoverHeroSection from "@/components/BackgroundRemoverHeroSection";
-import { Metadata } from "next/types";
+import type { Metadata } from "next/types";
 export const metadata : Metadata = {
     title: "Remove Background from Images Locally",   
     description: "Remove background from images and photos quickly and easily without uploading them to any server.",
@@ -12,7 +12,7 @@ export const metadata : Metadata = {
 }
 export default function Home() {
     return (
-        <main className="flex justify-center align-middle items-center min-h-screen max-w-[90%] mx-auto">
+        <main className="flex justify-center align-middle items-center min-h-screen max-w-[90%] mx-auto my-10">
                 <div>
                     <BackgroundRemoverHeroSection/>
                     <BackgroundRemover/>
