@@ -36,7 +36,7 @@ export default function Features() {
         <motion.div
           key={`${// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
             index}feature`}
-          className="border p-4 rounded-lg flex space-x-4 mt-5"
+          className="border p-4 rounded-lg flex space-x-4 mt-5 bg-card"
           whileHover={{ scale: 1.02 }}
           transition={{ type: 'spring', stiffness: 200 }}
         >

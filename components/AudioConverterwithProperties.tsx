@@ -20,6 +20,8 @@ import InfoTooltip from "./InfoTooltip";
 import { MusicIcon } from "lucide-react";
 import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
+import { Switch } from "./ui/switch";
+import { ChangeFileAlertDialog } from "./ChangeFileAlert";
 
 
 export default function AudioConverterWithProperties({format, primaryFormat}: {format: string, primaryFormat: string}) {
@@ -38,7 +40,7 @@ export default function AudioConverterWithProperties({format, primaryFormat}: {f
   const [percentProgress, setPercentProgress] = useState(0);
   const [converting, setConverting] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-  
+  const [useMultithreading,setUseMultithreading] = useState(false);
   // The function that processes the audio file
   const FFMPEGProcessor = async () => {
     if(!loaded) load();
@@ -65,6 +67,7 @@ export default function AudioConverterWithProperties({format, primaryFormat}: {f
         await ffmpeg
           .writeFile(`input.${primaryFormat}`, await fetchFile(inputFile))
           .then(() => setConverting(true));
+        
         await ffmpeg
           .exec(["-i", `input.${primaryFormat}`, ...appliedAttributes, `output.${format}`]);
   
@@ -107,6 +110,7 @@ export default function AudioConverterWithProperties({format, primaryFormat}: {f
     setSampleRate("original");
     setPercentProgress(0);
     setTotalDuration(-10);    
+    setConverting(false);
   };
 
   const preventDefaults = (e: React.DragEvent<HTMLDivElement>) => {
@@ -154,32 +158,58 @@ export default function AudioConverterWithProperties({format, primaryFormat}: {f
   	  }
     };
 
-  const load = async () => {
-    const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm";
-    const ffmpeg = ffmpegRef.current;
-    ffmpeg.on("log", ({ message }) => {		
-      setMessage(message);
-	//   console.log(message);
-    });
-    const ffmpegLoaded = await ffmpeg.load({
-      coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript"),
-      wasmURL: await toBlobURL(
-        `${baseURL}/ffmpeg-core.wasm`,
-        "application/wasm"
-      ),
-      // SharedBufferArray is not supported in the browser (so not possible to use multithreading right now)
-      // workerURL: await toBlobURL(
-      //   `${baseURL}/ffmpeg-core.worker.js`,
-      //   "text/javascript"
-      // ),
-    });
-    if (ffmpegLoaded) setLoaded(true);
-  };
+    const load = async () => {
+			if (useMultithreading) {
+				// let's test the multithreading -- working
+				const baseURL = "https://unpkg.com/@ffmpeg/core-mt@0.12.6/dist/esm";
+				const ffmpeg = ffmpegRef.current;
+				ffmpeg.on("log", ({ message }) => {
+					setMessage(message);
+					console.log(message);
+				});
+				const ffmpegLoaded = await ffmpeg.load({
+					coreURL: await toBlobURL(
+						`${baseURL}/ffmpeg-core.js`,
+						"text/javascript",
+					),
+					wasmURL: await toBlobURL(
+						`${baseURL}/ffmpeg-core.wasm`,
+						"application/wasm",
+					),
+					// SharedBufferArray is not supported in the browser (so not possible to use multithreading right now)
+					// on 6th August 2024 - Enabling this (let's see if it works)
+					workerURL: await toBlobURL(
+						`${baseURL}/ffmpeg-core.worker.js`,
+						"text/javascript",
+					),
+				});
+				if (ffmpegLoaded) setLoaded(true);
+			} else {
+				// let's test the multithreading
+				const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm";
+				const ffmpeg = ffmpegRef.current;
+				ffmpeg.on("log", ({ message }) => {
+					setMessage(message);
+					console.log(message);
+				});
+				const ffmpegLoaded = await ffmpeg.load({
+					coreURL: await toBlobURL(
+						`${baseURL}/ffmpeg-core.js`,
+						"text/javascript",
+					),
+					wasmURL: await toBlobURL(
+						`${baseURL}/ffmpeg-core.wasm`,
+						"application/wasm",
+					),
+				});
+				if (ffmpegLoaded) setLoaded(true);
+			}
+		};
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (!loaded) load();
-  }, [loaded, inputFile]);
+  }, [loaded, inputFile, useMultithreading]);
 
   useEffect(() => {
     function parseProgessAndDuration(message: string) {
@@ -210,7 +240,7 @@ export default function AudioConverterWithProperties({format, primaryFormat}: {f
   }, [message, totalDuration]);
   
   return (
-    <div className="flex align-middle justify-center flex-col rounded-lg shadow-md border p-2">
+    <div className="flex align-middle justify-center flex-col rounded-lg shadow-md border p-2 mt-2">
       <div className="m-2">
         {inputFile === null ? (
           <Label
@@ -242,24 +272,26 @@ export default function AudioConverterWithProperties({format, primaryFormat}: {f
             <p className=" text-lg font-semibold text-gray-500 dark:text-gray-400  text-center">
               {inputFile?.name.length <= 23 ? inputFile?.name : `${inputFile?.name.substring(0, 15)}....${inputFile?.name.substring(inputFile?.name.length - 5)}`}
             </p>
-            <Button
+            {converting === false ? <Button
               variant={"ghost"}
-              onClick={() => setInputFile(null)}
-              className="text-xs opacity-30 justify-self-end"
+              onClick={resetUpload}
+              className="opacity-50"
               disabled={converting}
             >
               Choose a different audio
-            </Button>
+            </Button> : 
+              <ChangeFileAlertDialog resetUpload={resetUpload} fileType="audio" />
+            }
           </div>
         )}
       </div>
-      {errorMsg && (
+      {errorMsg && !converting && outputFileURL === '' && (
         <div className="border p-4 rounded-lg bg-red-100 dark:bg-red-200 text-red-500 dark:text-red-500 m-2 font-medium transition-transform ease-in-out">
           {errorMsg}
         </div>
       )}
       <div className={"flex flex-col space-y-6 m-2 border p-5 rounded-lg "}>
-        <div className={`${converting === true ? "blur disabled" : ""}`}>
+        <div className={`${converting && inputFile ? "blur disabled" : ""}`}>
           <h2 className="flex items-center text-xl font-semibold">
             <MusicIcon className="mr-2 text-gray-600" />
             Audio
@@ -373,6 +405,11 @@ export default function AudioConverterWithProperties({format, primaryFormat}: {f
       </div>
       <div className="p-5 grid grid-cols-1 items-center gap-5 border m-2 rounded-lg">
         <Progress value={percentProgress} className="text-grey-500" />
+        <div className="flex items-center space-x-2">
+            <Switch id="use-multithreading" checked={useMultithreading} onCheckedChange={()=>setUseMultithreading((prev)=>!prev)}/>
+            <Label htmlFor="use-multithreading">Use Multithreading</Label>
+            <InfoTooltip information="Multithreading, in general will take less time but will consume high amount of RAM and compute." />
+          </div>        
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-3 xl:grid-cols-3 items-center">
           <Button
             onClick={FFMPEGProcessor}
@@ -381,7 +418,7 @@ export default function AudioConverterWithProperties({format, primaryFormat}: {f
             }
             className="text-md"
           >
-            {converting === true ? "Converting..." : "Convert"}
+            {converting === true ? "Converting..." : outputFileURL === '' ? 'Convert' : 'Re-Convert'}
           </Button>
           {outputFileURL !== "" && (
             <a
