@@ -81,7 +81,7 @@ export default function VideoProperties ({
       const seconds = Number.parseInt(time[2].split('.')[0])
       const totalDurationInSeconds = hours * 3600 + minutes * 60 + seconds
       setTotalDuration(totalDurationInSeconds)
-      console.log('Total duration set:', totalDurationInSeconds)
+      // console.log('Total duration set:', totalDurationInSeconds)
     }
 
     if (message.includes('time=')) {
@@ -95,7 +95,7 @@ export default function VideoProperties ({
       setTotalDuration(prevTotalDuration => {
         if (prevTotalDuration > 0) {
           const progress = (currentDuration / prevTotalDuration) * 100
-          console.log('Progress:', progress)
+          // console.log('Progress:', progress)
           setPercentProgress(progress)
         }
         return prevTotalDuration
