@@ -42,8 +42,8 @@ export default function ConversionSelector() {
             <h2 className="text-3xl font-bold mb-3">Try it now</h2>
             <div className="border p-4 rounded-lg flex flex-col items-center align-middle justify-center">
                 <div className="mb-5 p-4 grid grid-cols-1 items-center gap-4 border rounded-lg">
-                    <h3 className="font-medium text-lg">Just select the required combination</h3>
-					<div className="grid grid-cols-1 lg:grid-cols-2 md:grid-cols-2 xl:grid-cols-2 gap-3">
+                    <h3 className="font-medium text-lg text-center">Just select the required combination</h3>
+					<div className="grid grid-cols-1 lg:grid-cols-2 md:grid-cols-2 xl:grid-cols-2 gap-3 items-center">
 						<Select onValueChange={handleFromFormat}>
 							<SelectTrigger className="w-[220px]">
 								<SelectValue placeholder="From"/>
