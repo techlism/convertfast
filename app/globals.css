@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -24,9 +23,12 @@
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
     --ring: 240 5.9% 10%;
-    --radius: 0.5rem;
-    --bgColor1:#f7f7fffb;   
-    --bgColor2:#ffffff;     
+    --radius: 0.75rem;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
   }
 
   .dark {
@@ -49,11 +51,16 @@
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
-
-    --bgColor1:#0c002e57;
-    --bgColor2:#040002f1;    
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
   }
 }
+
+
+
 
 @layer base {
   * {
@@ -63,7 +70,7 @@
     @apply bg-background text-foreground;
   }
   .blur {
-    transition: filter 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+    transition: filter 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
     filter: blur(5px);
 
   }
