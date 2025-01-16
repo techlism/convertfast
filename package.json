@@ -39,7 +39,7 @@
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.363.0",
     "marked": "^13.0.3",
-    "next": "14.1.4",
+    "next": "^14.2.23",
     "next-themes": "^0.3.0",
     "react": "^18",
     "react-dom": "^18",
