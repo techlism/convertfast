@@ -1,10 +1,7 @@
 "use client";
-import HomeHeroCarousel from "./HomeHeroCarousel";
 
-import { FileCheck2, Shield, WifiOff, MegaphoneOff } from "lucide-react";
 import ConversionSelector from "./ConversionSelectorHomePage";
 import LandingPageAnimation from "./LandingPageAnimation";
-import { motion } from "framer-motion";
 import Features from "./WhyConvertfast";
 
 export default function HomePageHeroSection() {
@@ -23,7 +20,6 @@ export default function HomePageHeroSection() {
 			<div>
 				<ConversionSelector />
 			</div>
-			{/* /--------------/ */}
 			<div>
 				<Features />
 			</div>
