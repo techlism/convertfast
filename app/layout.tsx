@@ -4,8 +4,9 @@ import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "@/components/theme-provider";
 import Footer from "@/components/Footer";
 import type { Viewport } from "next";
-import { Analytics } from "@vercel/analytics/react";
+// import { Analytics } from "@vercel/analytics/react";
 import { GeistSans } from "geist/font/sans";
+
 export const metadata: Metadata = {
     title: "Convertfast",
     description:
@@ -62,14 +63,14 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
             <body className={`${GeistSans.className}`}>
                 <ThemeProvider attribute="class" enableSystem>
                     <Navbar />
                     {children}
                     <Footer />
                 </ThemeProvider>
-                <Analytics />
+                {/* <Analytics /> */}
             </body>
         </html>
     );
