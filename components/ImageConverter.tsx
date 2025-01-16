@@ -9,7 +9,7 @@ import {
   initializeImageMagick,
   ImageMagick,
   Magick,
-  MagickFormat,
+  type MagickFormat,
   Quantum,
 } from "@imagemagick/magick-wasm";
 // import Link from "next/link";
@@ -28,7 +28,7 @@ export default function ImageConverter({format, primaryFormat}: {format: string;
     if(extension && name){
       return `${name}.${format}`;
     }
-    else return `converted.${format}`
+    return `converted.${format}`
   }
 
   async function loadWASM() {
@@ -49,7 +49,7 @@ export default function ImageConverter({format, primaryFormat}: {format: string;
         if (inputFile && buffer) {      
           await initializeImageMagick(buffer);
           const imageBuffer = await inputFile?.arrayBuffer();
-          const imageData = new Uint8Array(imageBuffer!);
+          const imageData = new Uint8Array(imageBuffer);
           ImageMagick.read(imageData, (image) => {
             image.format = format.toUpperCase() as MagickFormat;
             // image.format = MagickFormat.Jpeg;
@@ -88,13 +88,13 @@ export default function ImageConverter({format, primaryFormat}: {format: string;
     const file = event.target.files?.[0] || null;
     // file?.name && console.log(file.name);
     if(primaryFormat === 'jpeg' || primaryFormat === 'jpg'){
-      if((file && file.name.toLowerCase().endsWith('jpeg')) || (file && file.name.toLowerCase().endsWith('jpg'))){
+      if((file?.name.toLowerCase().endsWith('jpeg')) || (file?.name.toLowerCase().endsWith('jpg'))){
         setInputFile(file);
         setErrorMsg("");
         return;
       }
     }
-    if (file && file.name.toLowerCase().endsWith(primaryFormat)) {
+    if (file?.name.toLowerCase().endsWith(primaryFormat)) {
       setInputFile(file);
       setErrorMsg("");
       return;
@@ -118,7 +118,7 @@ export default function ImageConverter({format, primaryFormat}: {format: string;
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       const file = e.dataTransfer.files?.[0] || null;
       // file?.name && console.log(file.name);
-      if (file && file.name.toLowerCase().endsWith(primaryFormat)) {
+      if (file?.name.toLowerCase().endsWith(primaryFormat)) {
         setInputFile(file);
         setErrorMsg("");
       }
@@ -145,7 +145,7 @@ export default function ImageConverter({format, primaryFormat}: {format: string;
             className="justify-self-center cursor-pointer"
           >
             <div
-              className={`flex flex-col items-center justify-center p-10 border-2 border-dashed rounded-lg`}
+              className={"flex flex-col items-center justify-center p-10 border-2 border-dashed rounded-lg"}
               onDragOver={preventDefaults}
               onDragEnter={preventDefaults}
               onDragLeave={preventDefaults}
@@ -198,7 +198,8 @@ export default function ImageConverter({format, primaryFormat}: {format: string;
               href={outputFileURL}
               download={getDownloadFileName(inputFile.name)}
               target="_blank"
-              className="bg-teal-600 dark:bg-teal-500 text-gray-100 hover:opacity-90 text-md font-medium flex justify-center items-center align-middle pt-2 pb-2 rounded-md"
+              className="bg-teal-600 dark:bg-teal-500 text-gray-100 hover:opacity-90 text-md font-medium flex justify-center items-center align-middle pt-2 pb-2 rounded-md" 
+              rel="noreferrer"
             >
               Download <Download size={15} className="ml-2"/>
             </a>
