@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Copyright, FileLock2, ChevronRightIcon } from "lucide-react";
 import { conversions } from "@/lib/conversion-formats";
+import { Separator } from "./ui/separator";
 export default function Footer() {
 return (
     <footer className="border-t max-w-screen mx-auto" id="footer">
@@ -33,8 +34,9 @@ return (
                 </div>
                 
             </div>            
-        </div>        
-        <div className="flex text-center text-gray-300 text-base font-semibold items-center justify-center mt-4 mb-1 opacity-80"> <Copyright size={16}/><span>{new Date().getFullYear()} Convertfast</span></div>
+        </div> 
+        <Separator/>
+        <div className="flex text-center text-gray-200 text-base font-medium items-center justify-center my-4 opacity-80"> <Copyright size={16}/><span>{new Date().getFullYear()} Convertfast</span></div>
     </footer>
 );
 }

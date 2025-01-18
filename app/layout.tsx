@@ -6,12 +6,14 @@ import Footer from "@/components/Footer";
 import type { Viewport } from "next";
 // import { Analytics } from "@vercel/analytics/react";
 import { GeistSans } from "geist/font/sans";
-import { PostHogProvider } from "../components/providers/posthog-provider";
+import { PostHogProvider } from "@/components/providers/posthog-provider";
+
+
 
 export const metadata: Metadata = {
-    title: "Convertfast",
+    title: "Convertfast: Fast, Secure and Browser-based File Converter",
     description:
-        "Convertfast is a free online tool to convert and compress media files. No files are sent to any server - all conversions and compressions happen right on your machine.",
+        "Convertfast: Free, secure media file converter & compressor — fast, browser-based, and private.",
     keywords: [
         "file converter",
         "file compressor",
@@ -63,6 +65,22 @@ export const viewport: Viewport = {
     ],
 };
 
+const jsonLd = {
+    '@context' : 'https://schema.org',
+    '@type' : 'WebSite',
+    name : 'Convertfast',
+    url : 'https://convertfast.media',
+    description : metadata.description,
+    potentialAction : {
+        '@type' : 'Convert',
+        target : {
+            '@type' : 'EntryPoint',
+            urlTemplate : 'https://convertfast.media/convert/{A-to-B}'
+        },
+        "query-input" : "required name=A-to-B"
+    }    
+}
+
 export default function RootLayout({
     children,
 }: Readonly<{
@@ -70,6 +88,13 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" suppressHydrationWarning>
+            <script
+                type="application/lg+json"
+                // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
+                dangerouslySetInnerHTML={{
+                    __html : JSON.stringify(jsonLd)
+                }}
+            />
             <body className={`${GeistSans.className}`}>
                 <PostHogProvider>
                     <ThemeProvider attribute="class" enableSystem>

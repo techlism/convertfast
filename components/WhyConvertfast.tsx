@@ -11,7 +11,7 @@ const features = [
       icon: Shield,
       color: '#3B82F6', // blue-500
       title: 'Complete Privacy',
-      description: 'Your files never leave your machine.',
+      description: 'Your files never leave your machine. As the entire conversion is browser-based.',
     },
     {
       icon: WifiOff,
@@ -30,7 +30,7 @@ const features = [
 export default function Features() {
   return (
     <div>
-      <h1 className="text-4xl font-bold my-5">Why Convertfast?</h1>
+      <h2 className="text-4xl font-bold my-5">Why Convertfast?</h2>
 
         {features.map((feature, index) => (
         <motion.div

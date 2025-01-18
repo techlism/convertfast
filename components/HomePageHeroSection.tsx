@@ -13,8 +13,7 @@ export default function HomePageHeroSection() {
 					Convert, Compress and Chill.
 				</h1>
 				<p className="text-md lg:text-xl md:text-lg xl:text-xl text-pretty font-medium text-center">
-					No files are sent to any server - all the conversions and compressions
-					happen right on your machine.
+					We do not store or share your data—everything, including conversions and compressions, happens locally on your device.
 				</p>
 			</div>
 			<div>
