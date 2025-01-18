@@ -7,7 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://convertfast.media'
   
   // Static routes
-  const staticRoutes = [
+  const staticRoutes : MetadataRoute.Sitemap = [
     {
       url: baseUrl,
       lastModified: new Date(),
@@ -23,6 +23,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       priority: 0.8,
     },
+    {
+        url : `${baseUrl}/compress-images`,
+        lastModified : new Date(),
+        priority : 0.8
+    },
+    {
+        url : `${baseUrl}/remove-bg`,
+        lastModified : new Date(),
+        priority : 0.8
+    }
   ]
 
   // Generate routes for app/[format]
@@ -39,5 +49,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.9,
   }))
 
-  return [...staticRoutes, ...legacyFormatRoutes, ...newFormatRoutes]
+  return Array.from(new Set([...staticRoutes, ...legacyFormatRoutes, ...newFormatRoutes]));
 }

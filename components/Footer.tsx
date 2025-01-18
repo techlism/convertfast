@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Copyright, FileLock2 } from "lucide-react";
+import { Copyright, FileLock2, ChevronRightIcon } from "lucide-react";
 import { conversions } from "@/lib/conversion-formats";
 export default function Footer() {
 return (
@@ -19,7 +19,8 @@ return (
                 </div>
                 <div className="grid gap-3 text-xs md:text-sm lg:text-sm xl:text-sm 2xl:text-sm grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-6 md:grid-cols-4">
                     {conversions.map((conversion, index) => (
-                        <div className="flex items-center space-x-2 align-middle" key={index}>
+                        // biome-ignore lint/suspicious/noArrayIndexKey: It would work just fine
+                        <div className="flex items-center space-x-2 align-middle" key={`conversion_formats_footer_${index}`}>
                             <ChevronRightIcon className="h-4 w-4 text-gray-500" />
                             <Link
                                 className="font-medium hover:underline underline-offset-4 text-xs md:text-sm lg:text-sm xl:text-sm 2xl:text-sm" 
@@ -33,27 +34,10 @@ return (
                 
             </div>            
         </div>        
-        <div className="flex text-center text-gray-500 text-sm font-semibold items-center justify-center mt-4 mb-1 opacity-40"> <Copyright size={16}/><span>2024 Convertfast</span></div>
+        <div className="flex text-center text-gray-300 text-base font-semibold items-center justify-center mt-4 mb-1 opacity-80"> <Copyright size={16}/><span>{new Date().getFullYear()} Convertfast</span></div>
     </footer>
 );
 }
 
-function ChevronRightIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="m9 18 6-6-6-6" />
-    </svg>
-  );
-}
+
 
