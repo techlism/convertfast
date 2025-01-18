@@ -38,16 +38,21 @@ export const metadata: Metadata = {
         "convertfast media",
     ],
     openGraph: {
-        images: "https://r2.my-links.live/convertfast-og.png",
+        images: "https://convertfast.media/opengraph.png",
+        siteName : "Convertfast"
     },
     twitter: {
-        images: "https://r2.my-links.live/convertfast-og.png",
+        images: "https://convertfast.media/opengraph.png",
         site: "@convertfast",
     },
     manifest: "/manifest.json",
     alternates: {
         canonical: "https://convertfast.media",
     },
+    robots : {
+        index : true,
+        follow : true
+    }
 };
 
 export const viewport: Viewport = {
