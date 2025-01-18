@@ -1,6 +1,8 @@
 import { redirect, notFound } from "next/navigation";
 import { conversions } from "@/lib/conversion-formats";
 
+export const dynamic = 'force-static';  // Add this to force static generation
+
 export async function generateStaticParams() {
 	return conversions.map((conversion) => ({
 		format: `${conversion.from.toLowerCase()}-to-${conversion.to.toLowerCase()}`,

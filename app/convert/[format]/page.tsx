@@ -8,6 +8,8 @@ import ImageConverter from "@/components/ImageConverter";
 import type { Conversion } from "@/lib/conversion-formats";
 import NOSSRWrapper from "@/components/NOSSRWrapper";
 
+export const dynamic = 'force-static';  // Add this to force static generation
+
 // Generate static paths for all valid conversions
 export async function generateStaticParams() {
 	return conversions.map((conversion) => ({
