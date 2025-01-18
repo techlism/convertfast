@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 import Footer from "@/components/Footer";
 import type { Viewport } from "next";
 // import { Analytics } from "@vercel/analytics/react";
 import { GeistSans } from "geist/font/sans";
+import { PostHogProvider } from "../components/providers/posthog-provider";
 
 export const metadata: Metadata = {
     title: "Convertfast",
@@ -70,11 +71,13 @@ export default function RootLayout({
     return (
         <html lang="en" suppressHydrationWarning>
             <body className={`${GeistSans.className}`}>
-                <ThemeProvider attribute="class" enableSystem>
-                    <Navbar />
-                    {children}
-                    <Footer />
-                </ThemeProvider>
+                <PostHogProvider>
+                    <ThemeProvider attribute="class" enableSystem>
+                        <Navbar />
+                        {children}
+                        <Footer />
+                    </ThemeProvider>
+                </PostHogProvider>
                 {/* <Analytics /> */}
             </body>
         </html>
