@@ -26,8 +26,8 @@ export default function DocumentConverterInfoSection({
 					may vary depending on your device.
 					<br />
 					Containerized file formats like Microsoft Word (.docx) and PowerPoint
-					(.pptx) won't work properly if they contain embedded content like images, as WASM
-					doesn't currently support full file input/output operations.{" "}
+					(.pptx) won&apos;t work properly if they contain embedded content like images, as WASM
+					doesn&apos;t currently support full file input/output operations.{" "}
 				</p>
 				<Separator />
 				<Link
