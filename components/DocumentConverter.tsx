@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useCallback, useRef, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -13,8 +13,6 @@ import {
 } from "@/components/ui/select";
 import {
 	Loader2,
-	Upload,
-	FileText,
 	Copy,
 	Download,
 	UploadIcon,
@@ -27,7 +25,6 @@ import {
 	ConsoleStdout,
 	PreopenDirectory,
 } from "@bjorn3/browser_wasi_shim";
-
 import { inputFormats, outputFormats } from "@/lib/document-formats";
 import { Label } from "./ui/label";
 
@@ -84,6 +81,19 @@ const PandocConverter: React.FC<PandocConverterProps> = ({
 			setTargetFormat(defaultTargetFormat);
 		}
 	}, [defaultSourceFormat, defaultTargetFormat]);
+
+    const getAcceptedFileTypes = useCallback(() => {
+        if (sourceFormat) {
+            const format = inputFormats[sourceFormat];
+            return format.ext ? `${format.ext}` : undefined;
+        }
+        
+        // If no source format is selected, return all possible input formats
+        return Object.values(inputFormats)
+            .map(format => format.ext ? `${format.ext}` : null)
+            .filter(Boolean)
+            .join(',');
+    }, [sourceFormat]);
 
 	const initializePandoc = useCallback(async () => {
 		try {
@@ -335,16 +345,16 @@ const PandocConverter: React.FC<PandocConverterProps> = ({
 								onClick={() => fileInputRef.current?.click()}
 								disabled={isLoading}
 							>
-								<span className="font-semibold">Click to Select</span> or Drag
-								and Drop
+								Click to Select or Drag and Drop
 							</Button>
 						</div>
 						{/* This is just a ref and should not be modified */}
 						<input
-							type="file"
+							type="file" 
 							ref={fileInputRef}
 							className="hidden"
 							onChange={handleFileSelect}
+                            accept={getAcceptedFileTypes()}
 						/>
 					</Label>
 				) : (

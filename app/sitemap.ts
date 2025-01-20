@@ -32,6 +32,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
         url : `${baseUrl}/remove-bg`,
         lastModified : new Date(),
         priority : 0.8
+    },
+    {
+      url : `${baseUrl}/convert/document`,
+      lastModified : new Date(),
+      priority : 0.8
     }
   ]
 
@@ -39,7 +44,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const legacyFormatRoutes = conversions.map((conversion) => ({
     url: `${baseUrl}/${conversion.from.toLowerCase()}-to-${conversion.to.toLowerCase()}`,
     lastModified: new Date(),
-    priority: 0.9,
+    priority: 0.7,
   }))
 
   // Generate routes for app/convert/[format]

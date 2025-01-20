@@ -7,6 +7,8 @@ import UnsupportedFormat from "@/components/UnsuportedFormat";
 import ImageConverter from "@/components/ImageConverter";
 import type { Conversion } from "@/lib/conversion-formats";
 import NOSSRWrapper from "@/components/NOSSRWrapper";
+import DocumentConverterInfoSection from "@/components/DocumentConverterInfoSection";
+import PandocConverter from "@/components/DocumentConverter";
 
 export const dynamic = 'force-static';  // Add this to force static generation
 
@@ -60,9 +62,8 @@ function RenderConverter({
 		case "document":
 			return (
 				<div>
-					<p className="text-center text-2xl font-semibold text-gray-800">
-						Work in progress...
-					</p>
+					<DocumentConverterInfoSection defaultSourceFormat={from} defaultTargetFormat={to}/>
+					<PandocConverter defaultSourceFormat={from} defaultTargetFormat={to} />
 				</div>
 			);
 		default:
