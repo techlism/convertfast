@@ -7,7 +7,7 @@ export default function DocumentConverterInfoSection({
 	defaultTargetFormat,
 }: { defaultSourceFormat?: string; defaultTargetFormat?: string }) {
 	return (
-		<div className="grid grid-cols-1 items-center align-middle gap-2 max-w-7xl">
+		<div className="grid grid-cols-1 items-center align-middle gap-2 mb-2 max-w-7xl ">
 			{defaultSourceFormat && defaultTargetFormat ? (
 				<h1 className="text-5xl font-bold text-center">
 					Convert your {defaultSourceFormat.toUpperCase()} files to{" "}
@@ -26,8 +26,8 @@ export default function DocumentConverterInfoSection({
 					may vary depending on your device.
 					<br />
 					Containerized file formats like Microsoft Word (.docx) and PowerPoint
-					(.pptx) won&apos;t work properly if they contain embedded content like images, as WASM
-					doesn&apos;t currently support full file input/output operations.{" "}
+					(.pptx) won&apos;t work properly if they contain embedded content like images, as WASM currently
+					doesn&apos;t support full file input/output operations.{" "}
 				</p>
 				<Separator />
 				<Link

@@ -58,7 +58,6 @@ export const inputFormats: Record<string, InputFormatType> = {
 };
 
 export const outputFormats : Record<string,OutputFormatType> = {
-    html: { label: "HTML", binary: false, ext: ".html", mime: "text/html" },
     native: { label: "Native Haskell", binary: false },
     json: {
         label: "json",
@@ -109,7 +108,6 @@ export const outputFormats : Record<string,OutputFormatType> = {
         ext: ".ipynb",
         mime: "application/x-ipynb+json",
     },
-    html4: { label: "html4", binary: false, ext: ".html", mime: "text/html" },
     html5: { label: "html5", binary: false, ext: ".html", mime: "text/html" },
     icml: {
         label: "icml",

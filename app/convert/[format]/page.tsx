@@ -10,7 +10,7 @@ import NOSSRWrapper from "@/components/NOSSRWrapper";
 import DocumentConverterInfoSection from "@/components/DocumentConverterInfoSection";
 import PandocConverter from "@/components/DocumentConverter";
 
-export const dynamic = 'force-static';  // Add this to force static generation
+export const dynamic = "force-static"; // Add this to force static generation
 
 // Generate static paths for all valid conversions
 export async function generateStaticParams() {
@@ -29,7 +29,14 @@ export async function generateMetadata({
 	const conversion = conversions.find(
 		(c) => c.from.toUpperCase() === from && c.to.toUpperCase() === to,
 	);
-	return conversion ? conversion.metadata : {};
+	return conversion
+		? {
+				...conversion.metadata,
+				alternates: {
+					canonical: `/convert/${params.format}`,
+				},
+			}
+		: {};
 }
 
 function RenderConverter({
@@ -62,8 +69,14 @@ function RenderConverter({
 		case "document":
 			return (
 				<div>
-					<DocumentConverterInfoSection defaultSourceFormat={from} defaultTargetFormat={to}/>
-					<PandocConverter defaultSourceFormat={from} defaultTargetFormat={to} />
+					<DocumentConverterInfoSection
+						defaultSourceFormat={from}
+						defaultTargetFormat={to}
+					/>
+					<PandocConverter
+						defaultSourceFormat={from}
+						defaultTargetFormat={to}
+					/>
 				</div>
 			);
 		default:
@@ -83,7 +96,7 @@ export default function Page({ params }: { params: { format: string } }) {
 		return <UnsupportedFormat />;
 	}
 	return (
-		<main className="flex justify-center align-middle items-center min-h-screen max-w-[90%] py-4 mx-auto">
+		<main className="flex justify-center align-middle items-center min-h-screen max-w-7xl p-4 mx-auto">
 			<NOSSRWrapper>
 				<RenderConverter
 					to={conversion.to.toLowerCase()}

@@ -27,6 +27,15 @@ const nextConfig = {
       }
     ]
   },
+  async redirects() {
+    return [
+      {
+        source: '/:format([a-z0-9]+-to-[a-z0-9]+)',
+        destination: '/convert/:format',
+        permanent: true,
+      },
+    ]
+  },
   async headers() {
     return [
       {

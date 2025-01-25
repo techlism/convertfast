@@ -48,6 +48,7 @@ export const metadata: Metadata = {
 		site: "@convertfast",
 	},
 	manifest: "/manifest.json",
+	metadataBase: new URL("https://convertfast.media"),
 	alternates: {
 		canonical: "https://convertfast.media",
 	},
@@ -71,12 +72,14 @@ const jsonLd = {
 	url: "https://convertfast.media",
 	description: metadata.description,
 	potentialAction: {
-		"@type": "Convert",
+		"@type": "Action",
+		name: "Convert File Format",
 		target: {
 			"@type": "EntryPoint",
-			urlTemplate: "https://convertfast.media/convert/{A-to-B}",
+			urlTemplate:
+				"https://convertfast.media/convert/{sourceFormat}-to-{targetFormat}",
 		},
-		"query-input": "required name=A-to-B",
+		"query-input": "required name=sourceFormat required name=targetFormat",
 	},
 };
 
@@ -97,7 +100,7 @@ export default function RootLayout({
 			<body className={`${GeistSans.className}`}>
 				<PostHogProvider>
 					<ThemeProvider attribute="class" enableSystem>
-						<FumaDocsRootProvider theme={{enabled : true, enableSystem : true}}>
+						<FumaDocsRootProvider theme={{ enabled: true, enableSystem: true }}>
 							<Navbar />
 							{children}
 							<Footer />
