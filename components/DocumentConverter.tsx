@@ -212,8 +212,10 @@ const PandocConverter: React.FC<PandocConverterProps> = ({
 		setFileContent(null);
 		setFileName("");
 		setTextContent("");
-		setSourceFormat("");
         setOutputContent("");
+		if(!defaultSourceFormat){
+			setSourceFormat('');
+		}
 	}
 
 	const handleDrop = async (e: React.DragEvent<HTMLDivElement>) => {
@@ -325,7 +327,7 @@ const PandocConverter: React.FC<PandocConverterProps> = ({
 		: false;
 
 	return (
-		<Card className="max-w-7xl mx-auto">
+		<Card>
 			<CardContent className="space-y-4 mt-6">
 				{fileName === "" ? (
 					<Label
@@ -381,13 +383,13 @@ const PandocConverter: React.FC<PandocConverterProps> = ({
 				)}
 
 				<div className="flex items-center justify-between gap-4 mb-4">
-					<div className="flex gap-4">
+					<div className="flex gap-4 flex-wrap w-full">
 						<Select
 							value={sourceFormat}
 							onValueChange={(value: InputFormat) => setSourceFormat(value)}
 							disabled={isLoading}
 						>
-							<SelectTrigger className="w-48">
+							<SelectTrigger className="min-w-[200px] flex-wrap w-full">
 								<SelectValue placeholder="Source format" />
 							</SelectTrigger>
 							<SelectContent>
@@ -404,13 +406,13 @@ const PandocConverter: React.FC<PandocConverterProps> = ({
 							onValueChange={(value: OutputFormat) => setTargetFormat(value)}
 							disabled={isLoading}
 						>
-							<SelectTrigger className="w-48">
+							<SelectTrigger className="min-w-[200px] flex-wrap w-full">
 								<SelectValue placeholder="Target format" />
 							</SelectTrigger>
 							<SelectContent>
-								{Object.entries(outputFormats).map(([key, format]) => (
+								{Object.entries(outputFormats).sort(([key1,_format1],[key2,_format2])=>key1.localeCompare(key2)).map(([key, format]) => (
 									<SelectItem key={key} value={key}>
-										{format.label}
+										{format.label.toUpperCase()}
 									</SelectItem>
 								))}
 							</SelectContent>
