@@ -1,10 +1,10 @@
 import { Card, Cards } from 'fumadocs-ui/components/card';
-import { PreWithCopy } from './pre';
-import { CustomCallout } from './callout';
-import { createHeadingComponent } from './heading';
-import { CustomImage } from './image';
-import { CustomLink } from './link';
-import { CustomTable } from './table';
+import { PreWithCopy } from './Pre';
+import { CustomCallout } from './Callout';
+import { createHeadingComponent } from './Heading';
+import { CustomImage } from './Image';
+import { CustomLink } from './Link';
+import { CustomTable } from './Table';
 
 const customMdxComponents = {
   pre: PreWithCopy,
