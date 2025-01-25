@@ -3,7 +3,7 @@ import { DocsBody } from "fumadocs-ui/page";
 import defaultMdxComponents from "fumadocs-ui/mdx";
 import customMdxComponents from "@/components/blog-components";
 import { Separator } from "@/components/ui/separator";
-import { TableofContents } from "@/components/blog-components/table-of-content";
+import { TableofContents } from "@/components/blog-components/Table-of-content";
 import type { Metadata } from "next";
 
 export const dynamicParams = false;
