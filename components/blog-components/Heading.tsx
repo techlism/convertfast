@@ -1,7 +1,7 @@
 import React from "react";
 
 export const createHeadingComponent = (level: number): React.ComponentType<React.HTMLAttributes<HTMLHeadingElement>> => {
-  return (props) => {
+  const HeadingComponent = (props: React.HTMLAttributes<HTMLHeadingElement>) => {
     const sizeClasses = {
       1: 'text-4xl font-bold mb-4 mt-8',
       2: 'text-3xl font-semibold mb-3 mt-6',
@@ -13,7 +13,10 @@ export const createHeadingComponent = (level: number): React.ComponentType<React
 
     return React.createElement(`h${level}`, {
       ...props,
-      className: `${sizeClasses} text-gray-900 dark:text-gray-100 font-sans ${props.className || ''}`
+      className: `${sizeClasses} text-gray-900 dark:text-gray-100 ${props.className || ''}`
     });
   };
+
+  HeadingComponent.displayName = `Heading${level}`;
+  return HeadingComponent;
 };

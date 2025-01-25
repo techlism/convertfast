@@ -38,3 +38,5 @@ export const CustomCallout = React.forwardRef<HTMLDivElement, CalloutProps>(
 		);
 	},
 );
+
+CustomCallout.displayName = "CustomCallout";
