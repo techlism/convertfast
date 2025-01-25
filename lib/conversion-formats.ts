@@ -184,7 +184,7 @@ function generateMeta(from: string, to: string, type: "image" | "video" | "audio
 	  ])].join(", "),
 	  creator: "Techlism",
 	  ...additionalFields,
-	};
+	} satisfies Metadata;
   }
 
 const conversions: Conversion[] = [

@@ -1,13 +1,22 @@
 import type { Config } from "tailwindcss";
+import { createPreset } from 'fumadocs-ui/tailwind-plugin';
 const config = {
   darkMode: ["class"],
   content: [
     './pages/**/*.{ts,tsx}',
+    './node_modules/fumadocs-ui/dist/**/*.js',
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-	],
+    './content/**/*.mdx',
+  ],
   prefix: "",
+  presets: [
+    createPreset({
+      addGlobalColors : true,
+      preset : 'neutral',
+      cssPrefix : ''
+    })
+  ],
   theme: {
     container: {
       center: true,
@@ -73,7 +82,7 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"),require('@tailwindcss/typography')],
+  plugins: [require("tailwindcss-animate"), require('@tailwindcss/typography')],
 } satisfies Config
 
 export default config
