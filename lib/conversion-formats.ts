@@ -389,8 +389,8 @@ const conversions: Conversion[] = [
 	{
 		from: "JPEG",
 		to: "PDF",
-		type: "document",
-		metadata: generateMeta("JPEG", "PDF", "document")
+		type: "image",
+		metadata: generateMeta("JPEG", "PDF", "image")
 	},
 	{
 		from: "PNG",
@@ -413,8 +413,8 @@ const conversions: Conversion[] = [
 	{
 		from: "PNG",
 		to: "PDF",
-		type: "document",
-		metadata: generateMeta("PNG", "PDF", "document")
+		type: "image",
+		metadata: generateMeta("PNG", "PDF", "image")
 	},
 	{
 		from: "WEBP",
@@ -437,8 +437,8 @@ const conversions: Conversion[] = [
 	{
 		from: "WEBP",
 		to: "PDF",
-		type: "document",
-		metadata: generateMeta("WEBP", "PDF", "document")
+		type: "image",
+		metadata: generateMeta("WEBP", "PDF", "image")
 	},
 	{
 		from: "BMP",
