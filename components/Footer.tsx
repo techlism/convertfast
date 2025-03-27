@@ -4,7 +4,7 @@ import { conversions } from "@/lib/conversion-formats"
 import { Separator } from "./ui/separator"
 import Image from "next/image"
 
-export default function Footer() {
+export default async function Footer() {
     // Sort conversions by the length of the conversion string (e.g., "Convert MP4 to MP3")
     const sortedConversions = [...conversions].sort((a, b) => {
         const conversionA = `Convert ${a.from} to ${a.to}`
@@ -14,14 +14,17 @@ export default function Footer() {
 
     return (
         <footer className="border-t border-border bg-background py-6">
-            <div className="max-w-7xl mx-auto">
+            <div className="max-w-7xl lg:mx-auto md:mx-auto sm:mx-auto mx-4">
 
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12">
                     <div className="col-span-2">
                         <div className="flex items-center gap-2 mb-4">
-                            <Link className=" w-8 h-8" href={'/'}>
+                            <Link className="flex items-center gap-2" href={'/'}>
                                 <Image className="dark:invert" src="/convifi.svg" alt="Logo" height={35} width={35} />
+                                <span className="text-xl font-semibold">
+                                    Convifi
+                                </span>
                             </Link>
                         </div>
                         <p className="text-sm text-muted-foreground max-w-xs">
@@ -36,7 +39,7 @@ export default function Footer() {
                     </div>            
                 </div>
                 <div className="my-6">
-                    <h3 className="text-base font-medium text-foreground mb-3 text-center">Conversion Links</h3>
+                    <h3 className="text-lg font-medium text-foreground mb-3">Conversion Links</h3>
                     <div className="gap-2 grid grid-cols-2 lg:grid-cols-4 md:grid-cols-3"> {/* Vertical stacking of conversion links */}
                         {sortedConversions.map((conversion) => (
                             <div className="flex items-center space-x-2" key={`conversion_formats_footer_${conversion.from}_${conversion.to}`}>
@@ -62,6 +65,9 @@ export default function Footer() {
                         </Link>
                         <Link href="#" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
                             Terms & Conditions
+                        </Link>
+                        <Link href={'/blog'} className="text-xs text-muted-foreground hover:text-foreground transition-colors">
+                            Blog
                         </Link>
                     </div>
                 </div>

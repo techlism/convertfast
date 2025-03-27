@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion"
 import { Shield, Lock, MegaphoneOff, FileCheck } from "lucide-react"
+import { ShineBorder } from "../ui/shine-border"
 
 export function FeatureSection() {
   const features = [
@@ -52,11 +53,13 @@ export function FeatureSection() {
         </div>
 
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-          {features.map((feature, index) => (
+          {features.map((feature) => (
             <div
               key={feature.description}
-              className="group relative bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl p-6 transition-all overflow-hidden hover:shadow-sm  hover:shadow-primary"
+              className="group relative bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl p-6 transition-all overflow-hidden"
             >
+              <ShineBorder shineColor={['#facc14']} />
+
               <div className="mb-4">{feature.icon}</div>
               <h3 className="text-xl font-medium mb-2">{feature.title}</h3>
               <p className="text-muted-foreground">{feature.description}</p>

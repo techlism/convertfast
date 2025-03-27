@@ -37,18 +37,17 @@ export const metadata: Metadata = {
 		"how to compress files locally",
 		"compress files without uploading",
 		"how to convert files locally",
-		"convertfast media",
 	],
 	openGraph: {
-		images: "https://convertfast.media/opengraph.png",
+		images: "https://convifi.com/opengraph.png",
 		siteName: "Convifi",
 	},
 	twitter: {
-		images: "https://convertfast.media/opengraph.png",
-		site: "@convertfast",
+		images: "https://convifi.com/opengraph.png",
+		site: "Convifi",
 	},
 	manifest: "/manifest.json",
-	metadataBase: new URL("https://convertfast.media"),
+	metadataBase: new URL("https://convifi.com"),
 	robots: {
 		index: true,
 		follow: true,
@@ -66,7 +65,7 @@ const jsonLd = {
 	"@context": "https://schema.org",
 	"@type": "WebSite",
 	name: "Convifi",
-	url: "https://convertfast.media",
+	url: "https://convifi.com",
 	description: metadata.description,
 	potentialAction: {
 		"@type": "Action",
@@ -74,7 +73,7 @@ const jsonLd = {
 		target: {
 			"@type": "EntryPoint",
 			urlTemplate:
-				"https://convertfast.media/convert/{sourceFormat}-to-{targetFormat}",
+				"https://convifi.com/convert/{sourceFormat}-to-{targetFormat}",
 		},
 		"query-input": "required name=sourceFormat required name=targetFormat",
 	},

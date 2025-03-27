@@ -4,7 +4,7 @@ import NOSSRWrapper from "@/components/NOSSRWrapper";
 
 export default function Page(){
     return(
-		<main className="flex justify-center align-middle items-center min-h-screen max-w-[90%] py-4 mx-auto">
+		<main className="flex justify-center align-middle items-center min-h-screen max-w-7xl py-4 mx-auto">
             <NOSSRWrapper>
                 <div>
                     <DocumentConverterInfoSection/>

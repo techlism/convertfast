@@ -797,66 +797,66 @@ const conversions: Conversion[] = [
 
 	// MediaWiki to common formats
 	{
-		from: "MediaWiki",
+		from: "Wiki",
 		to: "Markdown",
 		type: "document",
 		metadata: generateMeta("MediaWiki", "Markdown", "document")
 	},
 	{
-		from: "MediaWiki",
+		from: "Wiki",
 		to: "HTML",
 		type: "document",
 		metadata: generateMeta("MediaWiki", "HTML", "document")
 	},
 	{
-		from: "MediaWiki",
+		from: "Wiki",
 		to: "DOCX",
 		type: "document",
 		metadata: generateMeta("MediaWiki", "DOCX", "document")
 	},
 	{
-		from: "MediaWiki",
+		from: "Wiki",
 		to: "ODT",
 		type: "document",
 		metadata: generateMeta("MediaWiki", "ODT", "document")
 	},
 	{
-		from: "MediaWiki",
+		from: "Wiki",
 		to: "EPUB",
 		type: "document",
 		metadata: generateMeta("MediaWiki", "EPUB", "document")
 	},
 
-	// Org Mode to common formats
+	// org to common formats
 	{
-		from: "Org Mode",
-		to: "Markdown",
+		from: "org",
+		to: "markdown",
 		type: "document",
-		metadata: generateMeta("Org Mode", "Markdown", "document")
+		metadata: generateMeta("org", "Markdown", "document")
 	},
 	{
-		from: "Org Mode",
+		from: "org",
 		to: "HTML",
 		type: "document",
-		metadata: generateMeta("Org Mode", "HTML", "document")
+		metadata: generateMeta("org", "HTML", "document")
 	},
 	{
-		from: "Org Mode",
+		from: "org",
 		to: "DOCX",
 		type: "document",
-		metadata: generateMeta("Org Mode", "DOCX", "document")
+		metadata: generateMeta("org", "DOCX", "document")
 	},
 	{
-		from: "Org Mode",
+		from: "org",
 		to: "ODT",
 		type: "document",
-		metadata: generateMeta("Org Mode", "ODT", "document")
+		metadata: generateMeta("org", "ODT", "document")
 	},
 	{
-		from: "Org Mode",
+		from: "org",
 		to: "EPUB",
 		type: "document",
-		metadata: generateMeta("Org Mode", "EPUB", "document")
+		metadata: generateMeta("org", "EPUB", "document")
 	},
 
 	// Textile to common formats
@@ -889,6 +889,18 @@ const conversions: Conversion[] = [
 		to: "EPUB",
 		type: "document",
 		metadata: generateMeta("Textile", "EPUB", "document")
+	},
+	{
+		from : "JPEG",
+		to : "JPG",
+		type : 'image',
+		metadata : generateMeta("JPEG", "JPG", "image")
+	},
+	{
+		from : 'JPG',
+		to : 'JPEG',
+		type : 'image',
+		metadata : generateMeta('JPG', 'JPEG', 'image')
 	}
 ];
 

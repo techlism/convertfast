@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const ctas = ['Convert Your Videos Locally', 'Remove Backgrounds Instantly', 'Compress Images', 'Convert Audio Files to Any Format', 'Turn Documents into Your Preferred Format']
+const ctas = ['Convert Your Videos Locally', 'Remove Backgrounds Instantly', 'Compress Images', 'Convert Audio Files', 'Turn Documents into Desired Format']
 
 export default function CTA() {
     const router = useRouter();

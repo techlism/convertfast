@@ -699,7 +699,6 @@ export default function VideoProperties({
 								<InfoTooltip information="Audio channels refer to the number of separate audio signals in a recording, affecting how sound is heard. 'Mono' has one channel and sounds the same from all speakers, while 'Stereo' uses two channels for left and right speakers, offering a sense of dimension and direction in the sound." />
 							</strong>
 							<Select
-								// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 								onValueChange={(value: string) =>
 									handleSettingChange("channels", value)
 								}

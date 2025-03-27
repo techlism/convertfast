@@ -5,7 +5,7 @@ User-agent: ChatGPT-User
 Disallow: /
 
 # Specify the preferred domain
-Host: https://convertfast.media
+Host: https://convifi.com
 
 # Point to your sitemap
-Sitemap: https://convertfast.media/sitemap.xml
+Sitemap: https://convifi.com/sitemap.xml

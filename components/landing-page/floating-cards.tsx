@@ -40,7 +40,7 @@ const cardTypes = [
   {
     id: "documents",
     title: "Documents",
-    description: "PDF, DOCX, TXT, XLSX",
+    description: "MARKDOWN, DOCX, CSV",
     icon: FilePdf,
     color: "bg-green-500/10",
     textColor: "text-green-500",

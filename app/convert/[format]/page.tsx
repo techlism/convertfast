@@ -10,7 +10,7 @@ import NOSSRWrapper from "@/components/NOSSRWrapper";
 import DocumentConverterInfoSection from "@/components/DocumentConverterInfoSection";
 import PandocConverter from "@/components/DocumentConverter";
 
-export const dynamic = "force-static"; // Add this to force static generation
+export const dynamic = "force-static"; 
 
 // Generate static paths for all valid conversions
 export async function generateStaticParams() {

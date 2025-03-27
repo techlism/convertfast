@@ -10,10 +10,10 @@ export default async function BlogPage() {
 		<div className="container max-w-4xl py-12">
 			<div className="mb-16 text-center">
 				<h1 className="text-4xl font-bold tracking-tight mb-4">
-					ConvertFast - Blog
+					Convifi - Blog
 				</h1>
 				<p className="text-muted-foreground text-lg">
-					Everything going on with ConvertFast.
+					Everything going on with Convifi.
 				</p>
 			</div>
 

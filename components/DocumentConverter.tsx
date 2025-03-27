@@ -63,7 +63,7 @@ const PandocConverter: React.FC<PandocConverterProps> = ({
 	const [pandocInstance, setPandocInstance] = useState<
 		((args_str: string, in_str: string) => string) | null
 	>(null);
-	const [error, setError] = useState("");
+	const [error, setError] = useState<string|null>(null);
 	const fileInputRef = useRef<HTMLInputElement>(null);
 
 	// Validate and set default formats
@@ -72,28 +72,27 @@ const PandocConverter: React.FC<PandocConverterProps> = ({
 			const sourceExists = defaultSourceFormat in inputFormats;
 			const targetExists = defaultTargetFormat in outputFormats;
 
-			if (!sourceExists || !targetExists) {
-				setError("Invalid default format configuration provided");
+			if (!sourceExists || !targetExists ) {
+				setError("Invalid default format configuration provided. Please use the select menus below.");
 				return;
 			}
-
 			setSourceFormat(defaultSourceFormat);
 			setTargetFormat(defaultTargetFormat);
 		}
 	}, [defaultSourceFormat, defaultTargetFormat]);
 
-    const getAcceptedFileTypes = useCallback(() => {
-        if (sourceFormat) {
-            const format = inputFormats[sourceFormat];
-            return format.ext ? `${format.ext}` : undefined;
-        }
-        
-        // If no source format is selected, return all possible input formats
-        return Object.values(inputFormats)
-            .map(format => format.ext ? `${format.ext}` : null)
-            .filter(Boolean)
-            .join(',');
-    }, [sourceFormat]);
+	const getAcceptedFileTypes = useCallback(() => {
+		if (sourceFormat) {
+			const format = inputFormats[sourceFormat];
+			return format.ext ? `${format.ext}` : undefined;
+		}
+
+		// If no source format is selected, return all possible input formats
+		return Object.values(inputFormats)
+			.map(format => format.ext ? `${format.ext}` : null)
+			.filter(Boolean)
+			.join(',');
+	}, [sourceFormat]);
 
 	const initializePandoc = useCallback(async () => {
 		try {
@@ -212,8 +211,8 @@ const PandocConverter: React.FC<PandocConverterProps> = ({
 		setFileContent(null);
 		setFileName("");
 		setTextContent("");
-        setOutputContent("");
-		if(!defaultSourceFormat){
+		setOutputContent("");
+		if (!defaultSourceFormat) {
 			setSourceFormat('');
 		}
 	}
@@ -327,15 +326,15 @@ const PandocConverter: React.FC<PandocConverterProps> = ({
 		: false;
 
 	return (
-		<Card>
-			<CardContent className="space-y-4 mt-6">
+		<Card className="m-1">
+			<CardContent className="space-y-4 p-2">
 				{fileName === "" ? (
 					<Label
 						htmlFor="dropzone-file"
 						className="justify-self-center cursor-pointer"
 					>
 						<div
-							className="flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-10 gap-2 "
+							className="flex flex-col items-center justify-center border-2 border-dashed rounded-lg gap-2 p-4"
 							onDragOver={preventDefaults}
 							onDragEnter={preventDefaults}
 							onDragLeave={preventDefaults}
@@ -352,11 +351,11 @@ const PandocConverter: React.FC<PandocConverterProps> = ({
 						</div>
 						{/* This is just a ref and should not be modified */}
 						<input
-							type="file" 
+							type="file"
 							ref={fileInputRef}
 							className="hidden"
 							onChange={handleFileSelect}
-                            accept={getAcceptedFileTypes()}
+							accept={getAcceptedFileTypes()}
 						/>
 					</Label>
 				) : (
@@ -377,9 +376,9 @@ const PandocConverter: React.FC<PandocConverterProps> = ({
 				)}
 
 				{error && (
-					<Alert variant="destructive">
-						<AlertDescription>{error}</AlertDescription>
-					</Alert>
+					<div className="border p-2 rounded-lg bg-red-100 dark:bg-red-200 text-red-500 dark:text-red-500  font-medium transition-transform ease-in-out">
+						{error}
+					</div>
 				)}
 
 				<div className="flex items-center justify-between gap-4 mb-4">
@@ -387,7 +386,7 @@ const PandocConverter: React.FC<PandocConverterProps> = ({
 						<Select
 							value={sourceFormat}
 							onValueChange={(value: InputFormat) => setSourceFormat(value)}
-							disabled={isLoading}
+							disabled={isLoading || (defaultSourceFormat !== undefined && defaultTargetFormat !== undefined && defaultSourceFormat in inputFormats && defaultTargetFormat in outputFormats)}
 						>
 							<SelectTrigger className="min-w-[200px] flex-wrap w-full">
 								<SelectValue placeholder="Source format" />
@@ -404,13 +403,13 @@ const PandocConverter: React.FC<PandocConverterProps> = ({
 						<Select
 							value={targetFormat}
 							onValueChange={(value: OutputFormat) => setTargetFormat(value)}
-							disabled={isLoading}
+							disabled={isLoading || (defaultSourceFormat !== undefined && defaultTargetFormat !== undefined && defaultSourceFormat in inputFormats && defaultTargetFormat in outputFormats)}
 						>
 							<SelectTrigger className="min-w-[200px] flex-wrap w-full">
 								<SelectValue placeholder="Target format" />
 							</SelectTrigger>
 							<SelectContent>
-								{Object.entries(outputFormats).sort(([key1,_format1],[key2,_format2])=>key1.localeCompare(key2)).map(([key, format]) => (
+								{Object.entries(outputFormats).sort(([key1, _format1], [key2, _format2]) => key1.localeCompare(key2)).map(([key, format]) => (
 									<SelectItem key={key} value={key}>
 										{format.label.toUpperCase()}
 									</SelectItem>
@@ -474,10 +473,10 @@ const PandocConverter: React.FC<PandocConverterProps> = ({
 							Download
 						</Button>
 					)}
-                    {outputContent && (isTargetBinary || targetFormat) && (
+					{outputContent && (isTargetBinary || targetFormat) && (
 						<Button
 							onClick={resetFileSelection}>
-                            Convert Another
+							Convert Another
 						</Button>
 					)}
 				</div>
