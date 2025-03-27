@@ -10,9 +10,9 @@ import { PostHogProvider } from "@/components/providers/posthog-provider";
 import { RootProvider as FumaDocsRootProvider } from "fumadocs-ui/provider";
 
 export const metadata: Metadata = {
-	title: "Convertfast: Fast, Secure and Browser-based File Converter",
+	title: "Convifi: Fast, Secure and Browser-based File Converter",
 	description:
-		"Convertfast: Free, secure media file converter & compressor — fast, browser-based, and private.",
+		"Convifi: Free, secure media file converter & compressor — fast, browser-based, and private.",
 	keywords: [
 		"file converter",
 		"file compressor",
@@ -20,12 +20,12 @@ export const metadata: Metadata = {
 		"file compress online",
 		"convert files online",
 		"file convert online",
-		"convertfast",
-		"convertfast online",
-		"convertfast file converter",
-		"convertfast file compressor",
-		"convertfast file convert",
-		"convertfast file compress",
+		"convifi",
+		"convifi online",
+		"convifi file converter",
+		"convifi file compressor",
+		"convifi file convert",
+		"convifi file compress",
 		"compress images for forms",
 		"compress photos",
 		"jpeg to png",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
 	],
 	openGraph: {
 		images: "https://convertfast.media/opengraph.png",
-		siteName: "Convertfast",
+		siteName: "Convifi",
 	},
 	twitter: {
 		images: "https://convertfast.media/opengraph.png",
@@ -49,9 +49,6 @@ export const metadata: Metadata = {
 	},
 	manifest: "/manifest.json",
 	metadataBase: new URL("https://convertfast.media"),
-	alternates: {
-		canonical: "https://convertfast.media",
-	},
 	robots: {
 		index: true,
 		follow: true,
@@ -68,7 +65,7 @@ export const viewport: Viewport = {
 const jsonLd = {
 	"@context": "https://schema.org",
 	"@type": "WebSite",
-	name: "Convertfast",
+	name: "Convifi",
 	url: "https://convertfast.media",
 	description: metadata.description,
 	potentialAction: {

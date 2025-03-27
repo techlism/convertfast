@@ -5,9 +5,9 @@ import type { Post, PostMetadata } from '../lib/types';
 
 const postsDirectory = path.join(process.cwd(), 'articles');
 
-function isValidSlug(slug: string): boolean {
-    return /^[a-zA-Z0-9_-]+$/.test(slug);
-}
+// function isValidSlug(slug: string): boolean {
+//     return /^[a-zA-Z0-9_-]+$/.test(slug);
+// }
 
 export async function getPostSlugs(): Promise<string[] | Error> {
     try {

@@ -42,11 +42,7 @@ export const generateMetadata = async (props: {
       twitter: {
         title,
         description,
-
-      },
-      alternates: {
-        canonical: post.url,
-      },
+      }
     } satisfies Metadata;
   };
 

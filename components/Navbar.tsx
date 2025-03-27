@@ -26,7 +26,7 @@ const Navbar: React.FC = () => {
                     <div className="flex items-center">
                         <div className="flex-shrink-0">
                             <Link href={'/'}>
-                                <Image className="dark:invert" src="/convertfast.svg" alt="Logo" height={35} width={35}/>
+                                <Image className="dark:invert" src="/convifi.svg" alt="Logo" height={35} width={35}/>
                             </Link>                            
                         </div>
                         <div className="hidden md:block">

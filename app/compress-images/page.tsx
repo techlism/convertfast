@@ -8,9 +8,6 @@ export const metadata : Metadata = {
     description: "Compress images and photos quickly and easily without uploading them to any server.",
     keywords : ["compress images", "compress photos", "compress pictures", "compress image online", "compress image", "compress without uploading", "resize", "resize to 50kb", "resize photographs for forms","decrease image size"],
     creator : "Techlism",
-    alternates : {
-        canonical : "https://convertfast.media/compress-images"
-    }
 }
 
 export default function Home(){

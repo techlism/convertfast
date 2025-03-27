@@ -32,9 +32,6 @@ export async function generateMetadata({
 	return conversion
 		? {
 				...conversion.metadata,
-				alternates: {
-					canonical: `/convert/${params.format}`,
-				},
 			}
 		: {};
 }

@@ -4,7 +4,7 @@ import type { MetadataRoute } from 'next';
 import { conversions } from '@/lib/conversion-formats'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://convertfast.media'
+  const baseUrl = 'https://convifi.media'
   
   // Static routes
   const staticRoutes : MetadataRoute.Sitemap = [
