@@ -5,9 +5,9 @@ import { conversions } from '@/lib/conversion-formats'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://convifi.com'
-  
+
   // Static routes
-  const staticRoutes : MetadataRoute.Sitemap = [
+  const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
       lastModified: new Date(),
@@ -24,29 +24,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
-        url : `${baseUrl}/compress-images`,
-        lastModified : new Date(),
-        priority : 0.8
+      url: `${baseUrl}/compress-images`,
+      lastModified: new Date(),
+      priority: 0.8
     },
     {
-        url : `${baseUrl}/remove-bg`,
-        lastModified : new Date(),
-        priority : 0.8
+      url: `${baseUrl}/remove-bg`,
+      lastModified: new Date(),
+      priority: 0.8
     },
     {
-      url : `${baseUrl}/convert/document`,
-      lastModified : new Date(),
-      priority : 0.8
+      url: `${baseUrl}/convert/document`,
+      lastModified: new Date(),
+      priority: 0.8
     }
   ]
 
-  // Generate routes for app/[format]
-  // const legacyFormatRoutes = conversions.map((conversion) => ({
-  //   url: `${baseUrl}/${conversion.from.toLowerCase()}-to-${conversion.to.toLowerCase()}`,
-  //   lastModified: new Date(),
-  //   priority: 0.7,
-  // }))
-  // Commenting out the legacyFormats because let's see does it fix the issues
 
   // Generate routes for app/convert/[format]
   const newFormatRoutes = conversions.map((conversion) => ({

@@ -5,7 +5,7 @@ import {
   defineCollections,
   defineConfig,
   frontmatterSchema
-} from "fumadocs-mdx/config";
+} from "fumadocs-mdx/config/zod-3";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
 import { z } from "zod";
